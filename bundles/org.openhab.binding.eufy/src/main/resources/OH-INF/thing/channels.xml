@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="eufy"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<channel-type id="switchDefault">
+		<item-type>Switch</item-type>
+		<label>Default switch type</label>
+	</channel-type>
+
+	<channel-type id="switchAdvanced" advanced="true">
+		<item-type>Switch</item-type>
+		<label>Advanced switch type</label>
+	</channel-type>
+
+	<channel-type id="readonlySwitchDefault">
+		<item-type>Switch</item-type>
+		<label>Readonly Switch</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="readonlySwitchAdvanced">
+		<item-type>Switch</item-type>
+		<label>Readonly Switch</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="wifiSignalLevel" advanced="true">
+		<item-type>Number</item-type>
+		<label>Wifi Signal Level</label>
+		<description>Wifi Signal Level, ranging from 1-4 where 4 is strongest</description>
+	</channel-type>
+
+	<channel-type id="cameraState" advanced="true">
+		<item-type>Number</item-type>
+		<label>State</label>
+		<description>Camera state</description>
+		<state>
+			<options>
+				<option value="0">Off</option>
+				<option value="1">Standby</option>
+				<option value="2">On</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="batteryTemperature" advanced="true">
+		<item-type>Number:Temperature</item-type>
+		<label>Battery Temperature</label>
+		<description>Battery temperature</description>
+		<state min="-20" max="50" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="watermark" advanced="true">
+		<item-type>Number</item-type>
+		<label>Watermark</label>
+		<description>The type of watermark on images and streams. Values are off, timestamp, and full (timestamp and logo)</description>
+		<state>
+			<options>
+				<option value="0">Off</option>
+				<option value="1">Timestamp</option>
+				<option value="2">Timestamp And Logo</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="livestreaming">
+		<item-type>Switch</item-type>
+		<label>Livestreaming</label>
+		<description>Represents the current live-streaming state of the device. Can be used to start/stop live streaming</description>
+	</channel-type>
+
+	<channel-type id="enabled">
+		<item-type>Switch</item-type>
+		<label>Enabled</label>
+		<description>If the device is currently enabled</description>
+	</channel-type>
+
+	<channel-type id="motionDetection">
+		<item-type>Switch</item-type>
+		<label>Motion Detection</label>
+		<description>If motion detection is currently enabled</description>
+	</channel-type>
+
+	<channel-type id="picture">
+		<item-type>Image</item-type>
+		<label>Picture</label>
+		<description>Picture taken of the last event</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="pictureUrl">
+		<item-type>String</item-type>
+		<label>Picture URL</label>
+		<description>URL of the picture taken of the last event</description>
+	</channel-type>
+
+	<channel-type id="secondsType" advanced="true">
+		<item-type>Number</item-type>
+		<label>Number of Seconds</label>
+	</channel-type>
+
+	<channel-type id="motionDetectionType">
+		<item-type>Number</item-type>
+		<label>Motion Detection Type</label>
+		<description>Detection motion of type (off, person, all)</description>
+		<state readOnly="true">
+			<options>
+				<option value="0">OFF</option>
+				<option value="1">PERSON</option>
+				<option value="2">ALL</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="motionDetectionSensitivity" advanced="true">
+		<item-type>Number</item-type>
+		<label>Motion Detection Sensitivity</label>
+		<description>Sensitivity level for motion detection (1-7, 7 is most sensitive)</description>
+	</channel-type>
+
+	<channel-type id="personName">
+		<item-type>String</item-type>
+		<label>Detected Person Name</label>
+		<description>Name of the person detected on the last person-detected event</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="chargingStatus" advanced="true">
+		<item-type>Number</item-type>
+		<label>Charging Status</label>
+		<state readOnly="true">
+			<options>
+				<option value="0">OFF</option>
+				<option value="1">ON</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="powerSource" advanced="true">
+		<item-type>Number</item-type>
+		<label>Power Source</label>
+		<state readOnly="true">
+			<options>
+				<option value="0">BATTERY</option>
+				<option value="1">WIRED</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="notificationType" advanced="true">
+		<item-type>Number</item-type>
+		<label>Notification Type</label>
+		<state readOnly="true">
+			<options>
+				<option value="0">OFF</option>
+				<option value="1">PUSH</option>
+				<option value="2">EMAIL</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="chimeHomebaseRingtoneType" advanced="true">
+		<item-type>Number</item-type>
+		<label>Chime Homebase Ringtone</label>
+		<description>Chime Homebase Ringtone</description>
+	</channel-type>
+
+	<channel-type id="notificationMotion" advanced="true">
+		<item-type>Number</item-type>
+		<label>Notification Motion</label>
+		<description>Notification Motion</description>
+	</channel-type>
+
+	<channel-type id="notificationRing" advanced="true">
+		<item-type>Number</item-type>
+		<label>Notification Ring</label>
+		<description>Notification Ring</description>
+	</channel-type>
+
+	<channel-type id="rtspStreamUrl" advanced="true">
+		<item-type>String</item-type>
+		<label>RTSP Url</label>
+		<description>URL of the RTSP stream</description>
+	</channel-type>
+
+	<channel-type id="videoStreamingQuality" advanced="true">
+		<item-type>Number</item-type>
+		<label>Video Stream Quality</label>
+		<description>Video Stream Quality</description>
+	</channel-type>
+
+</thing:thing-descriptions>

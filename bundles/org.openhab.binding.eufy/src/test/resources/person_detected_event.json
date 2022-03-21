@@ -1,0 +1,10 @@
+{
+	"type": "event",
+	"event": {
+		"source": "device",
+		"event": "person detected",
+		"serialNumber": "T8140P8121432028",
+		"state": true,
+		"person": "Unknown"
+	}
+}

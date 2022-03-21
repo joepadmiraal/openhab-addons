@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="eufy"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="doorbell">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="container"/>
+		</supported-bridge-type-refs>
+		<label>Eufy Doorbell</label>
+		<description>Eufy doorbell connected to a station.
+			Supports wired and battery models.</description>
+		<channels>
+			<channel typeId="switchDefault" id="enabled">
+				<label>Enabled</label>
+				<description>If the device is enabled</description>
+			</channel>
+			<channel typeId="cameraState" id="state"/>
+
+			<channel typeId="system.battery-level" id="battery">
+				<label>Battery Level</label>
+				<description>The battery level, in percent</description>
+			</channel>
+
+			<channel typeId="batteryTemperature" id="batteryTemperature"/>
+
+			<channel typeId="switchDefault" id="motionDetection">
+				<label>Motion Detection</label>
+				<description>Motion Detection status</description>
+			</channel>
+
+			<channel typeId="motionDetectionType" id="motionDetectionType"/>
+
+			<channel typeId="motionDetectionSensitivity" id="motionDetectionSensitivity"/>
+
+			<channel typeId="notificationMotion" id="notificationMotion"/>
+
+			<channel typeId="notificationRing" id="notificationRing"/>
+
+			<channel typeId="notificationType" id="notificationType"/>
+
+			<channel typeId="system.volume" id="speakerVolume">
+				<label>Speaker Volume</label>
+				<description>Volume of the speaker of this doorbell</description>
+			</channel>
+
+			<channel typeId="system.motion" id="motionDetected">
+				<label>Motion Detected</label>
+				<description>If the camera detected motion</description>
+			</channel>
+
+			<channel typeId="system.motion" id="personDetected">
+				<label>Person Detected</label>
+				<description>If the camera detected motion from a person</description>
+			</channel>
+
+			<channel typeId="personName" id="personName"/>
+
+			<channel typeId="switchDefault" id="nightVision">
+				<label>Night Vision</label>
+				<description>If the camera is currently in night vision mode</description>
+			</channel>
+
+			<channel typeId="switchDefault" id="autoNightvision">
+				<label>Auto Night Vision</label>
+				<description>If the camera switches to night vision automatically</description>
+			</channel>
+
+			<channel typeId="watermark" id="watermark"/>
+
+			<channel typeId="system.signal-strength" id="wifiSignalLevel"/>
+
+			<channel typeId="picture" id="picture"/>
+
+			<channel typeId="pictureUrl" id="pictureUrl"/>
+
+			<channel typeId="readonlySwitchDefault" id="ringing">
+				<label>Ringing</label>
+				<description>The doorbell ringing state</description>
+			</channel>
+
+			<channel typeId="readonlySwitchDefault" id="audioRecording">
+				<label>Audio Recording</label>
+				<description>Audio Recording</description>
+			</channel>
+
+			<channel typeId="switchAdvanced" id="chimeHomebase">
+				<label>Chime Homebase</label>
+				<description>Chime Homebase</description>
+			</channel>
+
+			<channel typeId="system.volume" id="ringtoneVolume">
+				<label>Ringtone Volume</label>
+				<description>Volume of the ringtone</description>
+			</channel>
+
+			<channel typeId="system.volume" id="chimeHomebaseRingtoneVolume">
+				<label>Chime Homebase Ringtone Volume</label>
+				<description>Volume of the homebase ringtone</description>
+			</channel>
+
+			<channel typeId="chimeHomebaseRingtoneType" id="chimeHomebaseRingtoneType"/>
+
+			<channel typeId="switchDefault" id="chimeIndoor">
+				<label>Chime Indoor</label>
+				<description>Chime Indoor</description>
+			</channel>
+
+			<channel typeId="switchAdvanced" id="statusLed">
+				<label>LED Status</label>
+				<description>LED status</description>
+			</channel>
+
+			<channel typeId="switchDefault" id="antitheftDetection">
+				<label>Anti Theft</label>
+				<description>Anti theft functionality armed</description>
+			</channel>
+
+			<channel typeId="chargingStatus" id="chargingStatus"/>
+
+			<channel typeId="secondsType" id="recordingClipLength">
+				<label>Recording Clip Length</label>
+				<description>Length of a recording clip</description>
+			</channel>
+
+			<channel typeId="switchAdvanced" id="recordingEndClipMotionStops">
+				<label>Record End Clip Motion Stops</label>
+				<description>Record End Clip Motion Stops</description>
+			</channel>
+
+			<channel typeId="secondsType" id="recordingRetriggerInterval">
+				<label>Recording Retrigger Interval</label>
+				<description>Recording Retrigger Interval</description>
+			</channel>
+
+			<channel typeId="videoStreamingQuality" id="videoStreamingQuality"/>
+		</channels>
+
+	</thing-type>
+
+</thing:thing-descriptions>

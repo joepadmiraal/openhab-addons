@@ -1,0 +1,178 @@
+{
+	"type": "result",
+	"success": true,
+	"messageId": "3",
+	"result": {
+		"serialNumber": "T8140P8121432028",
+		"properties": {
+			"name": {
+				"value": "Voordeur",
+				"timestamp": 1640335395000
+			},
+			"model": {
+				"value": "T8140-Z",
+				"timestamp": 1640335395000
+			},
+			"serialNumber": {
+				"value": "T8140P8121432028",
+				"timestamp": 1640335395000
+			},
+			"type": {
+				"value": 14,
+				"timestamp": 1640335395000
+			},
+			"hardwareVersion": {
+				"value": "T8140-Z",
+				"timestamp": 1640335395000
+			},
+			"softwareVersion": {
+				"value": "4.0.9",
+				"timestamp": 1640302458000
+			},
+			"stationSerialNumber": {
+				"value": "T8010P2321381032",
+				"timestamp": 1640335395000
+			},
+			"rtspStreamUrl": {
+				"value": "",
+				"timestamp": 0
+			},
+			"lastChargingDays": {
+				"value": -1,
+				"timestamp": 1640335395000
+			},
+			"lastChargingFalseEvents": {
+				"value": 10,
+				"timestamp": 1640335395000
+			},
+			"lastChargingRecordedEvents": {
+				"value": 3,
+				"timestamp": 1640335395000
+			},
+			"lastChargingTotalEvents": {
+				"value": 13,
+				"timestamp": 1640335395000
+			},
+			"batteryUsageLastWeek": {
+				"value": 0,
+				"timestamp": 1640335395000
+			},
+			"pictureUrl": {
+				"value": "https://zhixin-security-eu.s3.eu-central-1.amazonaws.com/thumb/2021/12/23/station/T8010P2321381032/lD0bjebWOQZkpTGa./camera00_20211224005444.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJYLV2KOLW6PU4FSA%2F20220101%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20220101T131208Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=bd8f0e7edc13597188db5a6d3248c2391de7db9b19896a31e83e3bda3a4a5105",
+				"timestamp": 1640303683000
+			},
+			"recordingClipLength": {
+				"value": 60,
+				"timestamp": 0
+			},
+			"recordingRetriggerInterval": {
+				"value": 5,
+				"timestamp": 0
+			},
+			"recordingEndClipMotionStops": {
+				"value": true,
+				"timestamp": 0
+			},
+			"antitheftDetection": {
+				"value": false,
+				"timestamp": 1640875976922
+			},
+			"rtspStream": {
+				"value": false,
+				"timestamp": 1640875976922
+			},
+			"motionDetection": {
+				"value": true,
+				"timestamp": 1640875976922
+			},
+			"enabled": {
+				"value": true,
+				"timestamp": 1640875976922
+			},
+			"chargingStatus": {
+				"value": 2,
+				"timestamp": 1640875976922
+			},
+			"powerSource": {
+				"value": 0,
+				"timestamp": 1640875976922
+			},
+			"speaker": {
+				"value": true,
+				"timestamp": 1640875976922
+			},
+			"microphone": {
+				"value": true,
+				"timestamp": 1640875976922
+			},
+			"battery": {
+				"value": 62,
+				"timestamp": 1640875976922
+			},
+			"watermark": {
+				"value": 2,
+				"timestamp": 1640875976922
+			},
+			"state": {
+				"value": 1,
+				"timestamp": 1640875976922
+			},
+			"audioRecording": {
+				"value": true,
+				"timestamp": 1640875976922
+			},
+			"motionDetectionSensitivity": {
+				"value": 4,
+				"timestamp": 1640301479000
+			},
+			"autoNightvision": {
+				"value": true,
+				"timestamp": 1640875976922
+			},
+			"speakerVolume": {
+				"value": 92,
+				"timestamp": 1640875976922
+			},
+			"powerWorkingMode": {
+				"value": 1,
+				"timestamp": 1640875976922
+			},
+			"notificationType": {
+				"value": 1,
+				"timestamp": 1640875976922
+			},
+			"statusLed": {
+				"value": false,
+				"timestamp": 1640875976922
+			},
+			"motionDetectionType": {
+				"value": 0,
+				"timestamp": 1640875976922
+			},
+			"wifiRssi": {
+				"value": -40,
+				"timestamp": 1640875976922
+			},
+			"wifiSignalLevel": {
+				"value": 4,
+				"timestamp": 1640301479000
+			},
+			"motionDetected": {
+				"value": false,
+				"timestamp": 0
+			},
+			"personDetected": {
+				"value": false,
+				"timestamp": 0
+			},
+			"personName": {
+				"value": "",
+				"timestamp": 0
+			},
+			"batteryTemperature": {
+				"value": 20,
+				"timestamp": 1640875976922
+			}
+		}
+	}
+}
