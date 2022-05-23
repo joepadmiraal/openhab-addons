@@ -12,10 +12,6 @@
  */
 package org.openhab.binding.arcam.internal;
 
-import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
-
-import java.util.Set;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.core.thing.Thing;
@@ -24,6 +20,8 @@ import org.openhab.core.thing.binding.BaseThingHandlerFactory;
 import org.openhab.core.thing.binding.ThingHandler;
 import org.openhab.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@link ArcamHandlerFactory} is responsible for creating things and thing
@@ -35,18 +33,22 @@ import org.osgi.service.component.annotations.Component;
 @Component(configurationPid = "binding.arcam", service = ThingHandlerFactory.class)
 public class ArcamHandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(THING_TYPE_SAMPLE);
+    private final Logger logger = LoggerFactory.getLogger(ArcamHandlerFactory.class);
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
-        return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
+
+        boolean result = ArcamBindingConstants.SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
+        logger.debug("supportsThingType thingTypeUID: {}, result: {}", thingTypeUID.getAsString(), result);
+
+        return result;
     }
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
-
-        if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
+        logger.debug("ArcamHandlerFactory createHandler");
+        if (ArcamBindingConstants.SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID)) {
             return new ArcamHandler(thing);
         }
 

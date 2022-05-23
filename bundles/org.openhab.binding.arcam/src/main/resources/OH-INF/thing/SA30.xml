@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="arcam"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="SA30">
+
+		<label>Arcam Binding Thing</label>
+		<description>SA30</description>
+
+		<channels>
+			<channel id="volume" typeId="system.volume"/>
+			<!--  TODO: power type -->
+			<channel id="power" typeId="system.power"/>
+			<channel id="input" typeId="input"/>
+		</channels>
+
+    
+
+		<config-description>
+			<parameter name="hostname" type="text">
+				<context>network-address</context>
+				<label>Hostname</label>
+				<description>Hostname or IP address of the device</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+	
+	
+	<channel-type id="input">
+        <item-type>String</item-type>
+        <label>Input Source</label>
+        <description>Select the input source</description>
+        <state>
+            <options>
+                <option value="PHONO">PHONO</option>
+                <option value="AUX">AUX</option>
+                <option value="PVR">PVR</option>
+                <option value="AV">AV</option>
+                <option value="STB">STB</option>
+                <option value="CD">CD</option>
+                <option value="BD">BD</option>
+                <option value="SAT">SAT</option>
+                <option value="GAME">GAME</option>
+                <option value="NET/USB">NET/USB</option>
+                <option value="ARC">ARC</option>
+            </options>
+        </state>
+    </channel-type>
+
+</thing:thing-descriptions>

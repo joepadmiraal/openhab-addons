@@ -15,13 +15,18 @@ package org.openhab.binding.arcam.internal;
 import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.PercentType;
+import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
+import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseThingHandler;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.RefreshType;
+import org.openhab.core.types.State;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,37 +37,77 @@ import org.slf4j.LoggerFactory;
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public class ArcamHandler extends BaseThingHandler {
+public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedListener, ArcamConnectionListener {
 
     private final Logger logger = LoggerFactory.getLogger(ArcamHandler.class);
 
-    private @Nullable ArcamConfiguration config;
+    private ArcamConnection connection;
+    private ArcamState state;
 
     public ArcamHandler(Thing thing) {
         super(thing);
+
+        logger.debug("Creating a ArcamHandler for thing '{}'", getThing().getUID());
+
+        state = new ArcamState(this);
+        connection = new ArcamConnection(state, scheduler, this);
     }
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        if (CHANNEL_1.equals(channelUID.getId())) {
+        if (CHANNEL_VOLUME.equals(channelUID.getId())) {
+            logger.info("handleCommand: {}", command.toFullString());
+
             if (command instanceof RefreshType) {
-                // TODO: handle data refresh
+                connection.getValue(ArcamCommand.GET_VOLUME);
             }
 
-            // TODO: handle command
-
-            // Note: if communication with thing fails for some reason,
-            // indicate that by setting the status with detail information:
-            // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-            // "Could not control device at IP address x.x.x.x");
+            if (command instanceof PercentType) {
+                logger.info("got percenttype");
+                PercentType p = (PercentType) command;
+                connection.setVolume(p.intValue());
+            }
         }
+
+        if (CHANNEL_POWER.equals(channelUID.getId())) {
+            logger.info("handleCommand: {}", command.toFullString());
+
+            if (command instanceof RefreshType) {
+                connection.getValue(ArcamCommand.GET_POWER);
+            }
+
+            if (command == OnOffType.ON) {
+                connection.setPower(1);
+            }
+            if (command == OnOffType.OFF) {
+                connection.setPower(0);
+            }
+
+        }
+
+        if (CHANNEL_INPUT.equals(channelUID.getId())) {
+            logger.info("handleCommand: {}", command.toFullString());
+
+            if (command instanceof RefreshType) {
+                connection.getValue(ArcamCommand.GET_INPUT);
+            }
+
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setInput(c.toFullString());
+            }
+        }
+
+        // Note: if communication with thing fails for some reason,
+        // indicate that by setting the status with detail information:
+        // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+        // "Could not control device at IP address x.x.x.x");
     }
 
     @Override
     public void initialize() {
-        config = getConfigAs(ArcamConfiguration.class);
+        ArcamConfiguration config = getConfigAs(ArcamConfiguration.class);
 
-        // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly, i.e. any network access must be done in
         // the background initialization below.
         // Also, before leaving this method a thing status from one of ONLINE, OFFLINE or UNKNOWN must be set. This
@@ -76,15 +121,23 @@ public class ArcamHandler extends BaseThingHandler {
         // we set this upfront to reliably check status updates in unit tests.
         updateStatus(ThingStatus.UNKNOWN);
 
-        // Example for background initialization:
         scheduler.execute(() -> {
-            boolean thingReachable = true; // <background task with long running initialization here>
-            // when done do:
-            if (thingReachable) {
-                updateStatus(ThingStatus.ONLINE);
-            } else {
-                updateStatus(ThingStatus.OFFLINE);
+            String hostname = config.hostname;
+
+            try {
+                if (hostname == null) {
+                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "No hostname specified");
+                    return;
+                }
+
+                connection.connect(hostname);
+            } catch (Exception e) {
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
+                return;
             }
+
+            updateStatus(ThingStatus.ONLINE);
+            logger.info("handler initialized. ip: {}", config.hostname);
         });
 
         // These logging types should be primarily used by bindings
@@ -100,5 +153,22 @@ public class ArcamHandler extends BaseThingHandler {
         // Add a description to give user information to understand why thing does not work as expected. E.g.
         // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
         // "Can not access device as username and/or password are invalid");
+    }
+
+    @Override
+    public void dispose() {
+        connection.dispose();
+
+        super.dispose();
+    }
+
+    @Override
+    public void stateChanged(String channelID, State state) {
+        updateState(channelID, state);
+    }
+
+    @Override
+    public void onError() {
+        updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR);
     }
 }

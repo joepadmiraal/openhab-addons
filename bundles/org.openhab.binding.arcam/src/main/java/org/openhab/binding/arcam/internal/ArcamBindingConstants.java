@@ -12,7 +12,9 @@
  */
 package org.openhab.binding.arcam.internal;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.openhab.core.thing.ThingTypeUID;
 
 /**
@@ -21,14 +23,18 @@ import org.openhab.core.thing.ThingTypeUID;
  *
  * @author Joep Admiraal - Initial contribution
  */
-@NonNullByDefault
 public class ArcamBindingConstants {
 
-    private static final String BINDING_ID = "arcam";
+    public static final String BINDING_ID = "arcam";
 
     // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "sample");
+    public static final ThingTypeUID SA30_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "SA30");
+    public static final Set<ThingTypeUID> SUPPORTED_KNOWN_THING_TYPES_UIDS = Set.of(SA30_THING_TYPE_UID);
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<>(SUPPORTED_KNOWN_THING_TYPES_UIDS);
 
     // List of all Channel ids
-    public static final String CHANNEL_1 = "channel1";
+    public static final String CHANNEL_VOLUME = "volume";
+    public static final String CHANNEL_POWER = "power";
+    public static final String CHANNEL_INPUT = "input";
+
 }

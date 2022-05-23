@@ -15,17 +15,12 @@ package org.openhab.binding.arcam.internal;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * The {@link ArcamConfiguration} class contains fields mapping thing configuration parameters.
+ * The {@link ArcamConnectionReaderListener} interface is used to signal events from the {@link ArcamConnectionReader}
+ * class
  *
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public class ArcamConfiguration {
-
-    /**
-     * Sample configuration parameters. Replace with your own.
-     */
-    public String hostname = "";
-    public String password = "";
-    public int refreshInterval = 600;
+public interface ArcamConnectionReaderListener {
+    void onResponse(ArcamResponse response);
 }
