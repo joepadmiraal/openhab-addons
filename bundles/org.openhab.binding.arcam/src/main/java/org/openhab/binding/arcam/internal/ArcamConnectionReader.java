@@ -58,7 +58,7 @@ public class ArcamConnectionReader extends Thread {
             while (!shouldStop()) {
                 byte responseData[] = new byte[1];
                 int size = input.read(responseData);
-                logger.info("responseData: {}, size: {}", ArcamUtil.bytesToHex(responseData), size);
+                // logger.info("responseData: {}, size: {}", ArcamUtil.bytesToHex(responseData), size);
 
                 for (int j = 0; j < responseData.length; j++) {
                     ArcamResponse response = responseHandler.parseByte(responseData[j]);

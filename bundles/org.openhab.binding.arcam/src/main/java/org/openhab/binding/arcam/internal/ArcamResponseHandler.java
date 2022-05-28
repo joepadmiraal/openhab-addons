@@ -30,12 +30,12 @@ public class ArcamResponseHandler {
 
     @Nullable
     public ArcamResponse parseByte(byte b) {
-        logger.info("parseByte: {}: {}", byteNr + 1, b);
+        // logger.info("parseByte: {}: {}", byteNr + 1, b);
         byteNr++;
         if (readyForNewResponse && b == 0x21) {
             byteNr = 0;
             readyForNewResponse = false;
-            logger.info("New response");
+            // logger.info("New response");
             return null;
         }
         if (readyForNewResponse) {

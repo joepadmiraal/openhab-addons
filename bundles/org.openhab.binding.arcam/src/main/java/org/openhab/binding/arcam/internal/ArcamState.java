@@ -29,6 +29,8 @@ public class ArcamState {
     private State volume;
     @Nullable
     private State input;
+    @Nullable
+    private State displayBrightness;
 
     private ArcamStateChangedListener handler;
 
@@ -57,6 +59,14 @@ public class ArcamState {
         if (!newVal.equals(this.input)) {
             this.input = newVal;
             handler.stateChanged(ArcamBindingConstants.CHANNEL_INPUT, this.input);
+        }
+    }
+
+    public void setDisplayBrightness(String brightness) {
+        StringType newVal = new StringType(brightness);
+        if (!newVal.equals(this.displayBrightness)) {
+            this.displayBrightness = newVal;
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_DISPLAY_BRIGHTNESS, this.displayBrightness);
         }
     }
 }

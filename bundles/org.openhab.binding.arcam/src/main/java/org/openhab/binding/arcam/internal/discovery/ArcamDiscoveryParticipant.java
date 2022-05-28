@@ -19,6 +19,7 @@ import java.util.Set;
 import org.jupnp.model.meta.RemoteDevice;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
+import org.openhab.binding.arcam.internal.devices.ArcamDeviceSelector;
 import org.openhab.core.config.discovery.DiscoveryResult;
 import org.openhab.core.config.discovery.DiscoveryResultBuilder;
 import org.openhab.core.config.discovery.upnp.UpnpDiscoveryParticipant;
@@ -78,7 +79,11 @@ public class ArcamDiscoveryParticipant implements UpnpDiscoveryParticipant {
             return null;
         }
 
-        ThingTypeUID thingTypeUID = ArcamBindingConstants.SA30_THING_TYPE_UID;
+        String modelName = device.getDetails().getModelDetails().getModelName();
+        ThingTypeUID thingTypeUID = ArcamDeviceSelector.getThingTypeUIDFromModelName(modelName);
+        if (thingTypeUID == null) {
+            return null;
+        }
 
         String serial = device.getDetails().getSerialNumber();
 

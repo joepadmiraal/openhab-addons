@@ -4,17 +4,16 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<thing-type id="SA30">
+	<thing-type id="AVR10">
 
 		<label>Arcam Binding Thing</label>
-		<description>SA30</description>
+		<description>AVR10</description>
 
 		<channels>
 			<channel id="volume" typeId="system.volume"/>
-			<!--  TODO: power type -->
 			<channel id="power" typeId="system.power"/>
-			<channel id="displaybrightness" typeId="sa30displaybrightness"/>
-			<channel id="input" typeId="sa30input"/>
+			<channel id="displaybrightness" typeId="avr10displaybrightness"/>
+			<channel id="input" typeId="avr10input"/>
 		</channels>
 
 		<config-description>

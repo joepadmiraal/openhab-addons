@@ -21,6 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.arcam.internal.devices.ArcamDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,8 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
     private static int PORT = 50000;
 
     private ArcamState state;
+    ArcamDevice device;
+
     protected ScheduledExecutorService scheduler;
     @Nullable
     private ArcamConnectionReader acr;
@@ -47,10 +50,11 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
     private ArcamConnectionListener connectionListener;
 
     public ArcamConnection(ArcamState state, ScheduledExecutorService scheduler,
-            ArcamConnectionListener connectionListener) {
+            ArcamConnectionListener connectionListener, ArcamDevice device) {
         this.state = state;
         this.scheduler = scheduler;
         this.connectionListener = connectionListener;
+        this.device = device;
     }
 
     public void connect(String hostname) throws UnknownHostException, IOException {
@@ -121,12 +125,19 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         sendCommand(data);
     }
 
-    public void setInput(String input) {
+    public void setInput(String inputStr) {
         byte[] data = ArcamCommand.SET_INPUT.data;
-        ArcamInput inputEnum = ArcamInput.valueOf(input);
-        data[4] = (byte) (inputEnum.ordinal() + 1);
+        data[4] = device.getInputDataByte(inputStr);
 
         logger.info("Sending input byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
+        sendCommand(data);
+    }
+
+    public void setDisplayBrightness(String brightness) {
+        byte[] data = ArcamCommand.DISPLAY_BRIGHTNESS.data;
+        data[4] = device.getDisplayBrightnessDataByte(brightness);
+
+        logger.info("Sending display brightness byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
         sendCommand(data);
     }
 
@@ -139,6 +150,7 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
 
         // Power
         if (response.cc == 0x00) {
+            logger.info("Got power response: {}", response.data);
             if (response.data.get(0) == 1) {
                 state.setPower(true);
             }
@@ -153,15 +165,22 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         }
         // Current input source
         if (response.cc == 0x1D) {
-            Integer input = Integer.valueOf(Byte.valueOf(response.data.get(0)).intValue());
-            if (input < 1) {
-                logger.warn("Could not parse input response from Arcam device. Value: {}", input);
-            }
-            // ArcamInput.valueOf(input).ordinal();
-            ArcamInput inputEnum = ArcamInput.values()[input - 1];
-            logger.info("input info: {}, enum: {}", input, inputEnum);
 
-            state.setInput(inputEnum.value);
+            String input = device.getInputName(response.data.get(0));
+
+            logger.info("input info: {}", input);
+
+            state.setInput(input);
+        }
+        // Current display brightness
+        if (response.cc == 0x01) {
+
+            String brightness = device.getDisplayBrightness(response.data.get(0));
+
+            logger.info("brightness info: {}", brightness);
+
+            state.setDisplayBrightness(brightness);
         }
     }
+
 }

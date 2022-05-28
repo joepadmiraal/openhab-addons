@@ -16,6 +16,8 @@ import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
+import org.openhab.binding.arcam.internal.devices.ArcamDevice;
+import org.openhab.binding.arcam.internal.devices.ArcamDeviceSelector;
 import org.openhab.core.library.types.OnOffType;
 import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.StringType;
@@ -43,6 +45,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
 
     private ArcamConnection connection;
     private ArcamState state;
+    private ArcamDevice device;
 
     public ArcamHandler(Thing thing) {
         super(thing);
@@ -50,7 +53,8 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         logger.debug("Creating a ArcamHandler for thing '{}'", getThing().getUID());
 
         state = new ArcamState(this);
-        connection = new ArcamConnection(state, scheduler, this);
+        device = ArcamDeviceSelector.getDeviceFromThingUID(getThing().getUID());
+        connection = new ArcamConnection(state, scheduler, this, device);
     }
 
     @Override
@@ -82,7 +86,18 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             if (command == OnOffType.OFF) {
                 connection.setPower(0);
             }
+        }
 
+        if (CHANNEL_DISPLAY_BRIGHTNESS.equals(channelUID.getId())) {
+            logger.info("handleCommand: {}", command.toFullString());
+
+            if (command instanceof RefreshType) {
+                connection.getValue(ArcamCommand.DISPLAY_BRIGHTNESS);
+            }
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setDisplayBrightness(c.toFullString());
+            }
         }
 
         if (CHANNEL_INPUT.equals(channelUID.getId())) {
