@@ -1,5 +1,7 @@
 package org.openhab.binding.arcam.internal.devices;
 
+import org.openhab.binding.arcam.internal.ArcamCommandCode;
+
 public class ArcamSA20 implements ArcamDevice {
     public enum SA20Input {
         PHONO("PHONO", (byte) 0x01),
@@ -35,13 +37,37 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
-    public byte getDisplayBrightnessDataByte(String displayBrigntness) {
+    public String getDisplayBrightness(byte dataByte) {
         // TODO Auto-generated method stub
-        return 0;
+        return null;
     }
 
     @Override
-    public String getDisplayBrightness(byte dataByte) {
+    public byte[] getPowerCommand(boolean on) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getInputCommand(String inputName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getVolumeCommand(int volume) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getDisplayBrightnessCommand(String displayBrightness) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -13,6 +13,7 @@
 package org.openhab.binding.arcam.internal;
 
 import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
+import static org.openhab.binding.arcam.internal.ArcamCommandCode.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
@@ -63,7 +64,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof RefreshType) {
-                connection.getValue(ArcamCommand.GET_VOLUME);
+                connection.requestState(VOLUME);
             }
 
             if (command instanceof PercentType) {
@@ -77,14 +78,14 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof RefreshType) {
-                connection.getValue(ArcamCommand.GET_POWER);
+                connection.requestState(POWER);
             }
 
             if (command == OnOffType.ON) {
-                connection.setPower(1);
+                connection.setPower(true);
             }
             if (command == OnOffType.OFF) {
-                connection.setPower(0);
+                connection.setPower(false);
             }
         }
 
@@ -92,7 +93,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof RefreshType) {
-                connection.getValue(ArcamCommand.DISPLAY_BRIGHTNESS);
+                connection.requestState(DISPLAY_BRIGHTNESS);
             }
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
@@ -104,7 +105,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof RefreshType) {
-                connection.getValue(ArcamCommand.GET_INPUT);
+                connection.requestState(INPUT);
             }
 
             if (command instanceof StringType) {

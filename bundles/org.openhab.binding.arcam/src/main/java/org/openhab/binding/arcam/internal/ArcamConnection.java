@@ -88,11 +88,16 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
 
     public void requestAllValues() {
         logger.info("requestAllValues");
-        getValue(ArcamCommand.GET_SYSTEM_STATUS);
+        requestState(ArcamCommandCode.SYSTEM_STATUS);
     }
 
-    public void getValue(ArcamCommand command) {
-        sendCommand(command.data);
+    public void requestState(ArcamCommandCode commandCode) {
+        byte[] data = device.getStateCommandByte(commandCode);
+        if (data == null) {
+            return;
+        }
+
+        sendCommand(data);
     }
 
     private void sendCommand(byte[] data) {
@@ -110,32 +115,28 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
     }
 
     public void setVolume(int volume) {
-        byte[] data = ArcamCommand.SET_VOLUME.data;
-        data[4] = (byte) volume;
+        byte[] data = device.getVolumeCommand(volume);
 
         logger.info("Sending volume byte: {}, array: {}", volume, ArcamUtil.bytesToHex(data));
         sendCommand(data);
     }
 
-    public void setPower(int power) {
-        byte[] data = ArcamCommand.SET_POWER.data;
-        data[4] = (byte) power;
+    public void setPower(boolean on) {
+        byte[] data = device.getPowerCommand(on);
 
-        logger.info("Sending power byte: {}, array: {}", power, ArcamUtil.bytesToHex(data));
+        logger.info("Sending power byte: {}, array: {}", on, ArcamUtil.bytesToHex(data));
         sendCommand(data);
     }
 
     public void setInput(String inputStr) {
-        byte[] data = ArcamCommand.SET_INPUT.data;
-        data[4] = device.getInputDataByte(inputStr);
+        byte[] data = device.getInputCommand(inputStr);
 
         logger.info("Sending input byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
         sendCommand(data);
     }
 
-    public void setDisplayBrightness(String brightness) {
-        byte[] data = ArcamCommand.DISPLAY_BRIGHTNESS.data;
-        data[4] = device.getDisplayBrightnessDataByte(brightness);
+    public void setDisplayBrightness(String displayBrightness) {
+        byte[] data = device.getDisplayBrightnessCommand(displayBrightness);
 
         logger.info("Sending display brightness byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
         sendCommand(data);

@@ -3,6 +3,7 @@ package org.openhab.binding.arcam.internal.devices;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamCommandData;
 import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
 
@@ -51,14 +52,43 @@ public class ArcamAVR10 implements ArcamDevice {
     }
 
     @Override
-    public byte getDisplayBrightnessDataByte(String displayBrightness) {
-        return commandDataFinder.getByteFromCommandDataCode(displayBrightness, displaybrightnessCommands);
-    }
-
-    @Override
     public String getDisplayBrightness(byte dataByte) {
 
         return commandDataFinder.getCommandCodeFromByte(dataByte, displaybrightnessCommands);
+    }
+
+    @Override
+    public byte[] getPowerCommand(boolean on) {
+        // Using RC5 simulation
+        if (on == true) {
+            return new byte[] { 0x21, 0x01, 0x08, 0x02, 0x10, 0x7B };
+        }
+
+        return new byte[] { 0x21, 0x01, 0x08, 0x02, 0x10, 0x7C };
+    }
+
+    @Override
+    public byte[] getInputCommand(String inputName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getVolumeCommand(int volume) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getDisplayBrightnessCommand(String displayBrightness) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
