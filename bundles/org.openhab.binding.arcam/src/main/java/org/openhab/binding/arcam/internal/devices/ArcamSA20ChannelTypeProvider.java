@@ -1,6 +1,5 @@
 package org.openhab.binding.arcam.internal.devices;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,17 +8,11 @@ import java.util.Locale;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
-import org.openhab.binding.arcam.internal.devices.ArcamSA20.SA20Input;
 import org.openhab.core.thing.type.ChannelType;
-import org.openhab.core.thing.type.ChannelTypeBuilder;
 import org.openhab.core.thing.type.ChannelTypeProvider;
 import org.openhab.core.thing.type.ChannelTypeUID;
-import org.openhab.core.types.StateDescriptionFragment;
-import org.openhab.core.types.StateDescriptionFragmentBuilder;
-import org.openhab.core.types.StateOption;
-import org.osgi.service.component.annotations.Component;
 
-@Component(service = ChannelTypeProvider.class)
+//@Component(service = ChannelTypeProvider.class)
 public class ArcamSA20ChannelTypeProvider implements ChannelTypeProvider {
 
     private static final String SA20INPUT = "sa20input";
@@ -34,24 +27,26 @@ public class ArcamSA20ChannelTypeProvider implements ChannelTypeProvider {
 
     @Override
     public @Nullable ChannelType getChannelType(ChannelTypeUID channelTypeUID, @Nullable Locale locale) {
-        if (!channelTypeUID.getBindingId().equals(ArcamBindingConstants.BINDING_ID)) {
-            return null;
-        }
-
-        String channelID = channelTypeUID.getId();
-        if (!channelID.equals(SA20INPUT)) {
-            return null;
-        }
-
-        List<StateOption> options = new ArrayList<>();
-        for (SA20Input input : ArcamSA20.SA20Input.values()) {
-            options.add(new StateOption(input.name(), input.value));
-        }
-
-        StateDescriptionFragment stateDescFrag = StateDescriptionFragmentBuilder.create().withOptions(options).build();
-
-        return ChannelTypeBuilder.state(channelTypeUID, "sa20 input", "String")
-                .withDescription("Select the input source").withStateDescriptionFragment(stateDescFrag).build();
+        return null;
+        // if (!channelTypeUID.getBindingId().equals(ArcamBindingConstants.BINDING_ID)) {
+        // return null;
+        // }
+        //
+        // String channelID = channelTypeUID.getId();
+        // if (!channelID.equals(SA20INPUT)) {
+        // return null;
+        // }
+        //
+        // List<StateOption> options = new ArrayList<>();
+        // for (SA20Input input : ArcamSA20.SA20Input.values()) {
+        // options.add(new StateOption(input.name(), input.value));
+        // }
+        //
+        // StateDescriptionFragment stateDescFrag =
+        // StateDescriptionFragmentBuilder.create().withOptions(options).build();
+        //
+        // return ChannelTypeBuilder.state(channelTypeUID, "sa20 input", "String")
+        // .withDescription("Select the input source").withStateDescriptionFragment(stateDescFrag).build();
     }
 
 }

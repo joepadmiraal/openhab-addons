@@ -1,11 +1,12 @@
 package org.openhab.binding.arcam.internal.devices;
 
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
+import org.openhab.binding.arcam.internal.ArcamZone;
 
 public interface ArcamDevice {
     public byte getInputDataByte(String inputName);
 
-    public byte[] getInputCommand(String inputName);
+    public byte[] getInputCommand(String inputName, ArcamZone zone);
 
     public byte[] getVolumeCommand(int volume);
 

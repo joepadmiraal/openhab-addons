@@ -1,6 +1,7 @@
 package org.openhab.binding.arcam.internal.devices;
 
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
+import org.openhab.binding.arcam.internal.ArcamZone;
 
 public class ArcamSA20 implements ArcamDevice {
     public enum SA20Input {
@@ -49,7 +50,7 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
-    public byte[] getInputCommand(String inputName) {
+    public byte[] getInputCommand(String inputName, ArcamZone zone) {
         // TODO Auto-generated method stub
         return null;
     }

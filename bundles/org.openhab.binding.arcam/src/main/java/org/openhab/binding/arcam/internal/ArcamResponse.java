@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 
 @NonNullByDefault
 public class ArcamResponse {
-    public int zn;
+    public byte zn;
     public byte cc;
     public byte ac;
     public int dl;

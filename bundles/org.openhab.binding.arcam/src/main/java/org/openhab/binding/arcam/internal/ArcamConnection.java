@@ -128,8 +128,8 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         sendCommand(data);
     }
 
-    public void setInput(String inputStr) {
-        byte[] data = device.getInputCommand(inputStr);
+    public void setInput(String inputStr, ArcamZone zone) {
+        byte[] data = device.getInputCommand(inputStr, zone);
 
         logger.info("Sending input byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
         sendCommand(data);
@@ -168,10 +168,14 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         if (response.cc == 0x1D) {
 
             String input = device.getInputName(response.data.get(0));
+            ArcamZone zone = byteToZone(response.zn);
 
-            logger.info("input info: {}", input);
-
-            state.setInput(input);
+            logger.info("input info: {}, zone: {}", input, zone);
+            if (zone == ArcamZone.MASTER) {
+                state.setMasterInput(input);
+            } else {
+                state.setZone2Input(input);
+            }
         }
         // Current display brightness
         if (response.cc == 0x01) {
@@ -182,6 +186,14 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
 
             state.setDisplayBrightness(brightness);
         }
+    }
+
+    private ArcamZone byteToZone(byte zone) {
+        if (zone == 0x01) {
+            return ArcamZone.MASTER;
+        }
+
+        return ArcamZone.ZONE2;
     }
 
 }

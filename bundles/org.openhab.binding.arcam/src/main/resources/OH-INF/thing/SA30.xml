@@ -8,14 +8,12 @@
 
 		<label>Arcam Binding Thing</label>
 		<description>SA30</description>
-
-		<channels>
-			<channel id="volume" typeId="system.volume"/>
-			<!--  TODO: power type -->
-			<channel id="power" typeId="system.power"/>
-			<channel id="displaybrightness" typeId="sa30displaybrightness"/>
-			<channel id="input" typeId="sa30input"/>
-		</channels>
+		<channel-groups>
+			<channel-group id="sa30MasterZone" typeId="sa30MasterZone">
+	             <label>Master zone</label>
+	             <description>The master zone. Commands that appear zone-less refer to the master zone</description>
+	         </channel-group>
+         </channel-groups>
 
 		<config-description>
 			<parameter name="hostname" type="text">
@@ -25,4 +23,17 @@
 			</parameter>
 		</config-description>
 	</thing-type>
+	
+	<channel-group-type id="sa30MasterZone">
+        <label>Master zone</label>
+        <description>Channels for the master zone.</description>
+        <channels>
+            <channel id="volume" typeId="system.volume"/>
+            <channel id="power" typeId="system.power"/>
+            <channel id="displaybrightness" typeId="sa30DisplayBrightness"/>
+            <channel id="input" typeId="sa30MasterInput"/>
+        </channels>
+    </channel-group-type>
+    
+    
 </thing:thing-descriptions>

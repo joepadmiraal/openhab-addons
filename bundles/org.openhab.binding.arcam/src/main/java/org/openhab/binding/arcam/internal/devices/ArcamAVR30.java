@@ -6,8 +6,9 @@ import java.util.List;
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamCommandData;
 import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
+import org.openhab.binding.arcam.internal.ArcamZone;
 
-public class ArcamAVR10 implements ArcamDevice {
+public class ArcamAVR30 implements ArcamDevice {
 
     public static List<ArcamCommandData> inputCommands = new ArrayList<>(List.of( //
             new ArcamCommandData("FZONE1", "Follow Zone 1", (byte) 0x00), //
@@ -32,11 +33,11 @@ public class ArcamAVR10 implements ArcamDevice {
             new ArcamCommandData("L2", "Front panel L2", (byte) 0x02) //
     ));
 
-    public static String AVR10 = "AVR10";
+    public static String AVR30 = "AVR30";
 
     private ArcamCommandDataFinder commandDataFinder;
 
-    public ArcamAVR10() {
+    public ArcamAVR30() {
         this.commandDataFinder = new ArcamCommandDataFinder();
     }
 
@@ -68,9 +69,11 @@ public class ArcamAVR10 implements ArcamDevice {
     }
 
     @Override
-    public byte[] getInputCommand(String inputName) {
-        // TODO Auto-generated method stub
-        return null;
+    public byte[] getInputCommand(String inputName, ArcamZone zone) {
+        byte[] data = new byte[] { 0x21, ArcamDeviceUtil.zoneToByte(zone), 0x1D, 0x01, (byte) 0x01, 0x0D };
+        data[4] = commandDataFinder.getByteFromCommandDataCode(inputName, inputCommands);
+
+        return data;
     }
 
     @Override

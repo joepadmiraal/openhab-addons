@@ -13,23 +13,23 @@ import org.openhab.core.thing.type.ChannelType;
 import org.openhab.core.thing.type.ChannelTypeProvider;
 import org.openhab.core.thing.type.ChannelTypeUID;
 import org.osgi.service.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Component(service = ChannelTypeProvider.class)
-public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
-    private final Logger logger = LoggerFactory.getLogger(ArcamSA30ChannelTypeProvider.class);
-    public static final String SA30_MASTER_INPUT = "sa30MasterInput";
-    public static final String SA30_DISPLAY_BRIGHTNESS = "sa30DisplayBrightness";
+public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
+
+    public static final String AVR30_MASTER_INPUT = "avr30MasterInput";
+    public static final String AVR30_ZONE2_INPUT = "avr30Zone2Input";
+    public static final String AVR30_DISPLAY_BRIGHTNESS = "avr30DisplayBrightness";
 
     @Override
     public Collection<@NonNull ChannelType> getChannelTypes(@Nullable Locale locale) {
         List<ChannelType> channelTypeList = new LinkedList<>();
-        logger.info("getChannleType list from arcam");
         channelTypeList
-                .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, SA30_MASTER_INPUT), locale));
+                .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_MASTER_INPUT), locale));
+        channelTypeList
+                .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_ZONE2_INPUT), locale));
         channelTypeList.add(
-                getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, SA30_DISPLAY_BRIGHTNESS), locale));
+                getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_DISPLAY_BRIGHTNESS), locale));
 
         return channelTypeList;
     }
@@ -42,20 +42,28 @@ public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
 
         String channelID = channelTypeUID.getId();
 
-        if (channelID.equals(SA30_MASTER_INPUT)) {
+        if (channelID.equals(AVR30_MASTER_INPUT)) {
             return ArcamCommandDataFinder.generateStringOptionChannelType( //
                     channelTypeUID, //
-                    "Input", //
+                    "xMaster Input", //
                     "Select the input source", //
-                    ArcamSA30.inputCommands); //
+                    ArcamAVR30.inputCommands); //
         }
 
-        if (channelID.equals(SA30_DISPLAY_BRIGHTNESS)) {
+        if (channelID.equals(AVR30_ZONE2_INPUT)) {
+            return ArcamCommandDataFinder.generateStringOptionChannelType( //
+                    channelTypeUID, //
+                    "Zone2 Input", //
+                    "Select the input source", //
+                    ArcamAVR30.inputCommands); //
+        }
+
+        if (channelID.equals(AVR30_DISPLAY_BRIGHTNESS)) {
             return ArcamCommandDataFinder.generateStringOptionChannelType( //
                     channelTypeUID, //
                     "Display brightness", //
                     "Select display brightness", //
-                    ArcamSA30.displaybrightnessCommands); //
+                    ArcamAVR30.displaybrightnessCommands); //
         }
 
         return null;

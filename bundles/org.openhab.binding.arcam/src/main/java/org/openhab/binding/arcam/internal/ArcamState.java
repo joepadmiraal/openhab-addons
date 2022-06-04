@@ -28,7 +28,9 @@ public class ArcamState {
     @Nullable
     private State volume;
     @Nullable
-    private State input;
+    private State masterInput;
+    @Nullable
+    private State zone2Input;
     @Nullable
     private State displayBrightness;
 
@@ -42,7 +44,7 @@ public class ArcamState {
         OnOffType newVal = power ? OnOffType.ON : OnOffType.OFF;
         if (newVal != this.power) {
             this.power = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_POWER, newVal);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_POWER, newVal);
         }
     }
 
@@ -50,15 +52,23 @@ public class ArcamState {
         PercentType newVal = new PercentType(volume);
         if (!newVal.equals(this.volume)) {
             this.volume = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_VOLUME, newVal);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_VOLUME, newVal);
         }
     }
 
-    public void setInput(String input) {
+    public void setMasterInput(String input) {
         StringType newVal = new StringType(input);
-        if (!newVal.equals(this.input)) {
-            this.input = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_INPUT, this.input);
+        if (!newVal.equals(this.masterInput)) {
+            this.masterInput = newVal;
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_INPUT, this.masterInput);
+        }
+    }
+
+    public void setZone2Input(String input) {
+        StringType newVal = new StringType(input);
+        if (!newVal.equals(this.zone2Input)) {
+            this.zone2Input = newVal;
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_ZONE2_INPUT, this.zone2Input);
         }
     }
 

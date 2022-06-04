@@ -30,15 +30,23 @@ public class ArcamBindingConstants {
     // List of all Thing Type UIDs
     public static final ThingTypeUID SA20_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "SA20");
     public static final ThingTypeUID SA30_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "SA30");
+    public static final ThingTypeUID AVR30_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR30");
     public static final Set<ThingTypeUID> SUPPORTED_KNOWN_THING_TYPES_UIDS = Set.of(SA20_THING_TYPE_UID,
-            SA30_THING_TYPE_UID);
+            SA30_THING_TYPE_UID, AVR30_THING_TYPE_UID);
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<>(SUPPORTED_KNOWN_THING_TYPES_UIDS);
 
     // List of all Channel ids
-    public static final String CHANNEL_VOLUME = "volume";
-    public static final String CHANNEL_POWER = "power";
-    public static final String CHANNEL_INPUT = "input";
+    // Generic
+    public static final String CHANNEL_DISPLAY_BRIGHTNESS = "masterZone#displaybrightness";
 
-    public static final String CHANNEL_DISPLAY_BRIGHTNESS = "displaybrightness";
+    // Master zone
+    public static final String CHANNEL_MASTER_VOLUME = "masterZone#volume";
+    public static final String CHANNEL_MASTER_POWER = "masterZone#power";
+    public static final String CHANNEL_MASTER_INPUT = "masterZone#input";
+
+    // Zone 2
+    public static final String CHANNEL_ZONE2_VOLUME = "zone2#volume";
+    public static final String CHANNEL_ZONE2_POWER = "zone2#power";
+    public static final String CHANNEL_ZONE2_INPUT = "zone2#input";
 
 }

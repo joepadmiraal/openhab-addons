@@ -43,7 +43,7 @@ public class ArcamResponseHandler {
         }
 
         if (byteNr == 1) {
-            response.zn = Byte.valueOf(b).intValue();
+            response.zn = b;
             return null;
         }
         if (byteNr == 2) {
@@ -63,8 +63,8 @@ public class ArcamResponseHandler {
             return null;
         }
 
-        logger.info("Got full response, cc: {}, length: {}, data: {}", ArcamUtil.byteToHex(response.cc), response.dl,
-                response.data);
+        logger.info("Got full response, cc: {}, zone: {}, length: {}, data: {}", ArcamUtil.byteToHex(response.cc),
+                ArcamUtil.byteToHex(response.zn), response.dl, response.data);
         ArcamResponse retVal = response;
         response = new ArcamResponse();
         readyForNewResponse = true;

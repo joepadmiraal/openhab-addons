@@ -18,7 +18,7 @@ import static org.openhab.binding.arcam.internal.ArcamCommandCode.*;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
 import org.openhab.binding.arcam.internal.devices.ArcamDevice;
-import org.openhab.binding.arcam.internal.devices.ArcamDeviceSelector;
+import org.openhab.binding.arcam.internal.devices.ArcamDeviceUtil;
 import org.openhab.core.library.types.OnOffType;
 import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.StringType;
@@ -54,13 +54,13 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         logger.debug("Creating a ArcamHandler for thing '{}'", getThing().getUID());
 
         state = new ArcamState(this);
-        device = ArcamDeviceSelector.getDeviceFromThingUID(getThing().getUID());
+        device = ArcamDeviceUtil.getDeviceFromThingUID(getThing().getUID());
         connection = new ArcamConnection(state, scheduler, this, device);
     }
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        if (CHANNEL_VOLUME.equals(channelUID.getId())) {
+        if (CHANNEL_MASTER_VOLUME.equals(channelUID.getId())) {
             logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof RefreshType) {
@@ -74,7 +74,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
-        if (CHANNEL_POWER.equals(channelUID.getId())) {
+        if (CHANNEL_MASTER_POWER.equals(channelUID.getId())) {
             logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof RefreshType) {
@@ -101,16 +101,25 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
-        if (CHANNEL_INPUT.equals(channelUID.getId())) {
-            logger.info("handleCommand: {}", command.toFullString());
-
+        if (CHANNEL_MASTER_INPUT.equals(channelUID.getId())) {
             if (command instanceof RefreshType) {
-                connection.requestState(INPUT);
+                connection.requestState(MASTER_INPUT);
             }
 
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
-                connection.setInput(c.toFullString());
+                connection.setInput(c.toFullString(), ArcamZone.MASTER);
+            }
+        }
+
+        if (CHANNEL_ZONE2_INPUT.equals(channelUID.getId())) {
+            if (command instanceof RefreshType) {
+                connection.requestState(ZONE2_INPUT);
+            }
+
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setInput(c.toFullString(), ArcamZone.ZONE2);
             }
         }
 

@@ -10,6 +10,7 @@ import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamCommandData;
 import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
 import org.openhab.binding.arcam.internal.ArcamCommandFinder;
+import org.openhab.binding.arcam.internal.ArcamZone;
 
 public class ArcamSA30 implements ArcamDevice {
 
@@ -37,7 +38,7 @@ public class ArcamSA30 implements ArcamDevice {
     public static List<ArcamCommand> commands = new ArrayList<>(List.of( //
             new ArcamCommand(SYSTEM_STATUS, new byte[] { 0x21, 0x01, 0x5D, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(POWER, new byte[] { 0x21, 0x01, 0x00, 0x01, (byte) 0xF0, 0x0D }), //
-            new ArcamCommand(INPUT, new byte[] { 0x21, 0x01, 0x1D, 0x01, (byte) 0xF0, 0x0D }), //
+            new ArcamCommand(MASTER_INPUT, new byte[] { 0x21, 0x01, 0x1D, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(DISPLAY_BRIGHTNESS, new byte[] { 0x21, 0x01, 0x01, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(VOLUME, new byte[] { 0x21, 0x01, 0x0D, 0x01, (byte) 0xF0, 0x0D }) //
     ));
@@ -59,12 +60,16 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public String getInputName(byte dataByte) {
+        byte convertedByte = dataByte;
+        if (dataByte > 0x0D) {
+            convertedByte = (byte) (dataByte - 0x10);
+        }
 
-        return commandDataFinder.getCommandCodeFromByte(dataByte, inputCommands);
+        return commandDataFinder.getCommandCodeFromByte(convertedByte, inputCommands);
     }
 
     @Override
-    public byte[] getInputCommand(String inputName) {
+    public byte[] getInputCommand(String inputName, ArcamZone zone) {
         byte[] data = new byte[] { 0x21, 0x01, 0x1D, 0x01, (byte) 0x01, 0x0D };
         data[4] = commandDataFinder.getByteFromCommandDataCode(inputName, inputCommands);
 

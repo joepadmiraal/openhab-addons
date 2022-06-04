@@ -3,7 +3,8 @@ package org.openhab.binding.arcam.internal;
 public enum ArcamCommandCode {
     SYSTEM_STATUS,
     POWER,
-    INPUT,
+    MASTER_INPUT,
     DISPLAY_BRIGHTNESS,
-    VOLUME
+    VOLUME,
+    ZONE2_INPUT,
 }
