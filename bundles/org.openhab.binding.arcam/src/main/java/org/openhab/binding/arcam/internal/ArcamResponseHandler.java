@@ -63,8 +63,9 @@ public class ArcamResponseHandler {
             return null;
         }
 
-        logger.info("Got full response, cc: {}, zone: {}, length: {}, data: {}", ArcamUtil.byteToHex(response.cc),
-                ArcamUtil.byteToHex(response.zn), response.dl, response.data);
+        logger.info("Got full response, cc: {}, zone: {}, length: {}, data: {}, ac: {}, et: {}",
+                ArcamUtil.byteToHex(response.cc), ArcamUtil.byteToHex(response.zn), response.dl,
+                ArcamUtil.bytesToHex(response.data), ArcamUtil.byteToHex(response.ac), ArcamUtil.byteToHex(b));
         ArcamResponse retVal = response;
         response = new ArcamResponse();
         readyForNewResponse = true;

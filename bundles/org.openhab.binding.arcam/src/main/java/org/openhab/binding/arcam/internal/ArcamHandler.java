@@ -13,12 +13,12 @@
 package org.openhab.binding.arcam.internal;
 
 import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
-import static org.openhab.binding.arcam.internal.ArcamCommandCode.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
 import org.openhab.binding.arcam.internal.devices.ArcamDevice;
 import org.openhab.binding.arcam.internal.devices.ArcamDeviceUtil;
+import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.OnOffType;
 import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.StringType;
@@ -60,66 +60,102 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        if (CHANNEL_MASTER_VOLUME.equals(channelUID.getId())) {
+        if (command instanceof RefreshType) {
+            // String channelId = channelUID.getIdWithoutGroup();
+            String channelId = channelUID.getId();
+            ArcamCommandCode commandCode = ArcamCommandCode.getFromChannel(channelId);
+
+            logger.info("ArcamHandler handled generic refreshType for: {}, commandCode: {}", channelId, commandCode);
+            if (commandCode != null) {
+                connection.requestState(commandCode);
+            }
+
+            return;
+        }
+
+        if (equalsWithoutGroup(CHANNEL_MASTER_BALANCE, channelUID)) {
             logger.info("handleCommand: {}", command.toFullString());
 
-            if (command instanceof RefreshType) {
-                connection.requestState(VOLUME);
+            if (command instanceof DecimalType) {
+                DecimalType p = (DecimalType) command;
+                connection.setBalance(p.intValue(), ArcamZone.MASTER);
             }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_MASTER_VOLUME, channelUID)) {
+            logger.info("handleCommand: {}", command.toFullString());
 
             if (command instanceof PercentType) {
                 logger.info("got percenttype");
                 PercentType p = (PercentType) command;
-                connection.setVolume(p.intValue());
+                connection.setVolume(p.intValue(), ArcamZone.MASTER);
             }
         }
 
-        if (CHANNEL_MASTER_POWER.equals(channelUID.getId())) {
-            logger.info("handleCommand: {}", command.toFullString());
-
-            if (command instanceof RefreshType) {
-                connection.requestState(POWER);
+        if (equalsWithoutGroup(CHANNEL_ZONE2_VOLUME, channelUID)) {
+            if (command instanceof PercentType) {
+                PercentType p = (PercentType) command;
+                connection.setVolume(p.intValue(), ArcamZone.ZONE2);
             }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_MASTER_POWER, channelUID)) {
+            logger.info("handleCommand: {}", command.toFullString());
 
             if (command == OnOffType.ON) {
-                connection.setPower(true);
+                connection.setPower(true, ArcamZone.MASTER);
             }
             if (command == OnOffType.OFF) {
-                connection.setPower(false);
+                connection.setPower(false, ArcamZone.MASTER);
             }
         }
 
-        if (CHANNEL_DISPLAY_BRIGHTNESS.equals(channelUID.getId())) {
+        if (equalsWithoutGroup(CHANNEL_MASTER_ROOM_EQUALISATION, channelUID)) {
             logger.info("handleCommand: {}", command.toFullString());
 
-            if (command instanceof RefreshType) {
-                connection.requestState(DISPLAY_BRIGHTNESS);
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setRoomEqualisation(c.toFullString(), ArcamZone.MASTER);
             }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_ZONE2_POWER, channelUID)) {
+            if (command == OnOffType.ON) {
+                connection.setPower(true, ArcamZone.ZONE2);
+            }
+            if (command == OnOffType.OFF) {
+                connection.setPower(false, ArcamZone.ZONE2);
+            }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_DISPLAY_BRIGHTNESS, channelUID)) {
+            logger.info("handleCommand: {}", command.toFullString());
+
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
                 connection.setDisplayBrightness(c.toFullString());
             }
         }
 
-        if (CHANNEL_MASTER_INPUT.equals(channelUID.getId())) {
-            if (command instanceof RefreshType) {
-                connection.requestState(MASTER_INPUT);
-            }
-
+        if (equalsWithoutGroup(CHANNEL_MASTER_INPUT, channelUID)) {
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
                 connection.setInput(c.toFullString(), ArcamZone.MASTER);
             }
         }
 
-        if (CHANNEL_ZONE2_INPUT.equals(channelUID.getId())) {
-            if (command instanceof RefreshType) {
-                connection.requestState(ZONE2_INPUT);
-            }
-
+        if (equalsWithoutGroup(CHANNEL_ZONE2_INPUT, channelUID)) {
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
                 connection.setInput(c.toFullString(), ArcamZone.ZONE2);
+            }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_REBOOT, channelUID)) {
+            logger.info("handleCommand: {}", command.toFullString());
+
+            if (command == OnOffType.ON) {
+                connection.reboot();
             }
         }
 
@@ -196,4 +232,15 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
     public void onError() {
         updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR);
     }
+
+    private boolean equalsWithoutGroup(String channelStr, ChannelUID channelUID) {
+        String[] parts = channelStr.split(ChannelUID.CHANNEL_GROUP_SEPARATOR);
+        if (parts.length - 1 < 0) {
+            logger.warn("Could not parse channelStr: {}, unable to change value", channelStr);
+            return false;
+        }
+        String id = parts[parts.length - 1];
+        return id.equals(channelUID.getIdWithoutGroup());
+    }
+
 }

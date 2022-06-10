@@ -37,16 +37,36 @@ public class ArcamBindingConstants {
 
     // List of all Channel ids
     // Generic
+    public static final String CHANNEL_DC_OFFSET = "masterZone#dcOffset";
     public static final String CHANNEL_DISPLAY_BRIGHTNESS = "masterZone#displaybrightness";
+    public static final String CHANNEL_HEADPHONES = "masterZone#headphones";
+    public static final String CHANNEL_INCOMING_SAMPLE_RATE = "masterZone#incomingSampleRate";
+    public static final String CHANNEL_LIFTER_TEMPERATURE = "masterZone#lifterTemperature";
+    public static final String CHANNEL_OUTPUT_TEMPERATURE = "masterZone#outputTemperature";
+    public static final String CHANNEL_REBOOT = "masterZone#reboot";
+    public static final String CHANNEL_SOFTWARE_VERSION = "masterZone#softwareVersion";
+    public static final String CHANNEL_TIMEOUT_COUNTER = "masterZone#timeoutCounter";
 
     // Master zone
-    public static final String CHANNEL_MASTER_VOLUME = "masterZone#volume";
-    public static final String CHANNEL_MASTER_POWER = "masterZone#power";
+    public static final String CHANNEL_MASTER_BALANCE = "masterZone#balance";
+    public static final String CHANNEL_MASTER_DIRECT_MODE = "masterZone#directMode";
     public static final String CHANNEL_MASTER_INPUT = "masterZone#input";
+    public static final String CHANNEL_MASTER_MUTE = "masterZone#mute";
+    public static final String CHANNEL_MASTER_NOW_PLAYING_TITLE = "masterZone#nowPlayingTitle";
+    public static final String CHANNEL_MASTER_NOW_PLAYING_ARTIST = "masterZone#nowPlayingArtist";
+    public static final String CHANNEL_MASTER_NOW_PLAYING_ALBUM = "masterZone#nowPlayingAlbum";
+    public static final String CHANNEL_MASTER_NOW_PLAYING_APPLICATION = "masterZone#nowPlayingApplication";
+    public static final String CHANNEL_MASTER_NOW_PLAYING_SAMPLE_RATE = "masterZone#nowPlayingSampleRate";
+    public static final String CHANNEL_MASTER_NOW_PLAYING_AUDIO_ENCODER = "masterZone#nowPlayingAudioEncoder";
+    public static final String CHANNEL_MASTER_POWER = "masterZone#power";
+    public static final String CHANNEL_MASTER_ROOM_EQUALISATION = "masterZone#roomEqualisation";
+    public static final String CHANNEL_MASTER_SHORT_CIRCUIT = "masterZone#shortCircuit";
+    public static final String CHANNEL_MASTER_VOLUME = "masterZone#volume";
 
     // Zone 2
-    public static final String CHANNEL_ZONE2_VOLUME = "zone2#volume";
-    public static final String CHANNEL_ZONE2_POWER = "zone2#power";
     public static final String CHANNEL_ZONE2_INPUT = "zone2#input";
+    public static final String CHANNEL_ZONE2_MUTE = "zone2#mute";
+    public static final String CHANNEL_ZONE2_POWER = "zone2#power";
+    public static final String CHANNEL_ZONE2_VOLUME = "zone2#volume";
 
 }

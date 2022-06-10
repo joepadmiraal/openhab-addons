@@ -1,6 +1,9 @@
 package org.openhab.binding.arcam.internal.devices;
 
+import java.util.List;
+
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
+import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamZone;
 
 public class ArcamSA20 implements ArcamDevice {
@@ -26,12 +29,6 @@ public class ArcamSA20 implements ArcamDevice {
     public static String SA20 = "SA20";
 
     @Override
-    public byte getInputDataByte(String inputName) {
-        SA20Input input = SA20Input.valueOf(inputName);
-        return input.dataByte;
-    }
-
-    @Override
     public String getInputName(byte dataByte) {
         // TODO Auto-generated method stub
         return null;
@@ -44,7 +41,7 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
-    public byte[] getPowerCommand(boolean on) {
+    public byte[] getPowerCommand(boolean on, ArcamZone zone) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -56,7 +53,7 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
-    public byte[] getVolumeCommand(int volume) {
+    public byte[] getVolumeCommand(int volume, ArcamZone zone) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -72,4 +69,95 @@ public class ArcamSA20 implements ArcamDevice {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getNowPlayingSampleRate(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getNowPlayingEncoder(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getMuteCommand(boolean mute, ArcamZone zone) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean getMute(byte dataByte) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public byte[] getRebootCommand() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getBalanceCommand(int balance, ArcamZone zone) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getRoomEqualisationCommand(String eq, ArcamZone zone) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getBalance(byte dataByte) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getRoomEqualisation(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getSoftwareVersion(List<Byte> dataBytes) {
+        // TODO Auto-generated method stub
+        return "";
+    }
+
+    @Override
+    public String getIncomingSampleRate(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean getBoolean(byte dataByte) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public int getTimeoutCounter(List<Byte> dataBytes) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getTemperature(List<Byte> dataBytes, int tempNr) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

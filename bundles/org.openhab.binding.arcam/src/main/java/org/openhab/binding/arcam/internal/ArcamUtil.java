@@ -13,6 +13,7 @@
 package org.openhab.binding.arcam.internal;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -24,6 +25,30 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class ArcamUtil {
     private static final byte[] HEX_ARRAY = "0123456789ABCDEF".getBytes(StandardCharsets.US_ASCII);
+
+    public static byte[] byteListToArray(List<Byte> bytes) {
+        byte[] byteArray = new byte[bytes.size()];
+        for (int i = 0; i < bytes.size(); i++) {
+            byteArray[i] = bytes.get(i);
+        }
+        return byteArray;
+    }
+
+    public static String bytesToHex(List<Byte> bytes) {
+
+        byte[] byteArray = byteListToArray(bytes);
+        for (int i = 0; i < bytes.size(); i++) {
+            byteArray[i] = bytes.get(i);
+        }
+
+        return bytesToHex(byteArray);
+    }
+
+    public static String byteListToUTF(List<Byte> bytes) {
+        byte[] byteArray = byteListToArray(bytes);
+
+        return new String(byteArray, StandardCharsets.UTF_8);
+    }
 
     public static String bytesToHex(byte[] bytes) {
         byte[] hexChars = new byte[bytes.length * 3];
@@ -45,4 +70,5 @@ public class ArcamUtil {
         hexChars[2] = HEX_ARRAY[v & 0x0F];
         return new String(hexChars, StandardCharsets.UTF_8);
     }
+
 }
