@@ -29,12 +29,14 @@
         <description>Channels for the master zone.</description>
         <channels>
             <channel id="balance" typeId="sa30Balance"/>
+            <channel id="dacFilter" typeId="sa30DacFilter"/>
             <channel id="dcOffset" typeId="dcOffset"/>
             <channel id="directMode" typeId="directMode"/>
             <channel id="displaybrightness" typeId="sa30DisplayBrightness"/>
             <channel id="headphones" typeId="headphones"/>
             <channel id="incomingSampleRate" typeId="incomingSampleRate"/>
             <channel id="input" typeId="sa30Input"/>
+            <channel id="inputDetect" typeId="inputDetect"/>
             <channel id="lifterTemperature" typeId="lifterTemperature"/>
             <channel id="mute" typeId="system.mute"/>
             <channel id="nowPlayingTitle" typeId="system.media-title"/>

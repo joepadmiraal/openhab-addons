@@ -17,19 +17,19 @@ import org.osgi.service.component.annotations.Component;
 @Component(service = ChannelTypeProvider.class)
 public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
 
+    public static final String AVR30_DISPLAY_BRIGHTNESS = "avr30DisplayBrightness";
     public static final String AVR30_MASTER_INPUT = "avr30MasterInput";
     public static final String AVR30_ZONE2_INPUT = "avr30Zone2Input";
-    public static final String AVR30_DISPLAY_BRIGHTNESS = "avr30DisplayBrightness";
 
     @Override
     public Collection<@NonNull ChannelType> getChannelTypes(@Nullable Locale locale) {
         List<ChannelType> channelTypeList = new LinkedList<>();
+        channelTypeList.add(
+                getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_DISPLAY_BRIGHTNESS), locale));
         channelTypeList
                 .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_MASTER_INPUT), locale));
         channelTypeList
                 .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_ZONE2_INPUT), locale));
-        channelTypeList.add(
-                getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_DISPLAY_BRIGHTNESS), locale));
 
         return channelTypeList;
     }
@@ -41,6 +41,14 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
         }
 
         String channelID = channelTypeUID.getId();
+
+        if (channelID.equals(AVR30_DISPLAY_BRIGHTNESS)) {
+            return ArcamCommandDataFinder.generateStringOptionChannelType( //
+                    channelTypeUID, //
+                    "Display brightness", //
+                    "Select display brightness", //
+                    ArcamAVR30.displaybrightnessCommands); //
+        }
 
         if (channelID.equals(AVR30_MASTER_INPUT)) {
             return ArcamCommandDataFinder.generateStringOptionChannelType( //
@@ -56,14 +64,6 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
                     "Zone2 Input", //
                     "Select the input source", //
                     ArcamAVR30.inputCommands); //
-        }
-
-        if (channelID.equals(AVR30_DISPLAY_BRIGHTNESS)) {
-            return ArcamCommandDataFinder.generateStringOptionChannelType( //
-                    channelTypeUID, //
-                    "Display brightness", //
-                    "Select display brightness", //
-                    ArcamAVR30.displaybrightnessCommands); //
         }
 
         return null;

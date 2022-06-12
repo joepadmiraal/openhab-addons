@@ -73,6 +73,22 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             return;
         }
 
+        if (equalsWithoutGroup(CHANNEL_DAC_FILTER, channelUID)) {
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setDacFilter(c.toFullString());
+            }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_DISPLAY_BRIGHTNESS, channelUID)) {
+            logger.info("handleCommand: {}", command.toFullString());
+
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setDisplayBrightness(c.toFullString());
+            }
+        }
+
         if (equalsWithoutGroup(CHANNEL_MASTER_BALANCE, channelUID)) {
             logger.info("handleCommand: {}", command.toFullString());
 
@@ -82,20 +98,10 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
-        if (equalsWithoutGroup(CHANNEL_MASTER_VOLUME, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
-            if (command instanceof PercentType) {
-                logger.info("got percenttype");
-                PercentType p = (PercentType) command;
-                connection.setVolume(p.intValue(), ArcamZone.MASTER);
-            }
-        }
-
-        if (equalsWithoutGroup(CHANNEL_ZONE2_VOLUME, channelUID)) {
-            if (command instanceof PercentType) {
-                PercentType p = (PercentType) command;
-                connection.setVolume(p.intValue(), ArcamZone.ZONE2);
+        if (equalsWithoutGroup(CHANNEL_MASTER_INPUT, channelUID)) {
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setInput(c.toFullString(), ArcamZone.MASTER);
             }
         }
 
@@ -119,28 +125,21 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
-        if (equalsWithoutGroup(CHANNEL_ZONE2_POWER, channelUID)) {
-            if (command == OnOffType.ON) {
-                connection.setPower(true, ArcamZone.ZONE2);
-            }
-            if (command == OnOffType.OFF) {
-                connection.setPower(false, ArcamZone.ZONE2);
-            }
-        }
-
-        if (equalsWithoutGroup(CHANNEL_DISPLAY_BRIGHTNESS, channelUID)) {
+        if (equalsWithoutGroup(CHANNEL_MASTER_VOLUME, channelUID)) {
             logger.info("handleCommand: {}", command.toFullString());
 
-            if (command instanceof StringType) {
-                StringType c = (StringType) command;
-                connection.setDisplayBrightness(c.toFullString());
+            if (command instanceof PercentType) {
+                logger.info("got percenttype");
+                PercentType p = (PercentType) command;
+                connection.setVolume(p.intValue(), ArcamZone.MASTER);
             }
         }
 
-        if (equalsWithoutGroup(CHANNEL_MASTER_INPUT, channelUID)) {
-            if (command instanceof StringType) {
-                StringType c = (StringType) command;
-                connection.setInput(c.toFullString(), ArcamZone.MASTER);
+        if (equalsWithoutGroup(CHANNEL_REBOOT, channelUID)) {
+            logger.info("handleCommand: {}", command.toFullString());
+
+            if (command == OnOffType.ON) {
+                connection.reboot();
             }
         }
 
@@ -151,11 +150,19 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
-        if (equalsWithoutGroup(CHANNEL_REBOOT, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
+        if (equalsWithoutGroup(CHANNEL_ZONE2_POWER, channelUID)) {
             if (command == OnOffType.ON) {
-                connection.reboot();
+                connection.setPower(true, ArcamZone.ZONE2);
+            }
+            if (command == OnOffType.OFF) {
+                connection.setPower(false, ArcamZone.ZONE2);
+            }
+        }
+
+        if (equalsWithoutGroup(CHANNEL_ZONE2_VOLUME, channelUID)) {
+            if (command instanceof PercentType) {
+                PercentType p = (PercentType) command;
+                connection.setVolume(p.intValue(), ArcamZone.ZONE2);
             }
         }
 

@@ -18,6 +18,16 @@ import org.openhab.binding.arcam.internal.ArcamZone;
 
 public class ArcamSA30 implements ArcamDevice {
 
+    public static List<ArcamCommandData> dacFilterCommands = new ArrayList<>(List.of( //
+            new ArcamCommandData("Linear Phase Fast Roll Off", (byte) 0x00), //
+            new ArcamCommandData("Linear Phase Slow Roll Off", (byte) 0x01), //
+            new ArcamCommandData("Minimum Phase Fast Roll Off", (byte) 0x02), //
+            new ArcamCommandData("Minimum Phase Slow Roll Off", (byte) 0x03), //
+            new ArcamCommandData("Brick Wall", (byte) 0x04), //
+            new ArcamCommandData("Corrected Phase Fast Roll Off", (byte) 0x05), //
+            new ArcamCommandData("Apodizing", (byte) 0x06) //
+    ));
+
     public static List<ArcamCommandData> inputCommands = new ArrayList<>(List.of( //
             new ArcamCommandData("PHONO", (byte) 0x01), //
             new ArcamCommandData("AUX", (byte) 0x02), //
@@ -46,6 +56,7 @@ public class ArcamSA30 implements ArcamDevice {
             // Non channel related
             new ArcamCommand(SYSTEM_STATUS, new byte[] { 0x21, 0x01, 0x5D, 0x01, (byte) 0xF0, 0x0D }), //
             // Generic
+            new ArcamCommand(DAC_FILTER, new byte[] { 0x21, 0x01, 0x61, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(DISPLAY_BRIGHTNESS, new byte[] { 0x21, 0x01, 0x01, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(HEADPHONES, new byte[] { 0x21, 0x01, 0x02, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(INCOMING_SAMPLE_RATE, new byte[] { 0x21, 0x01, 0x44, 0x01, (byte) 0xF0, 0x0D }), //
@@ -57,6 +68,7 @@ public class ArcamSA30 implements ArcamDevice {
             new ArcamCommand(MASTER_BALANCE, new byte[] { 0x21, 0x01, 0x3B, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_MUTE, new byte[] { 0x21, 0x01, 0x0E, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_INPUT, new byte[] { 0x21, 0x01, 0x1D, 0x01, (byte) 0xF0, 0x0D }), //
+            new ArcamCommand(MASTER_INPUT_DETECT, new byte[] { 0x21, 0x01, 0x5A, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_DIRECT_MODE, new byte[] { 0x21, 0x01, 0x0F, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_NOW_PLAYING_TITLE, new byte[] { 0x21, 0x01, 0x64, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_NOW_PLAYING_ARTIST, new byte[] { 0x21, 0x01, 0x64, 0x01, (byte) 0xF1, 0x0D }), //
@@ -280,6 +292,19 @@ public class ArcamSA30 implements ArcamDevice {
         }
 
         return dataByte;
+    }
+
+    @Override
+    public String getDacFilter(Byte dataByte) {
+        return commandDataFinder.getCommandCodeFromByte(dataByte, dacFilterCommands);
+    }
+
+    @Override
+    public byte[] getDacFilterCommand(String dacFilter) {
+        byte[] data = new byte[] { 0x21, 0x01, 0x61, 0x01, (byte) 0xF0, 0x0D };
+        data[4] = commandDataFinder.getByteFromCommandDataCode(dacFilter, dacFilterCommands);
+
+        return data;
     }
 
     @Override

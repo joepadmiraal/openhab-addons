@@ -4,6 +4,7 @@
     xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
     xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
+
     <channel-type id="dcOffset">
         <item-type>Switch</item-type>
         <label>DC offset</label>
@@ -22,10 +23,16 @@
         <description>Determine whether headphones are connected.</description>
         <state readOnly="true" />
     </channel-type>
-     <channel-type id="incomingSampleRate">
+    <channel-type id="incomingSampleRate">
         <item-type>String</item-type>
         <label>Incoming audio sample rate</label>
         <description>Incoming audio sample rate.</description>
+        <state readOnly="true" />
+    </channel-type>
+    <channel-type id="inputDetect">
+        <item-type>Switch</item-type>
+        <label>Input detect</label>
+        <description>the status of the active input.</description>
         <state readOnly="true" />
     </channel-type>
     <channel-type id="lifterTemperature">

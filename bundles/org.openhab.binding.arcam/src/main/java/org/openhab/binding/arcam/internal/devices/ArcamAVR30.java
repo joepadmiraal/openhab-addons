@@ -181,4 +181,16 @@ public class ArcamAVR30 implements ArcamDevice {
         return 0;
     }
 
+    @Override
+    public String getDacFilter(Byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getDacFilterCommand(String dacFilter) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

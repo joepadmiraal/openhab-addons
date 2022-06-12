@@ -88,6 +88,13 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         }
     }
 
+    public void reboot() {
+        byte[] data = device.getRebootCommand();
+
+        logger.info("Sending reboot array: {}", ArcamUtil.bytesToHex(data));
+        sendCommand(data);
+    }
+
     public void requestAllValues() {
         logger.info("requestAllValues");
         requestState(ArcamCommandCode.SYSTEM_STATUS);
@@ -106,20 +113,6 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         sendCommand(data);
     }
 
-    private void sendCommand(byte[] data) {
-        OutputStream os = outputStream;
-        if (os == null) {
-            return;
-        }
-
-        try {
-            logger.info("outputStream write: {}", ArcamUtil.bytesToHex(data));
-            os.write(data);
-        } catch (IOException e) {
-            connectionListener.onError();
-        }
-    }
-
     public void setBalance(int balance, ArcamZone zone) {
         byte[] data = device.getBalanceCommand(balance, zone);
 
@@ -127,24 +120,10 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         sendCommand(data);
     }
 
-    public void setVolume(int volume, ArcamZone zone) {
-        byte[] data = device.getVolumeCommand(volume, zone);
+    public void setDacFilter(String dacFilter) {
+        byte[] data = device.getDacFilterCommand(dacFilter);
 
-        logger.info("Sending volume byte: {}, array: {}, zone: {}", volume, ArcamUtil.bytesToHex(data), zone);
-        sendCommand(data);
-    }
-
-    public void setPower(boolean on, ArcamZone zone) {
-        byte[] data = device.getPowerCommand(on, zone);
-
-        logger.info("Sending power byte: {}, array: {}, zone: {}", on, ArcamUtil.bytesToHex(data), zone);
-        sendCommand(data);
-    }
-
-    public void setInput(String inputStr, ArcamZone zone) {
-        byte[] data = device.getInputCommand(inputStr, zone);
-
-        logger.info("Sending input byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
+        logger.info("Sending dacFilter byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
         sendCommand(data);
     }
 
@@ -155,10 +134,17 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         sendCommand(data);
     }
 
-    public void reboot() {
-        byte[] data = device.getRebootCommand();
+    public void setInput(String inputStr, ArcamZone zone) {
+        byte[] data = device.getInputCommand(inputStr, zone);
 
-        logger.info("Sending reboot array: {}", ArcamUtil.bytesToHex(data));
+        logger.info("Sending input byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
+        sendCommand(data);
+    }
+
+    public void setPower(boolean on, ArcamZone zone) {
+        byte[] data = device.getPowerCommand(on, zone);
+
+        logger.info("Sending power byte: {}, array: {}, zone: {}", on, ArcamUtil.bytesToHex(data), zone);
         sendCommand(data);
     }
 
@@ -169,39 +155,29 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         sendCommand(data);
     }
 
+    public void setVolume(int volume, ArcamZone zone) {
+        byte[] data = device.getVolumeCommand(volume, zone);
+
+        logger.info("Sending volume byte: {}, array: {}, zone: {}", volume, ArcamUtil.bytesToHex(data), zone);
+        sendCommand(data);
+    }
+
     @Override
     public void onResponse(ArcamResponse response) {
         if (response.ac != 0x00) {
             logger.warn("There is an error with the command");
             return;
         }
-
         // Balance
         if (response.cc == 0x3B) {
             int balance = device.getBalance(response.data.get(0));
             state.setMasterBalance(balance);
         }
-        // Current input source
-        if (response.cc == 0x1D) {
-
-            String input = device.getInputName(response.data.get(0));
-            ArcamZone zone = byteToZone(response.zn);
-
-            logger.info("input info: {}, zone: {}", input, zone);
-            if (zone == ArcamZone.MASTER) {
-                state.setMasterInput(input);
-            } else {
-                state.setZone2Input(input);
-            }
-        }
-        // Current display brightness
-        if (response.cc == 0x01) {
-
-            String brightness = device.getDisplayBrightness(response.data.get(0));
-
-            logger.info("brightness info: {}", brightness);
-
-            state.setDisplayBrightness(brightness);
+        // DAC filter
+        if (response.cc == 0x61) {
+            String dacFilter = device.getDacFilter(response.data.get(0));
+            logger.info("Got DAC filter: {}, {}", ArcamUtil.bytesToHex(response.data), dacFilter);
+            state.setDacFilter(dacFilter);
         }
         // DC offset
         if (response.cc == 0x51) {
@@ -217,6 +193,14 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
                 state.setMasterDirectMode(directMode);
             }
         }
+        // Display brightness
+        if (response.cc == 0x01) {
+            String brightness = device.getDisplayBrightness(response.data.get(0));
+
+            logger.info("brightness info: {}", brightness);
+
+            state.setDisplayBrightness(brightness);
+        }
         // Headphones
         if (response.cc == 0x02) {
             logger.info("Got headphones response: {}", response.data);
@@ -228,6 +212,28 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
             String sampleRate = device.getIncomingSampleRate(response.data.get(0));
             logger.info("Got incomingSampleRateresponse: {}, {}", ArcamUtil.bytesToHex(response.data), sampleRate);
             state.setIncomingSampleRate(sampleRate);
+        }
+        // Input detect
+        if (response.cc == 0x5A) {
+            logger.info("Got Input detetc response: {}", response.data);
+            boolean inputDetect = device.getBoolean(response.data.get(0));
+            ArcamZone zone = byteToZone(response.zn);
+            if (zone == ArcamZone.MASTER) {
+                state.setMasterInputDetect(inputDetect);
+            }
+        }
+        // Input source
+        if (response.cc == 0x1D) {
+
+            String input = device.getInputName(response.data.get(0));
+            ArcamZone zone = byteToZone(response.zn);
+
+            logger.info("input info: {}, zone: {}", input, zone);
+            if (zone == ArcamZone.MASTER) {
+                state.setMasterInput(input);
+            } else {
+                state.setZone2Input(input);
+            }
         }
         // Lifter temperature
         if (response.cc == 0x56) {
@@ -349,6 +355,20 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         }
 
         return ArcamZone.ZONE2;
+    }
+
+    private void sendCommand(byte[] data) {
+        OutputStream os = outputStream;
+        if (os == null) {
+            return;
+        }
+
+        try {
+            logger.info("outputStream write: {}", ArcamUtil.bytesToHex(data));
+            os.write(data);
+        } catch (IOException e) {
+            connectionListener.onError();
+        }
     }
 
 }

@@ -26,6 +26,8 @@ import org.openhab.core.types.State;
 public class ArcamState {
     // Generic
     @Nullable
+    private State dacFilter;
+    @Nullable
     private State dcOffset;
     @Nullable
     private State displayBrightness;
@@ -49,6 +51,8 @@ public class ArcamState {
     private State masterDirectMode;
     @Nullable
     private State masterInput;
+    @Nullable
+    private State masterInputDetect;
     @Nullable
     private State masterNowPlayingTitle;
     @Nullable
@@ -89,6 +93,14 @@ public class ArcamState {
     }
 
     // Generic
+    public void setDacFilter(String dacFilter) {
+        StringType newVal = new StringType(dacFilter);
+        if (!newVal.equals(this.dacFilter)) {
+            this.dacFilter = newVal;
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_DAC_FILTER, this.dacFilter);
+        }
+    }
+
     public void setDcOffset(boolean dc) {
         OnOffType newVal = dc ? OnOffType.ON : OnOffType.OFF;
         if (newVal != this.dcOffset) {
@@ -175,6 +187,14 @@ public class ArcamState {
         if (!newVal.equals(this.masterInput)) {
             this.masterInput = newVal;
             handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_INPUT, this.masterInput);
+        }
+    }
+
+    public void setMasterInputDetect(boolean inputDetect) {
+        OnOffType newVal = inputDetect ? OnOffType.ON : OnOffType.OFF;
+        if (newVal != this.masterInputDetect) {
+            this.masterInputDetect = newVal;
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_INPUT_DETECT, newVal);
         }
     }
 

@@ -13,6 +13,8 @@ public interface ArcamDevice {
     // Methods used to send a value to the device
     public byte[] getBalanceCommand(int balance, ArcamZone zone);
 
+    public byte[] getDacFilterCommand(String dacFilter);
+
     public byte[] getDisplayBrightnessCommand(String displayBrightness);
 
     public byte[] getInputCommand(String inputName, ArcamZone zone);
@@ -31,6 +33,8 @@ public interface ArcamDevice {
     public int getBalance(byte dataByte);
 
     public boolean getBoolean(byte dataByte);
+
+    public String getDacFilter(Byte dataByte);
 
     public String getDisplayBrightness(byte dataByte);
 
@@ -56,4 +60,5 @@ public interface ArcamDevice {
     // Methods used to successively provide dataByte arrays which belong together. When complete it will return an
     // object with the parsed values
     public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes);
+
 }

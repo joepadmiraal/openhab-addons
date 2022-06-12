@@ -37,6 +37,7 @@ public class ArcamBindingConstants {
 
     // List of all Channel ids
     // Generic
+    public static final String CHANNEL_DAC_FILTER = "masterZone#dacFilter";
     public static final String CHANNEL_DC_OFFSET = "masterZone#dcOffset";
     public static final String CHANNEL_DISPLAY_BRIGHTNESS = "masterZone#displaybrightness";
     public static final String CHANNEL_HEADPHONES = "masterZone#headphones";
@@ -51,6 +52,7 @@ public class ArcamBindingConstants {
     public static final String CHANNEL_MASTER_BALANCE = "masterZone#balance";
     public static final String CHANNEL_MASTER_DIRECT_MODE = "masterZone#directMode";
     public static final String CHANNEL_MASTER_INPUT = "masterZone#input";
+    public static final String CHANNEL_MASTER_INPUT_DETECT = "masterZone#inputDetect";
     public static final String CHANNEL_MASTER_MUTE = "masterZone#mute";
     public static final String CHANNEL_MASTER_NOW_PLAYING_TITLE = "masterZone#nowPlayingTitle";
     public static final String CHANNEL_MASTER_NOW_PLAYING_ARTIST = "masterZone#nowPlayingArtist";
