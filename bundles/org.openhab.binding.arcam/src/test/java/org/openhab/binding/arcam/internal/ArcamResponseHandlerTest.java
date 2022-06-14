@@ -1,6 +1,6 @@
 package org.openhab.binding.arcam.internal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +22,7 @@ public class ArcamResponseHandlerTest {
             result = sut.parseByte(b);
         }
 
+        assertNotNull(result);
         assertEquals(1, result.zn);
         assertEquals((byte) 0x00, result.cc);
         assertEquals((byte) 0x00, result.ac);
@@ -39,6 +40,7 @@ public class ArcamResponseHandlerTest {
             result = sut.parseByte(b);
         }
 
+        assertNotNull(result);
         assertEquals(1, result.zn);
         assertEquals((byte) 0x00, result.cc);
         assertEquals((byte) 0x00, result.ac);
@@ -62,6 +64,7 @@ public class ArcamResponseHandlerTest {
             result = sut.parseByte(b);
         }
 
+        assertNotNull(result);
         assertEquals(6, result.zn);
         assertEquals((byte) 0x07, result.cc);
         assertEquals((byte) 0x08, result.ac);

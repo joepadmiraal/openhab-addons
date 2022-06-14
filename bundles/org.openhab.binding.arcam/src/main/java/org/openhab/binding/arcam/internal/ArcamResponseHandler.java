@@ -17,6 +17,12 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@link ArcamResponseHandler} class parses the incoming bytes and creates {@link ArcamResponse} objects out of
+ * them.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 @NonNullByDefault
 public class ArcamResponseHandler {
     private final Logger logger = LoggerFactory.getLogger(ArcamConnectionReader.class);

@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2022 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.arcam.internal;
 
 import java.util.ArrayList;
@@ -13,6 +25,12 @@ import org.openhab.core.types.StateOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@link ArcamCommandDataFinder} class provides lookup methods, used to lookup CommandData from the device specific
+ * lists.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 public class ArcamCommandDataFinder {
     private final Logger logger = LoggerFactory.getLogger(ArcamCommandDataFinder.class);
 
@@ -67,5 +85,4 @@ public class ArcamCommandDataFinder {
         return ChannelTypeBuilder.state(channelTypeUID, label, "String").withDescription(description)
                 .withStateDescriptionFragment(stateDescFrag).build();
     }
-
 }

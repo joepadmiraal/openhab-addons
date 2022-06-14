@@ -21,6 +21,11 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@link ArcamConnectionReader} class manages the Socket.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 @NonNullByDefault
 public class ArcamConnectionReader extends Thread {
     private Socket socket;
@@ -57,10 +62,9 @@ public class ArcamConnectionReader extends Thread {
 
             while (!shouldStop()) {
                 byte responseData[] = new byte[1];
-                int size = input.read(responseData);
-                // logger.info("responseData: {}, size: {}", ArcamUtil.bytesToHex(responseData), size);
+                int bytesRead = input.read(responseData);
 
-                for (int j = 0; j < responseData.length; j++) {
+                for (int j = 0; j < bytesRead; j++) {
                     ArcamResponse response = responseHandler.parseByte(responseData[j]);
                     if (response != null) {
                         listener.onResponse(response);

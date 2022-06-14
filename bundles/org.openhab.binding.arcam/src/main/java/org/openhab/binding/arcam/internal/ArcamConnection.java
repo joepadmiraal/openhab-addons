@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link ArcamConnection} class manages the socket connection with the amplifier.
+ * The {@link ArcamConnection} class manages the socket connection with the device.
  * It will trigger state changes when new messages are received and writes commands to the socket.
  *
  * @author Joep Admiraal - Initial contribution
@@ -63,25 +63,29 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
 
         logger.info("connecting to: {} {}", hostname, PORT);
 
-        socket = new Socket(hostname, PORT);
-        Socket s = socket;
+        Socket s = new Socket(hostname, PORT);
+        socket = s;
         outputStream = s.getOutputStream();
-        acr = new ArcamConnectionReader(s, this);
+        ArcamConnectionReader acr = new ArcamConnectionReader(s, this);
         acr.start();
+        this.acr = acr;
 
         requestAllValues();
     }
 
     public void dispose() {
         try {
-            if (outputStream != null) {
-                outputStream.close();
+            OutputStream os = outputStream;
+            if (os != null) {
+                os.close();
             }
+            ArcamConnectionReader acr = this.acr;
             if (acr != null) {
                 acr.dispose();
             }
-            if (socket != null) {
-                socket.close();
+            Socket s = socket;
+            if (s != null) {
+                s.close();
             }
         } catch (IOException e) {
             logger.debug("{}", e.getMessage());
@@ -346,7 +350,6 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
             BigDecimal bd = BigDecimal.valueOf(Byte.valueOf(response.data.get(0)).intValue());
             state.setMasterVolume(bd);
         }
-
     }
 
     private ArcamZone byteToZone(byte zone) {
@@ -370,5 +373,4 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
             connectionListener.onError();
         }
     }
-
 }

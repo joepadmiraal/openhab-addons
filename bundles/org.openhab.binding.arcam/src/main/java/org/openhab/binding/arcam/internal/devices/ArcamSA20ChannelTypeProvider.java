@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2022 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.arcam.internal.devices;
 
 import java.util.Collection;
@@ -12,7 +24,12 @@ import org.openhab.core.thing.type.ChannelType;
 import org.openhab.core.thing.type.ChannelTypeProvider;
 import org.openhab.core.thing.type.ChannelTypeUID;
 
-//@Component(service = ChannelTypeProvider.class)
+/**
+ * The {@link ArcamSA20ChannelTypeProvider} class provides the device specific channel types.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
+// @Component(service = ChannelTypeProvider.class)
 public class ArcamSA20ChannelTypeProvider implements ChannelTypeProvider {
 
     private static final String SA20INPUT = "sa20input";
@@ -48,5 +65,4 @@ public class ArcamSA20ChannelTypeProvider implements ChannelTypeProvider {
         // return ChannelTypeBuilder.state(channelTypeUID, "sa20 input", "String")
         // .withDescription("Select the input source").withStateDescriptionFragment(stateDescFrag).build();
     }
-
 }

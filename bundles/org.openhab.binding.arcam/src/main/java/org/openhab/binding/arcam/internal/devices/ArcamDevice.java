@@ -2,13 +2,16 @@ package org.openhab.binding.arcam.internal.devices;
 
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamZone;
 
+@NonNullByDefault
 public interface ArcamDevice {
     // Methods used to get a value from the device
-    public byte[] getStateCommandByte(ArcamCommandCode commandCode);
+    public byte @Nullable [] getStateCommandByte(ArcamCommandCode commandCode);
 
     // Methods used to send a value to the device
     public byte[] getBalanceCommand(int balance, ArcamZone zone);
@@ -59,6 +62,6 @@ public interface ArcamDevice {
 
     // Methods used to successively provide dataByte arrays which belong together. When complete it will return an
     // object with the parsed values
+    @Nullable
     public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes);
-
 }

@@ -249,5 +249,4 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         String id = parts[parts.length - 1];
         return id.equals(channelUID.getIdWithoutGroup());
     }
-
 }

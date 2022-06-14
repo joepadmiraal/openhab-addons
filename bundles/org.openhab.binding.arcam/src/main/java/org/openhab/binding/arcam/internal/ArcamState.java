@@ -22,6 +22,11 @@ import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.types.State;
 
+/**
+ * The {@link ArcamState} class contains the device state as seen by the binding.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 @NonNullByDefault
 public class ArcamState {
     // Generic
@@ -97,7 +102,7 @@ public class ArcamState {
         StringType newVal = new StringType(dacFilter);
         if (!newVal.equals(this.dacFilter)) {
             this.dacFilter = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_DAC_FILTER, this.dacFilter);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_DAC_FILTER, newVal);
         }
     }
 
@@ -113,7 +118,7 @@ public class ArcamState {
         StringType newVal = new StringType(brightness);
         if (!newVal.equals(this.displayBrightness)) {
             this.displayBrightness = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_DISPLAY_BRIGHTNESS, this.displayBrightness);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_DISPLAY_BRIGHTNESS, newVal);
         }
     }
 
@@ -129,7 +134,7 @@ public class ArcamState {
         StringType newVal = new StringType(sampleRate);
         if (!newVal.equals(this.incomingSampleRate)) {
             this.incomingSampleRate = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_INCOMING_SAMPLE_RATE, this.incomingSampleRate);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_INCOMING_SAMPLE_RATE, newVal);
         }
     }
 
@@ -153,7 +158,7 @@ public class ArcamState {
         StringType newVal = new StringType(version);
         if (!newVal.equals(this.softwareVersion)) {
             this.softwareVersion = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_SOFTWARE_VERSION, this.softwareVersion);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_SOFTWARE_VERSION, newVal);
         }
     }
 
@@ -186,7 +191,7 @@ public class ArcamState {
         StringType newVal = new StringType(input);
         if (!newVal.equals(this.masterInput)) {
             this.masterInput = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_INPUT, this.masterInput);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_INPUT, newVal);
         }
     }
 
@@ -210,7 +215,7 @@ public class ArcamState {
         StringType newVal = new StringType(title);
         if (!newVal.equals(this.masterNowPlayingTitle)) {
             this.masterNowPlayingTitle = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_TITLE, this.masterNowPlayingTitle);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_TITLE, newVal);
         }
     }
 
@@ -218,7 +223,7 @@ public class ArcamState {
         StringType newVal = new StringType(artist);
         if (!newVal.equals(this.masterNowPlayingArtist)) {
             this.masterNowPlayingArtist = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ARTIST, this.masterNowPlayingArtist);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ARTIST, newVal);
         }
     }
 
@@ -226,7 +231,7 @@ public class ArcamState {
         StringType newVal = new StringType(album);
         if (!newVal.equals(this.masterNowPlayingAlbum)) {
             this.masterNowPlayingAlbum = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ALBUM, this.masterNowPlayingAlbum);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ALBUM, newVal);
         }
     }
 
@@ -234,8 +239,7 @@ public class ArcamState {
         StringType newVal = new StringType(application);
         if (!newVal.equals(this.masterNowPlayingApplication)) {
             this.masterNowPlayingApplication = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_APPLICATION,
-                    this.masterNowPlayingApplication);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_APPLICATION, newVal);
         }
     }
 
@@ -243,8 +247,7 @@ public class ArcamState {
         StringType newVal = new StringType(sampleRate);
         if (!newVal.equals(this.masterNowPlayingSampleRate)) {
             this.masterNowPlayingSampleRate = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_SAMPLE_RATE,
-                    this.masterNowPlayingSampleRate);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_SAMPLE_RATE, newVal);
         }
     }
 
@@ -252,8 +255,7 @@ public class ArcamState {
         StringType newVal = new StringType(audioEncoder);
         if (!newVal.equals(this.masterNowPlayingAudioEncoder)) {
             this.masterNowPlayingAudioEncoder = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_AUDIO_ENCODER,
-                    this.masterNowPlayingAudioEncoder);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_AUDIO_ENCODER, newVal);
         }
     }
 
@@ -294,7 +296,7 @@ public class ArcamState {
         StringType newVal = new StringType(input);
         if (!newVal.equals(this.zone2Input)) {
             this.zone2Input = newVal;
-            handler.stateChanged(ArcamBindingConstants.CHANNEL_ZONE2_INPUT, this.zone2Input);
+            handler.stateChanged(ArcamBindingConstants.CHANNEL_ZONE2_INPUT, newVal);
         }
     }
 
@@ -321,5 +323,4 @@ public class ArcamState {
             handler.stateChanged(ArcamBindingConstants.CHANNEL_ZONE2_VOLUME, newVal);
         }
     }
-
 }

@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2022 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.arcam.internal.devices;
 
 import java.util.ArrayList;
@@ -9,6 +21,11 @@ import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
 import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamZone;
 
+/**
+ * The {@link ArcamAVR30} class contains the device specific implementation for the AVR30
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 public class ArcamAVR30 implements ArcamDevice {
 
     public static List<ArcamCommandData> inputCommands = new ArrayList<>(List.of( //
@@ -75,44 +92,43 @@ public class ArcamAVR30 implements ArcamDevice {
     @Override
     public byte[] getVolumeCommand(int volume, ArcamZone zone) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
     public byte[] getDisplayBrightnessCommand(String displayBrightness) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
     public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
     public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes) {
         // TODO Auto-generated method stub
         return null;
-
     }
 
     @Override
     public String getNowPlayingSampleRate(byte dataByte) {
         // TODO Auto-generated method stub
-        return null;
+        return "";
     }
 
     @Override
     public String getNowPlayingEncoder(byte dataByte) {
         // TODO Auto-generated method stub
-        return null;
+        return "";
     }
 
     @Override
     public byte[] getMuteCommand(boolean mute, ArcamZone zone) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
@@ -124,19 +140,19 @@ public class ArcamAVR30 implements ArcamDevice {
     @Override
     public byte[] getRebootCommand() {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
     public byte[] getBalanceCommand(int balance, ArcamZone zone) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
     public byte[] getRoomEqualisationCommand(String eq, ArcamZone zone) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
 
     @Override
@@ -148,7 +164,7 @@ public class ArcamAVR30 implements ArcamDevice {
     @Override
     public String getRoomEqualisation(byte dataByte) {
         // TODO Auto-generated method stub
-        return null;
+        return "";
     }
 
     @Override
@@ -160,7 +176,7 @@ public class ArcamAVR30 implements ArcamDevice {
     @Override
     public String getIncomingSampleRate(byte dataByte) {
         // TODO Auto-generated method stub
-        return null;
+        return "";
     }
 
     @Override
@@ -184,13 +200,12 @@ public class ArcamAVR30 implements ArcamDevice {
     @Override
     public String getDacFilter(Byte dataByte) {
         // TODO Auto-generated method stub
-        return null;
+        return "";
     }
 
     @Override
     public byte[] getDacFilterCommand(String dacFilter) {
         // TODO Auto-generated method stub
-        return null;
+        return new byte[] { 0x00 };
     }
-
 }

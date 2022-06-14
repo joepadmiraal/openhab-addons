@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2022 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.arcam.internal.devices;
 
 import static org.openhab.binding.arcam.internal.ArcamCommandCode.*;
@@ -16,6 +28,11 @@ import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamUtil;
 import org.openhab.binding.arcam.internal.ArcamZone;
 
+/**
+ * The {@link ArcamSA30} class contains the device specific implementation for the SA30
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 public class ArcamSA30 implements ArcamDevice {
 
     public static List<ArcamCommandData> dacFilterCommands = new ArrayList<>(List.of( //
@@ -51,6 +68,7 @@ public class ArcamSA30 implements ArcamDevice {
     /**
      * List of commands, with the databytes set to the request state bytes
      * Used to request one of the states of an Arcam device.
+     * Used to generate the commands to send to the Arcam device.
      */
     public static List<ArcamCommand> commands = new ArrayList<>(List.of( //
             // Non channel related
@@ -83,7 +101,7 @@ public class ArcamSA30 implements ArcamDevice {
 
     ));
 
-    public static Map<Byte, String> sampleRates = Map.ofEntries( //
+    public final static Map<Byte, String> sampleRates = Map.ofEntries( //
             Map.entry((byte) 0x00, "32 kHz"), //
             Map.entry((byte) 0x01, "44.1 kHz"), //
             Map.entry((byte) 0x02, "48 kHz"), //
@@ -125,6 +143,142 @@ public class ArcamSA30 implements ArcamDevice {
         this.commandFinder = new ArcamCommandFinder();
     }
 
+    // Generate command bytes to send
+
+    @Override
+    public byte[] getBalanceCommand(int balance, ArcamZone zone) {
+        // 0x00 – Set the balance to the centre
+        // 0x01 – 0x0C – Set the balance to the right 1, 2, ..., 11, 12
+        // 0x81 – 0x8C – Set the balance to the left 1, 2,..., 11, 12
+
+        byte[] data = commandFinder.getCommandFromCode(MASTER_BALANCE, commands);
+        byte balanceByte = (byte) balance;
+
+        if (balance < 0) {
+            balanceByte = (byte) ((balance * -1) + 0x80);
+        }
+        data[4] = balanceByte;
+
+        return data;
+    }
+
+    @Override
+    public byte[] getDacFilterCommand(String dacFilter) {
+        byte[] data = commandFinder.getCommandFromCode(DAC_FILTER, commands);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(dacFilter, dacFilterCommands);
+
+        return data;
+    }
+
+    @Override
+    public byte[] getDisplayBrightnessCommand(String displayBrightness) {
+        byte[] data = commandFinder.getCommandFromCode(DISPLAY_BRIGHTNESS, commands);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(displayBrightness, displaybrightnessCommands);
+
+        return data;
+    }
+
+    @Override
+    public byte[] getInputCommand(String inputName, ArcamZone zone) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_INPUT, commands);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(inputName, inputCommands);
+
+        return data;
+    }
+
+    @Override
+    public byte[] getMuteCommand(boolean mute, ArcamZone zone) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_MUTE, commands);
+        if (mute == true) {
+            data[4] = (byte) 0x00;
+            return data;
+        }
+
+        data[4] = (byte) 0x01;
+        return data;
+    }
+
+    @Override
+    public byte[] getPowerCommand(boolean on, ArcamZone zone) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_POWER, commands);
+        if (on == true) {
+            data[4] = (byte) 0x01;
+            return data;
+        }
+
+        data[4] = (byte) 0x00;
+        return data;
+    }
+
+    @Override
+    public byte[] getRebootCommand() {
+        // Hard coded here instead of in the commands list as there is no way to retrieve the status reboot
+        return new byte[] { 0x21, 0x01, 0x26, 0x06, 0x52, 0x45, 0x42, 0x4F, 0x4F, 0x54, 0x0D };
+    }
+
+    @Override
+    public byte[] getRoomEqualisationCommand(String eq, ArcamZone zone) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_ROOM_EQUALISATION, commands);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(eq, ArcamDeviceConstants.ROOM_EQ);
+        return data;
+    }
+
+    @Override
+    public byte[] getVolumeCommand(int volume, ArcamZone zone) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_VOLUME, commands);
+        data[4] = (byte) volume;
+
+        return data;
+    }
+
+    @Override
+    public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
+        return commandFinder.getCommandFromCode(commandCode, commands);
+    }
+
+    // Interpret incoming bytes
+
+    @Override
+    public int getBalance(byte dataByte) {
+        // 0x00 – Balance is Centered
+        // 0x00 – 0x0C – Balance is Right 1, 2,...,11, 12
+        // 0x81 – 0x8C – Balance is Left 1, 2,...,11, 12
+        if (dataByte < 0) {
+            int balance = (dataByte + 0x80) * -1;
+            return balance;
+        }
+
+        return dataByte;
+    }
+
+    @Override
+    public boolean getBoolean(byte dataByte) {
+        if (dataByte == 0x01) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String getDacFilter(Byte dataByte) {
+        return commandDataFinder.getCommandCodeFromByte(dataByte, dacFilterCommands);
+    }
+
+    @Override
+    public String getDisplayBrightness(byte dataByte) {
+        return commandDataFinder.getCommandCodeFromByte(dataByte, displaybrightnessCommands);
+    }
+
+    @Override
+    public String getIncomingSampleRate(byte dataByte) {
+        String sampleRate = sampleRates.get(dataByte);
+        if (sampleRate == null) {
+            return "Unknown";
+        }
+
+        return sampleRate;
+    }
+
     @Override
     public String getInputName(byte dataByte) {
         byte convertedByte = dataByte;
@@ -136,71 +290,11 @@ public class ArcamSA30 implements ArcamDevice {
     }
 
     @Override
-    public byte[] getBalanceCommand(int balance, ArcamZone zone) {
-        // 0x00 – Set the balance to the centre
-        // 0x01 – 0x0C – Set the balance to the right 1, 2, ..., 11, 12
-        // 0x81 – 0x8C – Set the balance to the left 1, 2,..., 11, 12
-
-        byte[] data = new byte[] { 0x21, 0x01, 0x3B, 0x01, (byte) 0x83, 0x0D };
-        byte balanceByte = (byte) balance;
-
-        if (balance < 0) {
-            balanceByte = (byte) ((balance * -1) + 0x80);
-        }
-        data[4] = data[4] = balanceByte;
-
-        return data;
-    }
-
-    @Override
-    public byte[] getInputCommand(String inputName, ArcamZone zone) {
-        byte[] data = new byte[] { 0x21, 0x01, 0x1D, 0x01, (byte) 0x01, 0x0D };
-        data[4] = commandDataFinder.getByteFromCommandDataCode(inputName, inputCommands);
-
-        return data;
-    }
-
-    @Override
-    public byte[] getVolumeCommand(int volume, ArcamZone zone) {
-        byte[] data = new byte[] { 0x21, 0x01, 0x0D, 0x01, 0x2D, 0x0D };
-        data[4] = data[4] = (byte) volume;
-
-        return data;
-    }
-
-    @Override
-    public String getDisplayBrightness(byte dataByte) {
-        return commandDataFinder.getCommandCodeFromByte(dataByte, displaybrightnessCommands);
-    }
-
-    @Override
-    public byte[] getPowerCommand(boolean on, ArcamZone zone) {
-        if (on == true) {
-            return new byte[] { 0x21, 0x01, 0x00, 0x01, 0x01, 0x0D };
-        }
-
-        return new byte[] { 0x21, 0x01, 0x00, 0x01, 0x00, 0x0D };
-    }
-
-    @Override
-    public byte[] getDisplayBrightnessCommand(String displayBrightness) {
-        byte[] data = new byte[] { 0x21, 0x01, 0x01, 0x01, (byte) 0xF0, 0x0D };
-        data[4] = commandDataFinder.getByteFromCommandDataCode(displayBrightness, displaybrightnessCommands);
-
-        return data;
-    }
-
-    @Override
-    public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
-        return commandFinder.getCommandFromCode(commandCode, commands);
-    }
-
-    @Override
-    public boolean getBoolean(byte dataByte) {
+    public boolean getMute(byte dataByte) {
         if (dataByte == 0x01) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -245,81 +339,26 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public String getNowPlayingSampleRate(byte dataByte) {
-        return sampleRates.get(dataByte);
+        String sampleRate = sampleRates.get(dataByte);
+        if (sampleRate == null) {
+            return "";
+        } else {
+            return sampleRate;
+        }
     }
 
     @Override
     public String getNowPlayingEncoder(byte dataByte) {
-        return audioEncoders.get(dataByte);
-    }
-
-    @Override
-    public byte[] getMuteCommand(boolean mute, ArcamZone zone) {
-        if (mute == true) {
-            return new byte[] { 0x21, 0x01, 0x0E, 0x01, 0x00, 0x0D };
+        String audioEncoder = audioEncoders.get(dataByte);
+        if (audioEncoder == null) {
+            return "";
+        } else {
+            return audioEncoder;
         }
-
-        return new byte[] { 0x21, 0x01, 0x0E, 0x01, 0x01, 0x0D };
-    }
-
-    @Override
-    public boolean getMute(byte dataByte) {
-        if (dataByte == 0x01) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public byte[] getRebootCommand() {
-        return new byte[] { 0x21, 0x01, 0x26, 0x06, 0x52, 0x45, 0x42, 0x4F, 0x4F, 0x54, 0x0D };
-    }
-
-    @Override
-    public byte[] getRoomEqualisationCommand(String eq, ArcamZone zone) {
-        ArcamCommandData command = commandDataFinder.getCommandDataFromCode(eq, ArcamDeviceConstants.ROOM_EQ);
-        return new byte[] { 0x21, 0x01, 0x37, 0x01, command.dataByte, 0x0D };
-    }
-
-    @Override
-    public int getBalance(byte dataByte) {
-        // 0x00 – Balance is Centred
-        // 0x00 – 0x0C – Balance is Right 1, 2,...,11, 12
-        // 0x81 – 0x8C – Balance is Left 1, 2,...,11, 12
-        if (dataByte < 0) {
-            int balance = (dataByte + 0x80) * -1;
-            return balance;
-        }
-
-        return dataByte;
-    }
-
-    @Override
-    public String getDacFilter(Byte dataByte) {
-        return commandDataFinder.getCommandCodeFromByte(dataByte, dacFilterCommands);
-    }
-
-    @Override
-    public byte[] getDacFilterCommand(String dacFilter) {
-        byte[] data = new byte[] { 0x21, 0x01, 0x61, 0x01, (byte) 0xF0, 0x0D };
-        data[4] = commandDataFinder.getByteFromCommandDataCode(dacFilter, dacFilterCommands);
-
-        return data;
-    }
-
-    @Override
-    public String getIncomingSampleRate(byte dataByte) {
-        return sampleRates.get(dataByte);
-    }
-
-    @Override
-    public int getTemperature(List<Byte> dataBytes, int tempNr) {
-        return dataBytes.get(tempNr);
     }
 
     @Override
     public String getRoomEqualisation(byte dataByte) {
-        System.err.println("getRoomEqualisation: " + dataByte);
         return commandDataFinder.getCommandCodeFromByte(dataByte, ArcamDeviceConstants.ROOM_EQ);
     }
 
@@ -331,9 +370,13 @@ public class ArcamSA30 implements ArcamDevice {
     }
 
     @Override
+    public int getTemperature(List<Byte> dataBytes, int tempNr) {
+        return dataBytes.get(tempNr);
+    }
+
+    @Override
     public int getTimeoutCounter(List<Byte> dataBytes) {
         // The range of the value returned is from 0x0000 - 0x00F0 (0 - 240minutes)
         return dataBytes.get(1);
     }
-
 }

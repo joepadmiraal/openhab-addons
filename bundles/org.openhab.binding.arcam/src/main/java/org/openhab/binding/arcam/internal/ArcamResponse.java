@@ -17,6 +17,11 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
+/**
+ * The {@link ArcamResponse} POJO holds the data that is returned from the device.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 @NonNullByDefault
 public class ArcamResponse {
     public byte zn;

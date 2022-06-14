@@ -70,5 +70,4 @@ public class ArcamUtil {
         hexChars[2] = HEX_ARRAY[v & 0x0F];
         return new String(hexChars, StandardCharsets.UTF_8);
     }
-
 }

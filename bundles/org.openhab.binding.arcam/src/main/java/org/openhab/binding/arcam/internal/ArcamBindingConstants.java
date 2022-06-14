@@ -70,5 +70,4 @@ public class ArcamBindingConstants {
     public static final String CHANNEL_ZONE2_MUTE = "zone2#mute";
     public static final String CHANNEL_ZONE2_POWER = "zone2#power";
     public static final String CHANNEL_ZONE2_VOLUME = "zone2#volume";
-
 }

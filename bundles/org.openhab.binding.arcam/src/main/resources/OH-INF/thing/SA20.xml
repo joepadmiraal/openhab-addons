@@ -11,7 +11,7 @@
 
 		<channels>
 			<channel id="volume" typeId="system.volume"/>
-			<!--  TODO: power type -->
+			<!-- TODO: power type -->
 			<channel id="power" typeId="system.power"/>
 			<channel id="input" typeId="sa20input"/>
 		</channels>
