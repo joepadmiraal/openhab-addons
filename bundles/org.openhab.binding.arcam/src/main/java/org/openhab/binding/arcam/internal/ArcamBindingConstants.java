@@ -15,6 +15,7 @@ package org.openhab.binding.arcam.internal;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.core.thing.ThingTypeUID;
 
 /**
@@ -23,6 +24,7 @@ import org.openhab.core.thing.ThingTypeUID;
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamBindingConstants {
 
     public static final String BINDING_ID = "arcam";

@@ -12,15 +12,18 @@
  */
 package org.openhab.binding.arcam.internal;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
 /**
  * The {@link ArcamCommand} class is a POJO to store the bytes that are used to send a command.
  * Used to create dynamic lookup tables so we can share logic between multiple devices.
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamCommand {
-    public ArcamCommandCode code;
-    public byte[] data;
+    public final ArcamCommandCode code;
+    public final byte[] data;
 
     public ArcamCommand(ArcamCommandCode code, byte[] data) {
         this.code = code;

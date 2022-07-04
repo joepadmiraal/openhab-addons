@@ -14,6 +14,7 @@ package org.openhab.binding.arcam.internal;
 
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamCommandFinder {
     private final Logger logger = LoggerFactory.getLogger(ArcamCommandFinder.class);
 
@@ -33,7 +35,7 @@ public class ArcamCommandFinder {
             }
         }
 
-        logger.warn("Could not find ArcamCommandfor code: {}", code);
-        return null;
+        logger.error("Could not find ArcamCommandfor code: {}.", code);
+        return new byte[] {};
     }
 }

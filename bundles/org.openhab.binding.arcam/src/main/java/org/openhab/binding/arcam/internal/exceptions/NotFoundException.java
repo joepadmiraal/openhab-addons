@@ -10,24 +10,22 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
+package org.openhab.binding.arcam.internal.exceptions;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * The {@link ArcamNowPlaying} POJO holds information about the current track that is playing.
- * This is used to collect multiple data fields that are send via subsequent messages.
+ * Thrown when an item cannot be found in a lookup table.
  *
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public class ArcamNowPlaying {
-    public String track = "";
-    public String album = "";
-    public String artist = "";
-    public String application = "";
-    public String sampleRate = "";
-    public String audioEncoder = "";
+@SuppressWarnings("serial")
+public class NotFoundException extends RuntimeException {
+    public NotFoundException() {
+    }
 
-    public int rowNr;
+    public NotFoundException(String message) {
+        super(message);
+    }
 }

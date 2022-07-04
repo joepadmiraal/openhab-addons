@@ -18,9 +18,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
 import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
+import org.openhab.binding.arcam.internal.exceptions.NotFoundException;
 import org.openhab.core.thing.type.ChannelType;
 import org.openhab.core.thing.type.ChannelTypeProvider;
 import org.openhab.core.thing.type.ChannelTypeUID;
@@ -32,6 +34,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Joep Admiraal - Initial contribution
  */
 @Component(service = ChannelTypeProvider.class)
+@NonNullByDefault
 public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
 
     public static final String AVR30_DISPLAY_BRIGHTNESS = "avr30DisplayBrightness";
@@ -41,12 +44,9 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
     @Override
     public Collection<@NonNull ChannelType> getChannelTypes(@Nullable Locale locale) {
         List<ChannelType> channelTypeList = new LinkedList<>();
-        channelTypeList.add(
-                getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_DISPLAY_BRIGHTNESS), locale));
-        channelTypeList
-                .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_MASTER_INPUT), locale));
-        channelTypeList
-                .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, AVR30_ZONE2_INPUT), locale));
+        channelTypeList.add(getChannelTypeOrThrow(AVR30_DISPLAY_BRIGHTNESS, locale));
+        channelTypeList.add(getChannelTypeOrThrow(AVR30_MASTER_INPUT, locale));
+        channelTypeList.add(getChannelTypeOrThrow(AVR30_ZONE2_INPUT, locale));
 
         return channelTypeList;
     }
@@ -84,5 +84,14 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
         }
 
         return null;
+    }
+
+    private ChannelType getChannelTypeOrThrow(String id, @Nullable Locale locale) {
+        ChannelType channelType = getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, id), locale);
+        if (channelType == null) {
+            throw new NotFoundException("Could not find Arcam channelType " + id);
+        }
+
+        return channelType;
     }
 }

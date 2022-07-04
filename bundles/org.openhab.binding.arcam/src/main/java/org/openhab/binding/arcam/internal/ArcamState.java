@@ -98,7 +98,7 @@ public class ArcamState {
     }
 
     // Generic
-    public void setDacFilter(String dacFilter) {
+    public void setDacFilter(@Nullable String dacFilter) {
         StringType newVal = new StringType(dacFilter);
         if (!newVal.equals(this.dacFilter)) {
             this.dacFilter = newVal;
@@ -114,7 +114,7 @@ public class ArcamState {
         }
     }
 
-    public void setDisplayBrightness(String brightness) {
+    public void setDisplayBrightness(@Nullable String brightness) {
         StringType newVal = new StringType(brightness);
         if (!newVal.equals(this.displayBrightness)) {
             this.displayBrightness = newVal;
@@ -187,7 +187,7 @@ public class ArcamState {
         }
     }
 
-    public void setMasterInput(String input) {
+    public void setMasterInput(@Nullable String input) {
         StringType newVal = new StringType(input);
         if (!newVal.equals(this.masterInput)) {
             this.masterInput = newVal;
@@ -267,7 +267,7 @@ public class ArcamState {
         }
     }
 
-    public void setMasterRoomEqualisation(String eq) {
+    public void setMasterRoomEqualisation(@Nullable String eq) {
         StringType newVal = new StringType(eq);
         if (!newVal.equals(this.masterRoomEqualisation)) {
             this.masterRoomEqualisation = newVal;
@@ -292,7 +292,7 @@ public class ArcamState {
     }
 
     // Zone2
-    public void setZone2Input(String input) {
+    public void setZone2Input(@Nullable String input) {
         StringType newVal = new StringType(input);
         if (!newVal.equals(this.zone2Input)) {
             this.zone2Input = newVal;

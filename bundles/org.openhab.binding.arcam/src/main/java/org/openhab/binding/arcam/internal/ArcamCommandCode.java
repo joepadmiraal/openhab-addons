@@ -14,11 +14,15 @@ package org.openhab.binding.arcam.internal;
 
 import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * The {@link ArcamCommandCode} enum provides a way specify the supported commands and link them to a channel
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public enum ArcamCommandCode {
     // Non channel commands
     SYSTEM_STATUS(""),
@@ -64,6 +68,7 @@ public enum ArcamCommandCode {
         this.channel = channel;
     }
 
+    @Nullable
     public static ArcamCommandCode getFromChannel(String channel) {
         for (ArcamCommandCode c : ArcamCommandCode.values()) {
             if (c.channel.equalsIgnoreCase(channel)) {

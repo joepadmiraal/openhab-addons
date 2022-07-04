@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamCommand;
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamCommandData;
@@ -33,9 +35,10 @@ import org.openhab.binding.arcam.internal.ArcamZone;
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamSA30 implements ArcamDevice {
 
-    public static List<ArcamCommandData> dacFilterCommands = new ArrayList<>(List.of( //
+    public static final List<ArcamCommandData> DAC_FILTER_COMMANDS = new ArrayList<>(List.of( //
             new ArcamCommandData("Linear Phase Fast Roll Off", (byte) 0x00), //
             new ArcamCommandData("Linear Phase Slow Roll Off", (byte) 0x01), //
             new ArcamCommandData("Minimum Phase Fast Roll Off", (byte) 0x02), //
@@ -45,7 +48,7 @@ public class ArcamSA30 implements ArcamDevice {
             new ArcamCommandData("Apodizing", (byte) 0x06) //
     ));
 
-    public static List<ArcamCommandData> inputCommands = new ArrayList<>(List.of( //
+    public static final List<ArcamCommandData> INPUT_COMMANDS = new ArrayList<>(List.of( //
             new ArcamCommandData("PHONO", (byte) 0x01), //
             new ArcamCommandData("AUX", (byte) 0x02), //
             new ArcamCommandData("PVR", (byte) 0x03), //
@@ -59,7 +62,7 @@ public class ArcamSA30 implements ArcamDevice {
             new ArcamCommandData("ARC", (byte) 0x0D) //
     ));
 
-    public static List<ArcamCommandData> displaybrightnessCommands = new ArrayList<>(List.of( //
+    public static final List<ArcamCommandData> DISPLAY_BRIGHTNESS_COMMANDS = new ArrayList<>(List.of( //
             new ArcamCommandData("OFF", (byte) 0x00), //
             new ArcamCommandData("DIM", (byte) 0x01), //
             new ArcamCommandData("FULL", (byte) 0x02) //
@@ -70,7 +73,7 @@ public class ArcamSA30 implements ArcamDevice {
      * Used to request one of the states of an Arcam device.
      * Used to generate the commands to send to the Arcam device.
      */
-    public static List<ArcamCommand> commands = new ArrayList<>(List.of( //
+    public static final List<ArcamCommand> COMMANDS = new ArrayList<>(List.of( //
             // Non channel related
             new ArcamCommand(SYSTEM_STATUS, new byte[] { 0x21, 0x01, 0x5D, 0x01, (byte) 0xF0, 0x0D }), //
             // Generic
@@ -101,7 +104,7 @@ public class ArcamSA30 implements ArcamDevice {
 
     ));
 
-    public final static Map<Byte, String> sampleRates = Map.ofEntries( //
+    public static final Map<Byte, String> SAMPLE_RATES = Map.ofEntries( //
             Map.entry((byte) 0x00, "32 kHz"), //
             Map.entry((byte) 0x01, "44.1 kHz"), //
             Map.entry((byte) 0x02, "48 kHz"), //
@@ -113,7 +116,7 @@ public class ArcamSA30 implements ArcamDevice {
             Map.entry((byte) 0x08, "Undetected") //
     );//
 
-    public static Map<Byte, String> audioEncoders = Map.ofEntries( //
+    public static final Map<Byte, String> AUDIO_ENCODERS = Map.ofEntries( //
             Map.entry((byte) 0x00, "Uknown"), //
             Map.entry((byte) 0x01, "MP3"), //
             Map.entry((byte) 0x02, "WMA"), //
@@ -132,7 +135,7 @@ public class ArcamSA30 implements ArcamDevice {
             Map.entry((byte) 0x0F, "MQA") //
     );//
 
-    public static String SA30 = "SA30";
+    public static final String SA30 = "SA30";
 
     private ArcamCommandDataFinder commandDataFinder;
     private ArcamCommandFinder commandFinder;
@@ -151,7 +154,7 @@ public class ArcamSA30 implements ArcamDevice {
         // 0x01 – 0x0C – Set the balance to the right 1, 2, ..., 11, 12
         // 0x81 – 0x8C – Set the balance to the left 1, 2,..., 11, 12
 
-        byte[] data = commandFinder.getCommandFromCode(MASTER_BALANCE, commands);
+        byte[] data = commandFinder.getCommandFromCode(MASTER_BALANCE, COMMANDS);
         byte balanceByte = (byte) balance;
 
         if (balance < 0) {
@@ -164,32 +167,32 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public byte[] getDacFilterCommand(String dacFilter) {
-        byte[] data = commandFinder.getCommandFromCode(DAC_FILTER, commands);
-        data[4] = commandDataFinder.getByteFromCommandDataCode(dacFilter, dacFilterCommands);
+        byte[] data = commandFinder.getCommandFromCode(DAC_FILTER, COMMANDS);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(dacFilter, DAC_FILTER_COMMANDS);
 
         return data;
     }
 
     @Override
     public byte[] getDisplayBrightnessCommand(String displayBrightness) {
-        byte[] data = commandFinder.getCommandFromCode(DISPLAY_BRIGHTNESS, commands);
-        data[4] = commandDataFinder.getByteFromCommandDataCode(displayBrightness, displaybrightnessCommands);
+        byte[] data = commandFinder.getCommandFromCode(DISPLAY_BRIGHTNESS, COMMANDS);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(displayBrightness, DISPLAY_BRIGHTNESS_COMMANDS);
 
         return data;
     }
 
     @Override
     public byte[] getInputCommand(String inputName, ArcamZone zone) {
-        byte[] data = commandFinder.getCommandFromCode(MASTER_INPUT, commands);
-        data[4] = commandDataFinder.getByteFromCommandDataCode(inputName, inputCommands);
+        byte[] data = commandFinder.getCommandFromCode(MASTER_INPUT, COMMANDS);
+        data[4] = commandDataFinder.getByteFromCommandDataCode(inputName, INPUT_COMMANDS);
 
         return data;
     }
 
     @Override
     public byte[] getMuteCommand(boolean mute, ArcamZone zone) {
-        byte[] data = commandFinder.getCommandFromCode(MASTER_MUTE, commands);
-        if (mute == true) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_MUTE, COMMANDS);
+        if (mute) {
             data[4] = (byte) 0x00;
             return data;
         }
@@ -200,8 +203,8 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public byte[] getPowerCommand(boolean on, ArcamZone zone) {
-        byte[] data = commandFinder.getCommandFromCode(MASTER_POWER, commands);
-        if (on == true) {
+        byte[] data = commandFinder.getCommandFromCode(MASTER_POWER, COMMANDS);
+        if (on) {
             data[4] = (byte) 0x01;
             return data;
         }
@@ -218,14 +221,14 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public byte[] getRoomEqualisationCommand(String eq, ArcamZone zone) {
-        byte[] data = commandFinder.getCommandFromCode(MASTER_ROOM_EQUALISATION, commands);
+        byte[] data = commandFinder.getCommandFromCode(MASTER_ROOM_EQUALISATION, COMMANDS);
         data[4] = commandDataFinder.getByteFromCommandDataCode(eq, ArcamDeviceConstants.ROOM_EQ);
         return data;
     }
 
     @Override
     public byte[] getVolumeCommand(int volume, ArcamZone zone) {
-        byte[] data = commandFinder.getCommandFromCode(MASTER_VOLUME, commands);
+        byte[] data = commandFinder.getCommandFromCode(MASTER_VOLUME, COMMANDS);
         data[4] = (byte) volume;
 
         return data;
@@ -233,7 +236,7 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
-        return commandFinder.getCommandFromCode(commandCode, commands);
+        return commandFinder.getCommandFromCode(commandCode, COMMANDS);
     }
 
     // Interpret incoming bytes
@@ -253,25 +256,24 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public boolean getBoolean(byte dataByte) {
-        if (dataByte == 0x01) {
-            return true;
-        }
-        return false;
+        return dataByte == 0x01;
     }
 
     @Override
+    @Nullable
     public String getDacFilter(Byte dataByte) {
-        return commandDataFinder.getCommandCodeFromByte(dataByte, dacFilterCommands);
+        return commandDataFinder.getCommandCodeFromByte(dataByte, DAC_FILTER_COMMANDS);
     }
 
     @Override
+    @Nullable
     public String getDisplayBrightness(byte dataByte) {
-        return commandDataFinder.getCommandCodeFromByte(dataByte, displaybrightnessCommands);
+        return commandDataFinder.getCommandCodeFromByte(dataByte, DISPLAY_BRIGHTNESS_COMMANDS);
     }
 
     @Override
     public String getIncomingSampleRate(byte dataByte) {
-        String sampleRate = sampleRates.get(dataByte);
+        String sampleRate = SAMPLE_RATES.get(dataByte);
         if (sampleRate == null) {
             return "Unknown";
         }
@@ -280,26 +282,24 @@ public class ArcamSA30 implements ArcamDevice {
     }
 
     @Override
+    @Nullable
     public String getInputName(byte dataByte) {
         byte convertedByte = dataByte;
         if (dataByte > 0x0D) {
             convertedByte = (byte) (dataByte - 0x10);
         }
 
-        return commandDataFinder.getCommandCodeFromByte(convertedByte, inputCommands);
+        return commandDataFinder.getCommandCodeFromByte(convertedByte, INPUT_COMMANDS);
     }
 
     @Override
     public boolean getMute(byte dataByte) {
-        if (dataByte == 0x01) {
-            return false;
-        }
-        return true;
+        return dataByte == 0x01;
     }
 
     @Override
+    @Nullable
     public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes) {
-
         byte[] bytes = ArcamUtil.byteListToArray(dataBytes);
 
         if (nowPlaying.rowNr == 0) {
@@ -339,7 +339,7 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public String getNowPlayingSampleRate(byte dataByte) {
-        String sampleRate = sampleRates.get(dataByte);
+        String sampleRate = SAMPLE_RATES.get(dataByte);
         if (sampleRate == null) {
             return "";
         } else {
@@ -349,7 +349,7 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public String getNowPlayingEncoder(byte dataByte) {
-        String audioEncoder = audioEncoders.get(dataByte);
+        String audioEncoder = AUDIO_ENCODERS.get(dataByte);
         if (audioEncoder == null) {
             return "";
         } else {
@@ -358,6 +358,7 @@ public class ArcamSA30 implements ArcamDevice {
     }
 
     @Override
+    @Nullable
     public String getRoomEqualisation(byte dataByte) {
         return commandDataFinder.getCommandCodeFromByte(dataByte, ArcamDeviceConstants.ROOM_EQ);
     }

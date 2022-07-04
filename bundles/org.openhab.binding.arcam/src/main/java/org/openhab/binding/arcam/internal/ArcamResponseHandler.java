@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  */
 @NonNullByDefault
 public class ArcamResponseHandler {
-    private final Logger logger = LoggerFactory.getLogger(ArcamConnectionReader.class);
+    private final Logger logger = LoggerFactory.getLogger(ArcamResponseHandler.class);
     private int byteNr;
     private boolean readyForNewResponse = true;
     private ArcamResponse response;

@@ -37,7 +37,6 @@ public class ArcamHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
-
         boolean result = ArcamBindingConstants.SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
         logger.debug("supportsThingType thingTypeUID: {}, result: {}", thingTypeUID.getAsString(), result);
 

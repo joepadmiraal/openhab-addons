@@ -12,11 +12,14 @@
  */
 package org.openhab.binding.arcam.internal;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
 /**
  * The {@link ArcamResponse} enum represents the zones that are available on the Arcam devices.
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public enum ArcamZone {
     MASTER,
     ZONE2

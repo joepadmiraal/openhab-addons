@@ -1,10 +1,31 @@
+/**
+ * Copyright (c) 2010-2022 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.arcam.internal.devices;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
 import org.openhab.binding.arcam.internal.ArcamZone;
+import org.openhab.binding.arcam.internal.exceptions.NotFoundException;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
 
+/**
+ * This class provides utility methods for the device classes
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
+@NonNullByDefault
 public class ArcamDeviceUtil {
     public static ArcamDevice getDeviceFromThingUID(ThingUID thingUID) {
         String id = thingUID.getAsString();
@@ -18,9 +39,10 @@ public class ArcamDeviceUtil {
         if (id.contains(ArcamAVR30.AVR30)) {
             return new ArcamAVR30();
         }
-        throw new RuntimeException("Could not find an Arcam device from the thingUID: " + id);
+        throw new NotFoundException("Could not find an Arcam device from the thingUID: " + id);
     }
 
+    @Nullable
     public static ThingTypeUID getThingTypeUIDFromModelName(String modelName) {
         if (modelName.contains("SA20")) {
             return ArcamBindingConstants.SA20_THING_TYPE_UID;

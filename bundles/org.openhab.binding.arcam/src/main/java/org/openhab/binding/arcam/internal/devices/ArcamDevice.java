@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2022 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.arcam.internal.devices;
 
 import java.util.List;
@@ -8,10 +20,15 @@ import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamZone;
 
+/**
+ * This interface allows splitting the device specific logic into separate classes.
+ *
+ * @author Joep Admiraal - Initial contribution
+ */
 @NonNullByDefault
 public interface ArcamDevice {
     // Methods used to get a value from the device
-    public byte @Nullable [] getStateCommandByte(ArcamCommandCode commandCode);
+    public byte[] getStateCommandByte(ArcamCommandCode commandCode);
 
     // Methods used to send a value to the device
     public byte[] getBalanceCommand(int balance, ArcamZone zone);
@@ -37,12 +54,15 @@ public interface ArcamDevice {
 
     public boolean getBoolean(byte dataByte);
 
+    @Nullable
     public String getDacFilter(Byte dataByte);
 
+    @Nullable
     public String getDisplayBrightness(byte dataByte);
 
     public String getIncomingSampleRate(byte dataByte);
 
+    @Nullable
     public String getInputName(byte dataByte);
 
     // PA720 needs a byte array
@@ -54,6 +74,7 @@ public interface ArcamDevice {
 
     public String getNowPlayingEncoder(byte dataByte);
 
+    @Nullable
     public String getRoomEqualisation(byte dataByte);
 
     public String getSoftwareVersion(List<Byte> dataBytes);

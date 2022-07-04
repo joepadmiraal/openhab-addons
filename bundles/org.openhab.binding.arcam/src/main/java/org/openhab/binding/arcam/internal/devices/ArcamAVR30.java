@@ -15,6 +15,8 @@ package org.openhab.binding.arcam.internal.devices;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamCommandData;
 import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
@@ -26,6 +28,7 @@ import org.openhab.binding.arcam.internal.ArcamZone;
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamAVR30 implements ArcamDevice {
 
     public static List<ArcamCommandData> inputCommands = new ArrayList<>(List.of( //
@@ -60,12 +63,14 @@ public class ArcamAVR30 implements ArcamDevice {
     }
 
     @Override
+    @Nullable
     public String getInputName(byte dataByte) {
 
         return commandDataFinder.getCommandCodeFromByte(dataByte, inputCommands);
     }
 
     @Override
+    @Nullable
     public String getDisplayBrightness(byte dataByte) {
 
         return commandDataFinder.getCommandCodeFromByte(dataByte, displaybrightnessCommands);
@@ -108,6 +113,7 @@ public class ArcamAVR30 implements ArcamDevice {
     }
 
     @Override
+    @Nullable
     public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes) {
         // TODO Auto-generated method stub
         return null;
@@ -162,6 +168,7 @@ public class ArcamAVR30 implements ArcamDevice {
     }
 
     @Override
+    @Nullable
     public String getRoomEqualisation(byte dataByte) {
         // TODO Auto-generated method stub
         return "";
@@ -198,6 +205,7 @@ public class ArcamAVR30 implements ArcamDevice {
     }
 
     @Override
+    @Nullable
     public String getDacFilter(Byte dataByte) {
         // TODO Auto-generated method stub
         return "";

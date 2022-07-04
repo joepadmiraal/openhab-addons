@@ -71,6 +71,10 @@ _Provide a full usage example based on textual configuration files._
 _*.things, *.items examples are mandatory as textual configuration is well used by many users._
 _*.sitemap examples are optional._
 
-## Any custom content here!
+## Development 
 
-_Feel free to add additional sections for whatever you think should also be mentioned about your binding!_
+When adding a new Arcam device you need to do the following.
+
+- Add the device to ArcamDeviceUtil.java and ArcamBindingConstants.java
+- Create an Arcam<model>.java and Arcam<model>ChannelTypeProvider.java vile
+- Create an <model>.xml file in the resources directory

@@ -18,15 +18,15 @@ import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
 import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
+import org.openhab.binding.arcam.internal.exceptions.NotFoundException;
 import org.openhab.core.thing.type.ChannelType;
 import org.openhab.core.thing.type.ChannelTypeProvider;
 import org.openhab.core.thing.type.ChannelTypeUID;
 import org.osgi.service.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class provides the device specific channel types.
@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
  * @author Joep Admiraal - Initial contribution
  */
 @Component(service = ChannelTypeProvider.class)
+@NonNullByDefault
 public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
-    private final Logger logger = LoggerFactory.getLogger(ArcamSA30ChannelTypeProvider.class);
 
     public static final String SA30_DAC_FILTER = "sa30DacFilter";
     public static final String SA30_DISPLAY_BRIGHTNESS = "sa30DisplayBrightness";
@@ -44,13 +44,10 @@ public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
     @Override
     public Collection<@NonNull ChannelType> getChannelTypes(@Nullable Locale locale) {
         List<ChannelType> channelTypeList = new LinkedList<>();
-        logger.info("getChannleType list from arcam");
 
-        channelTypeList
-                .add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, SA30_DAC_FILTER), locale));
-        channelTypeList.add(
-                getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, SA30_DISPLAY_BRIGHTNESS), locale));
-        channelTypeList.add(getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, SA30_INPUT), locale));
+        channelTypeList.add(getChannelTypeOrThrow(SA30_DAC_FILTER, locale));
+        channelTypeList.add(getChannelTypeOrThrow(SA30_DISPLAY_BRIGHTNESS, locale));
+        channelTypeList.add(getChannelTypeOrThrow(SA30_INPUT, locale));
 
         return channelTypeList;
     }
@@ -68,7 +65,7 @@ public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
                     channelTypeUID, //
                     "DAC filter", //
                     "Select DAC filter", //
-                    ArcamSA30.dacFilterCommands); //
+                    ArcamSA30.DAC_FILTER_COMMANDS); //
         }
 
         if (channelID.equals(SA30_INPUT)) {
@@ -76,7 +73,7 @@ public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
                     channelTypeUID, //
                     "Input", //
                     "Select the input source", //
-                    ArcamSA30.inputCommands); //
+                    ArcamSA30.INPUT_COMMANDS); //
         }
 
         if (channelID.equals(SA30_DISPLAY_BRIGHTNESS)) {
@@ -84,9 +81,18 @@ public class ArcamSA30ChannelTypeProvider implements ChannelTypeProvider {
                     channelTypeUID, //
                     "Display brightness", //
                     "Select display brightness", //
-                    ArcamSA30.displaybrightnessCommands); //
+                    ArcamSA30.DISPLAY_BRIGHTNESS_COMMANDS); //
         }
 
         return null;
+    }
+
+    private ChannelType getChannelTypeOrThrow(String id, @Nullable Locale locale) {
+        ChannelType channelType = getChannelType(new ChannelTypeUID(ArcamBindingConstants.BINDING_ID, id), locale);
+        if (channelType == null) {
+            throw new NotFoundException("Could not find Arcam channelType " + id);
+        }
+
+        return channelType;
     }
 }

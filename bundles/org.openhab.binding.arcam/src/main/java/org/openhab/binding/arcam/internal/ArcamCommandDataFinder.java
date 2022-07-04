@@ -15,6 +15,7 @@ package org.openhab.binding.arcam.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.core.thing.type.ChannelType;
 import org.openhab.core.thing.type.ChannelTypeBuilder;
@@ -31,9 +32,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamCommandDataFinder {
     private final Logger logger = LoggerFactory.getLogger(ArcamCommandDataFinder.class);
 
+    @Nullable
     public ArcamCommandData getCommandDataFromCode(String code, List<ArcamCommandData> list) {
         for (ArcamCommandData commandData : list) {
             if (commandData.code.equals(code)) {
@@ -45,6 +48,7 @@ public class ArcamCommandDataFinder {
         return null;
     }
 
+    @Nullable
     public ArcamCommandData getCommandDataFromByte(byte dataByte, List<ArcamCommandData> list) {
         for (ArcamCommandData commandData : list) {
             if (commandData.dataByte == dataByte) {
@@ -56,6 +60,7 @@ public class ArcamCommandDataFinder {
         return null;
     }
 
+    @Nullable
     public String getCommandCodeFromByte(byte dataByte, List<ArcamCommandData> list) {
         ArcamCommandData commandData = getCommandDataFromByte(dataByte, list);
         if (commandData == null) {
@@ -72,7 +77,7 @@ public class ArcamCommandDataFinder {
         return commandData.dataByte;
     }
 
-    public static @Nullable ChannelType generateStringOptionChannelType(ChannelTypeUID channelTypeUID, String label,
+    public static ChannelType generateStringOptionChannelType(ChannelTypeUID channelTypeUID, String label,
             String description, List<ArcamCommandData> list) {
         List<StateOption> options = new ArrayList<>();
 

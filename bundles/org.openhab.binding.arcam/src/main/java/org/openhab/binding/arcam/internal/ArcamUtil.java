@@ -35,7 +35,6 @@ public class ArcamUtil {
     }
 
     public static String bytesToHex(List<Byte> bytes) {
-
         byte[] byteArray = byteListToArray(bytes);
         for (int i = 0; i < bytes.size(); i++) {
             byteArray[i] = bytes.get(i);

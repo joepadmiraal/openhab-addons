@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 @NonNullByDefault
 public class ArcamConnection implements ArcamConnectionReaderListener {
     private final Logger logger = LoggerFactory.getLogger(ArcamConnection.class);
-    private static int PORT = 50000;
+    private static final int PORT = 50000;
 
     private ArcamState state;
     ArcamDevice device;
@@ -50,23 +50,26 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
     private ArcamCommandCode nowPlayingInTransit;
 
     private ArcamConnectionListener connectionListener;
+    private String thingUID;
 
     public ArcamConnection(ArcamState state, ScheduledExecutorService scheduler,
-            ArcamConnectionListener connectionListener, ArcamDevice device) {
+            ArcamConnectionListener connectionListener, ArcamDevice device, String thingUID) {
         this.state = state;
         this.scheduler = scheduler;
         this.connectionListener = connectionListener;
         this.device = device;
+        this.thingUID = thingUID;
     }
 
     public void connect(String hostname) throws UnknownHostException, IOException {
-
         logger.info("connecting to: {} {}", hostname, PORT);
 
         Socket s = new Socket(hostname, PORT);
         socket = s;
         outputStream = s.getOutputStream();
         ArcamConnectionReader acr = new ArcamConnectionReader(s, this);
+        acr.setName("OH-binding-" + thingUID);
+        acr.setDaemon(true);
         acr.start();
         this.acr = acr;
 
@@ -106,9 +109,6 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
 
     public void requestState(ArcamCommandCode commandCode) {
         byte[] data = device.getStateCommandByte(commandCode);
-        if (data == null) {
-            return;
-        }
 
         if (data[2] == 0x64) {
             nowPlayingInTransit = commandCode;
@@ -228,7 +228,6 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         }
         // Input source
         if (response.cc == 0x1D) {
-
             String input = device.getInputName(response.data.get(0));
             ArcamZone zone = byteToZone(response.zn);
 
@@ -320,7 +319,6 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         }
         // Room Equalisation
         if (response.cc == 0x37) {
-
             String eq = device.getRoomEqualisation(response.data.get(0));
             ArcamZone zone = byteToZone(response.zn);
 

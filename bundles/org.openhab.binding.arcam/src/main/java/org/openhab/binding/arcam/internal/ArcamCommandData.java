@@ -12,16 +12,19 @@
  */
 package org.openhab.binding.arcam.internal;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
 /**
  * The {@link ArcamCommandData} POJO is used to specify options for commands with the corresponding byte.
  * Used for both interpreting the response from the device as well as generating the command to send to the device.
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamCommandData {
-    public String code;
-    public String name;
-    public byte dataByte;
+    public final String code;
+    public final String name;
+    public final byte dataByte;
 
     public ArcamCommandData(String code, String name, byte dataByte) {
         this.code = code;

@@ -12,9 +12,13 @@
  */
 package org.openhab.binding.arcam.internal.devices;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamCommandCode;
+import org.openhab.binding.arcam.internal.ArcamCommandData;
 import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamZone;
 
@@ -23,7 +27,15 @@ import org.openhab.binding.arcam.internal.ArcamZone;
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public class ArcamSA20 implements ArcamDevice {
+
+    // TODO not done yet
+    public static List<ArcamCommandData> inputCommands = new ArrayList<>(List.of( //
+            new ArcamCommandData("PHONO", (byte) 0x01), //
+            new ArcamCommandData("AUX", (byte) 0x02) //
+    ));
+
     public enum SA20Input {
         PHONO("PHONO", (byte) 0x01),
         AUX("AUX", (byte) 0x02),
@@ -44,18 +56,6 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     public static String SA20 = "SA20";
-
-    @Override
-    public String getInputName(byte dataByte) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String getDisplayBrightness(byte dataByte) {
-        // TODO Auto-generated method stub
-        return "";
-    }
 
     @Override
     public byte[] getPowerCommand(boolean on, ArcamZone zone) {
@@ -79,18 +79,6 @@ public class ArcamSA20 implements ArcamDevice {
     public byte[] getDisplayBrightnessCommand(String displayBrightness) {
         // TODO Auto-generated method stub
         return new byte[] { 0x00 };
-    }
-
-    @Override
-    public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
-        // TODO Auto-generated method stub
-        return new byte[] { 0x00 };
-    }
-
-    @Override
-    public ArcamNowPlaying setNowPlaying(List<Byte> dataBytes) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -142,12 +130,6 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
-    public String getRoomEqualisation(byte dataByte) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
     public String getSoftwareVersion(List<Byte> dataBytes) {
         // TODO Auto-generated method stub
         return "";
@@ -178,14 +160,44 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
-    public String getDacFilter(Byte dataByte) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
     public byte[] getDacFilterCommand(String dacFilter) {
         // TODO Auto-generated method stub
         return new byte[] { 0x00 };
+    }
+
+    @Override
+    public @Nullable String getDisplayBrightness(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public @Nullable String getInputName(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public byte[] getStateCommandByte(ArcamCommandCode commandCode) {
+        // TODO Auto-generated method stub
+        return new byte[] {};
+    }
+
+    @Override
+    public @Nullable String getDacFilter(Byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public @Nullable String getRoomEqualisation(byte dataByte) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public @Nullable ArcamNowPlaying setNowPlaying(List<Byte> dataBytes) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

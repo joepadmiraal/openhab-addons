@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.jupnp.model.meta.RemoteDevice;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
@@ -36,6 +38,7 @@ import org.slf4j.LoggerFactory;
  * @author Joep Admiraal - Initial contribution
  */
 @Component
+@NonNullByDefault
 public class ArcamDiscoveryParticipant implements UpnpDiscoveryParticipant {
 
     private final Logger logger = LoggerFactory.getLogger(ArcamDiscoveryParticipant.class);
@@ -46,6 +49,7 @@ public class ArcamDiscoveryParticipant implements UpnpDiscoveryParticipant {
     }
 
     @Override
+    @Nullable
     public DiscoveryResult createResult(RemoteDevice device) {
         ThingUID uid = getThingUID(device);
         if (uid == null) {
@@ -73,6 +77,7 @@ public class ArcamDiscoveryParticipant implements UpnpDiscoveryParticipant {
     }
 
     @Override
+    @Nullable
     public ThingUID getThingUID(RemoteDevice device) {
         String manufacturer = device.getDetails().getManufacturerDetails().getManufacturer();
         if (manufacturer == null || !manufacturer.toUpperCase().equals("HARMAN LUXURY AUDIO")) {

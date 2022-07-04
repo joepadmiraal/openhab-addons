@@ -26,6 +26,7 @@ import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
+import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.BaseThingHandler;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.RefreshType;
@@ -54,8 +55,9 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         logger.debug("Creating a ArcamHandler for thing '{}'", getThing().getUID());
 
         state = new ArcamState(this);
-        device = ArcamDeviceUtil.getDeviceFromThingUID(getThing().getUID());
-        connection = new ArcamConnection(state, scheduler, this, device);
+        ThingUID thingUID = getThing().getUID();
+        device = ArcamDeviceUtil.getDeviceFromThingUID(thingUID);
+        connection = new ArcamConnection(state, scheduler, this, device, thingUID.toString());
     }
 
     @Override

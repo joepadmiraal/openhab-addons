@@ -48,7 +48,7 @@ public class ArcamConnectionReader extends Thread {
         }
         mutex.unlock();
 
-        if (result == true) {
+        if (result) {
             logger.info("Arcam Connection detected should stop");
         }
         return result;
@@ -71,8 +71,8 @@ public class ArcamConnectionReader extends Thread {
                     }
                 }
             }
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        } catch (IOException e) {
+            logger.warn("Something went wrong in the connectionReader. Message: {}", e.getMessage());
         }
     }
 
