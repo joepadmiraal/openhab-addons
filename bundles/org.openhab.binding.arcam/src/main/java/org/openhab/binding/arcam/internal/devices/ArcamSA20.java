@@ -70,6 +70,12 @@ public class ArcamSA20 implements ArcamDevice {
     }
 
     @Override
+    public byte[] getHeartbeatCommand() {
+        // TODO Auto-generated method stub
+        return new byte[] { 0x00 };
+    }
+
+    @Override
     public byte[] getVolumeCommand(int volume, ArcamZone zone) {
         // TODO Auto-generated method stub
         return new byte[] { 0x00 };
@@ -200,4 +206,5 @@ public class ArcamSA20 implements ArcamDevice {
         // TODO Auto-generated method stub
         return null;
     }
+
 }

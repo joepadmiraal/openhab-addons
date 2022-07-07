@@ -53,7 +53,6 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         super(thing);
 
         logger.debug("Creating a ArcamHandler for thing '{}'", getThing().getUID());
-
         state = new ArcamState(this);
         ThingUID thingUID = getThing().getUID();
         device = ArcamDeviceUtil.getDeviceFromThingUID(thingUID);
@@ -206,23 +205,8 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
                 return;
             }
 
-            updateStatus(ThingStatus.ONLINE);
             logger.info("handler initialized. ip: {}", config.hostname);
         });
-
-        // These logging types should be primarily used by bindings
-        // logger.trace("Example trace message");
-        // logger.debug("Example debug message");
-        // logger.warn("Example warn message");
-        //
-        // Logging to INFO should be avoided normally.
-        // See https://www.openhab.org/docs/developer/guidelines.html#f-logging
-
-        // Note: When initialization can NOT be done set the status with more details for further
-        // analysis. See also class ThingStatusDetail for all available status details.
-        // Add a description to give user information to understand why thing does not work as expected. E.g.
-        // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-        // "Can not access device as username and/or password are invalid");
     }
 
     @Override
@@ -250,5 +234,10 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         }
         String id = parts[parts.length - 1];
         return id.equals(channelUID.getIdWithoutGroup());
+    }
+
+    @Override
+    public void onConnection() {
+        updateStatus(ThingStatus.ONLINE);
     }
 }

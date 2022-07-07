@@ -37,6 +37,8 @@ public interface ArcamDevice {
 
     public byte[] getDisplayBrightnessCommand(String displayBrightness);
 
+    public byte[] getHeartbeatCommand();
+
     public byte[] getInputCommand(String inputName, ArcamZone zone);
 
     public byte[] getMuteCommand(boolean mute, ArcamZone zone);

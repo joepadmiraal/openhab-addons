@@ -75,6 +75,7 @@ public class ArcamSA30 implements ArcamDevice {
      */
     public static final List<ArcamCommand> COMMANDS = new ArrayList<>(List.of( //
             // Non channel related
+            new ArcamCommand(HEARTBEAT, new byte[] { 0x21, 0x01, 0x25, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(SYSTEM_STATUS, new byte[] { 0x21, 0x01, 0x5D, 0x01, (byte) 0xF0, 0x0D }), //
             // Generic
             new ArcamCommand(DAC_FILTER, new byte[] { 0x21, 0x01, 0x61, 0x01, (byte) 0xF0, 0x0D }), //
@@ -179,6 +180,11 @@ public class ArcamSA30 implements ArcamDevice {
         data[4] = commandDataFinder.getByteFromCommandDataCode(displayBrightness, DISPLAY_BRIGHTNESS_COMMANDS);
 
         return data;
+    }
+
+    @Override
+    public byte[] getHeartbeatCommand() {
+        return commandFinder.getCommandFromCode(HEARTBEAT, COMMANDS);
     }
 
     @Override
@@ -380,4 +386,5 @@ public class ArcamSA30 implements ArcamDevice {
         // The range of the value returned is from 0x0000 - 0x00F0 (0 - 240minutes)
         return dataBytes.get(1);
     }
+
 }

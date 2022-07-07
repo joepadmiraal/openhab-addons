@@ -13,9 +13,7 @@
 package org.openhab.binding.arcam.internal;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -32,74 +30,39 @@ import org.slf4j.LoggerFactory;
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public class ArcamConnection implements ArcamConnectionReaderListener {
+public class ArcamConnection implements ArcamSocketListener {
     private final Logger logger = LoggerFactory.getLogger(ArcamConnection.class);
-    private static final int PORT = 50000;
 
     private ArcamState state;
-    ArcamDevice device;
+    private ArcamDevice device;
+    private ArcamSocket socket;
+    private ArcamConnectionListener connectionListener;
 
-    protected ScheduledExecutorService scheduler;
-    @Nullable
-    private ArcamConnectionReader acr;
-    @Nullable
-    private Socket socket;
-    @Nullable
-    private OutputStream outputStream;
     @Nullable
     private ArcamCommandCode nowPlayingInTransit;
-
-    private ArcamConnectionListener connectionListener;
-    private String thingUID;
 
     public ArcamConnection(ArcamState state, ScheduledExecutorService scheduler,
             ArcamConnectionListener connectionListener, ArcamDevice device, String thingUID) {
         this.state = state;
-        this.scheduler = scheduler;
-        this.connectionListener = connectionListener;
         this.device = device;
-        this.thingUID = thingUID;
+        byte[] heartbeatCommand = device.getHeartbeatCommand();
+        this.socket = new ArcamSocket(thingUID, scheduler, heartbeatCommand, this);
+        this.connectionListener = connectionListener;
     }
 
     public void connect(String hostname) throws UnknownHostException, IOException {
-        logger.info("connecting to: {} {}", hostname, PORT);
-
-        Socket s = new Socket(hostname, PORT);
-        socket = s;
-        outputStream = s.getOutputStream();
-        ArcamConnectionReader acr = new ArcamConnectionReader(s, this);
-        acr.setName("OH-binding-" + thingUID);
-        acr.setDaemon(true);
-        acr.start();
-        this.acr = acr;
-
-        requestAllValues();
+        socket.connect(hostname);
     }
 
     public void dispose() {
-        try {
-            OutputStream os = outputStream;
-            if (os != null) {
-                os.close();
-            }
-            ArcamConnectionReader acr = this.acr;
-            if (acr != null) {
-                acr.dispose();
-            }
-            Socket s = socket;
-            if (s != null) {
-                s.close();
-            }
-        } catch (IOException e) {
-            logger.debug("{}", e.getMessage());
-        }
+        socket.dispose();
     }
 
     public void reboot() {
         byte[] data = device.getRebootCommand();
 
         logger.info("Sending reboot array: {}", ArcamUtil.bytesToHex(data));
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void requestAllValues() {
@@ -114,56 +77,56 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
             nowPlayingInTransit = commandCode;
         }
 
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setBalance(int balance, ArcamZone zone) {
         byte[] data = device.getBalanceCommand(balance, zone);
 
         logger.info("Sending balance byte: {}, array: {}, zone: {}", balance, ArcamUtil.bytesToHex(data), zone);
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setDacFilter(String dacFilter) {
         byte[] data = device.getDacFilterCommand(dacFilter);
 
         logger.info("Sending dacFilter byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setDisplayBrightness(String displayBrightness) {
         byte[] data = device.getDisplayBrightnessCommand(displayBrightness);
 
         logger.info("Sending display brightness byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setInput(String inputStr, ArcamZone zone) {
         byte[] data = device.getInputCommand(inputStr, zone);
 
         logger.info("Sending input byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setPower(boolean on, ArcamZone zone) {
         byte[] data = device.getPowerCommand(on, zone);
 
         logger.info("Sending power byte: {}, array: {}, zone: {}", on, ArcamUtil.bytesToHex(data), zone);
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setRoomEqualisation(String eqStr, ArcamZone zone) {
         byte[] data = device.getRoomEqualisationCommand(eqStr, zone);
 
         logger.info("Sending eq byte: {}, array: {}", data[4], ArcamUtil.bytesToHex(data));
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     public void setVolume(int volume, ArcamZone zone) {
         byte[] data = device.getVolumeCommand(volume, zone);
 
         logger.info("Sending volume byte: {}, array: {}, zone: {}", volume, ArcamUtil.bytesToHex(data), zone);
-        sendCommand(data);
+        socket.sendCommand(data);
     }
 
     @Override
@@ -358,17 +321,15 @@ public class ArcamConnection implements ArcamConnectionReaderListener {
         return ArcamZone.ZONE2;
     }
 
-    private void sendCommand(byte[] data) {
-        OutputStream os = outputStream;
-        if (os == null) {
-            return;
-        }
-
-        try {
-            logger.info("outputStream write: {}", ArcamUtil.bytesToHex(data));
-            os.write(data);
-        } catch (IOException e) {
-            connectionListener.onError();
-        }
+    @Override
+    public void onConnection() {
+        connectionListener.onConnection();
+        requestAllValues();
     }
+
+    @Override
+    public void onError() {
+        connectionListener.onError();
+    }
+
 }

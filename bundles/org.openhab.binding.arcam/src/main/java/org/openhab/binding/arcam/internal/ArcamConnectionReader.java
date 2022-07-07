@@ -61,6 +61,12 @@ public class ArcamConnectionReader extends Thread {
             InputStream input = socket.getInputStream();
 
             while (!shouldStop()) {
+                // Checking with available() so we don't block with input.read() when no data is coming in.
+                if (input.available() == 0) {
+                    Thread.sleep(100);
+                    continue;
+                }
+
                 byte responseData[] = new byte[1];
                 int bytesRead = input.read(responseData);
 
@@ -71,15 +77,18 @@ public class ArcamConnectionReader extends Thread {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             logger.warn("Something went wrong in the connectionReader. Message: {}", e.getMessage());
+            listener.onConnReadError();
         }
+
+        logger.info("ACR thread done");
     }
 
     public void dispose() {
-        // TODO: should we wait until the loop is finished, or simply catch the socketException?
         mutex.lock();
         shouldStop = true;
         mutex.unlock();
+        logger.info("ACR dispose done");
     }
 }

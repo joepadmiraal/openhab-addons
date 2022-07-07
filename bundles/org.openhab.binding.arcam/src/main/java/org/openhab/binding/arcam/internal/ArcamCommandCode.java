@@ -25,6 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public enum ArcamCommandCode {
     // Non channel commands
+    HEARTBEAT(""),
     SYSTEM_STATUS(""),
 
     // Generic channel commands

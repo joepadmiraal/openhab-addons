@@ -216,4 +216,10 @@ public class ArcamAVR30 implements ArcamDevice {
         // TODO Auto-generated method stub
         return new byte[] { 0x00 };
     }
+
+    @Override
+    public byte[] getHeartbeatCommand() {
+        // TODO Auto-generated method stub
+        return new byte[] { 0x00 };
+    }
 }

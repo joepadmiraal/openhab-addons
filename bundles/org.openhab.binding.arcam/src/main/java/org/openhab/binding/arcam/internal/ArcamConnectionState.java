@@ -12,16 +12,13 @@
  */
 package org.openhab.binding.arcam.internal;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-
 /**
- * The {@link ArcamConnectionListener} interface is used to signal events from the {@link ArcamConnection} class
+ * Specifies the connection state
  *
  * @author Joep Admiraal - Initial contribution
  */
-@NonNullByDefault
-public interface ArcamConnectionListener {
-    public void onError();
-
-    public void onConnection();
+public enum ArcamConnectionState {
+    CONNECTING,
+    RECONNECTING,
+    CONNECTED
 }
