@@ -86,7 +86,7 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
     }
 
     private synchronized void connect() throws UnknownHostException, IOException {
-        logger.info("connecting to: {} {}", hostname, PORT);
+        logger.debug("connecting to: {} {}", hostname, PORT);
         Socket s = new Socket(hostname, PORT);
         socket = s;
 
@@ -105,7 +105,7 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
         if (hostname == null) {
             return;
         }
-        logger.info("Atempting to reconnect to: {}", hostname);
+        logger.debug("Atempting to reconnect to: {}", hostname);
 
         ArcamConnectionReader acr = this.acr;
         if (acr != null) {
@@ -137,14 +137,14 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
 
     // This method should be called from a synchronized method in order to be thread safe
     private void handleConnectionIssue() {
-        logger.info("handleConnectionIssue");
+        logger.debug("handleConnectionIssue");
         var x = System.out;
         if (x != null) {
             new Exception().printStackTrace(x);
         }
 
         if (connectionState == ArcamConnectionState.RECONNECTING) {
-            logger.info("skip reconnect because already connecting");
+            logger.debug("skip reconnect because already connecting");
             return;
         }
 

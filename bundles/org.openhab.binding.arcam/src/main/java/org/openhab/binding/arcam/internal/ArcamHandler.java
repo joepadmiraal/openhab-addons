@@ -62,10 +62,9 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         if (command instanceof RefreshType) {
-            // String channelId = channelUID.getIdWithoutGroup();
             String channelId = channelUID.getId();
 
-            logger.info("ArcamHandler handled generic refreshType for: {}, commandCode: {}", channelId);
+            logger.debug("ArcamHandler handled generic refreshType for: {}, commandCode: {}", channelId);
 
             connection.requestState(channelId);
 
@@ -85,8 +84,6 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         }
 
         if (equalsWithoutGroup(CHANNEL_DISPLAY_BRIGHTNESS, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
                 connection.setDisplayBrightness(c.toFullString());
@@ -94,8 +91,6 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         }
 
         if (equalsWithoutGroup(CHANNEL_MASTER_BALANCE, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
             if (command instanceof DecimalType) {
                 DecimalType p = (DecimalType) command;
                 connection.setBalance(p.intValue(), ArcamZone.MASTER);
@@ -110,19 +105,11 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         }
 
         if (equalsWithoutGroup(CHANNEL_MASTER_POWER, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
-            if (command == OnOffType.ON) {
-                connection.setPower(true, ArcamZone.MASTER);
-            }
-            if (command == OnOffType.OFF) {
-                connection.setPower(false, ArcamZone.MASTER);
-            }
+            boolean value = command == OnOffType.ON;
+            connection.setPower(value, ArcamZone.MASTER);
         }
 
         if (equalsWithoutGroup(CHANNEL_MASTER_ROOM_EQUALISATION, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
                 connection.setRoomEqualisation(c.toFullString(), ArcamZone.MASTER);
@@ -130,18 +117,13 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         }
 
         if (equalsWithoutGroup(CHANNEL_MASTER_VOLUME, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
             if (command instanceof PercentType) {
-                logger.info("got percenttype");
                 PercentType p = (PercentType) command;
                 connection.setVolume(p.intValue(), ArcamZone.MASTER);
             }
         }
 
         if (equalsWithoutGroup(CHANNEL_REBOOT, channelUID)) {
-            logger.info("handleCommand: {}", command.toFullString());
-
             if (command == OnOffType.ON) {
                 connection.reboot();
             }
@@ -155,12 +137,8 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         }
 
         if (equalsWithoutGroup(CHANNEL_ZONE2_POWER, channelUID)) {
-            if (command == OnOffType.ON) {
-                connection.setPower(true, ArcamZone.ZONE2);
-            }
-            if (command == OnOffType.OFF) {
-                connection.setPower(false, ArcamZone.ZONE2);
-            }
+            boolean value = command == OnOffType.ON;
+            connection.setPower(value, ArcamZone.ZONE2);
         }
 
         if (equalsWithoutGroup(CHANNEL_ZONE2_VOLUME, channelUID)) {
@@ -208,7 +186,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
                 return;
             }
 
-            logger.info("handler initialized. ip: {}", config.hostname);
+            logger.debug("handler initialized. ip: {}", config.hostname);
         });
     }
 

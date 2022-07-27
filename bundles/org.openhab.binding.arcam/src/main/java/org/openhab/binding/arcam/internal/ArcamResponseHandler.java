@@ -36,12 +36,10 @@ public class ArcamResponseHandler {
 
     @Nullable
     public ArcamResponse parseByte(byte b) {
-        // logger.info("parseByte: {}: {}", byteNr + 1, b);
         byteNr++;
         if (readyForNewResponse && b == 0x21) {
             byteNr = 0;
             readyForNewResponse = false;
-            // logger.info("New response");
             return null;
         }
         if (readyForNewResponse) {
@@ -69,7 +67,7 @@ public class ArcamResponseHandler {
             return null;
         }
 
-        logger.info("Got full response, cc: {}, zone: {}, length: {}, data: {}, ac: {}, et: {}",
+        logger.debug("Got full response, cc: {}, zone: {}, length: {}, data: {}, ac: {}, et: {}",
                 ArcamUtil.byteToHex(response.cc), ArcamUtil.byteToHex(response.zn), response.dl,
                 ArcamUtil.bytesToHex(response.data), ArcamUtil.byteToHex(response.ac), ArcamUtil.byteToHex(b));
         ArcamResponse retVal = response;

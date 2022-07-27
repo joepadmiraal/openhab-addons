@@ -49,7 +49,7 @@ public class ArcamConnectionReader extends Thread {
         mutex.unlock();
 
         if (result) {
-            logger.info("Arcam Connection detected should stop");
+            logger.debug("Arcam Connection detected should stop");
         }
         return result;
     }
@@ -82,13 +82,13 @@ public class ArcamConnectionReader extends Thread {
             listener.onConnReadError();
         }
 
-        logger.info("ACR thread done");
+        logger.debug("ACR thread done");
     }
 
     public void dispose() {
         mutex.lock();
         shouldStop = true;
         mutex.unlock();
-        logger.info("ACR dispose done");
+        logger.debug("ACR dispose done");
     }
 }
