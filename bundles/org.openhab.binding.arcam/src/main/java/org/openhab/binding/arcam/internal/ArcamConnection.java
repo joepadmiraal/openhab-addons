@@ -13,7 +13,6 @@
 package org.openhab.binding.arcam.internal;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.UnknownHostException;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -67,11 +66,24 @@ public class ArcamConnection implements ArcamSocketListener {
 
     public void requestAllValues() {
         logger.info("requestAllValues");
-        requestState(ArcamCommandCode.SYSTEM_STATUS);
+
+        byte[] data = device.getStateCommandByte(ArcamCommandCode.SYSTEM_STATUS);
+        if (data.length == 0) {
+            return;
+        }
+        socket.sendCommand(data);
     }
 
-    public void requestState(ArcamCommandCode commandCode) {
+    public void requestState(String channel) {
+        ArcamCommandCode commandCode = ArcamCommandCode.getFromChannel(channel);
+        if (commandCode == null) {
+            return;
+        }
+
         byte[] data = device.getStateCommandByte(commandCode);
+        if (data.length == 0) {
+            return;
+        }
 
         if (data[2] == 0x64) {
             nowPlayingInTransit = commandCode;
@@ -138,26 +150,26 @@ public class ArcamConnection implements ArcamSocketListener {
         // Balance
         if (response.cc == 0x3B) {
             int balance = device.getBalance(response.data.get(0));
-            state.setMasterBalance(balance);
+            state.setState(ArcamBindingConstants.CHANNEL_MASTER_BALANCE, balance);
         }
         // DAC filter
         if (response.cc == 0x61) {
             String dacFilter = device.getDacFilter(response.data.get(0));
             logger.info("Got DAC filter: {}, {}", ArcamUtil.bytesToHex(response.data), dacFilter);
-            state.setDacFilter(dacFilter);
+            state.setState(ArcamBindingConstants.CHANNEL_DAC_FILTER, dacFilter);
         }
         // DC offset
         if (response.cc == 0x51) {
             logger.info("Got DC offset response: {}", response.data);
             boolean dc = device.getBoolean(response.data.get(0));
-            state.setDcOffset(dc);
+            state.setState(ArcamBindingConstants.CHANNEL_DC_OFFSET, dc);
         }
         // Direct mode
         if (response.cc == 0x0F) {
             logger.info("Got direct mode response: {}", response.data);
             if (response.data.size() > 1) {
                 boolean directMode = device.getBoolean(response.data.get(1));
-                state.setMasterDirectMode(directMode);
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_DIRECT_MODE, directMode);
             }
         }
         // Display brightness
@@ -165,57 +177,53 @@ public class ArcamConnection implements ArcamSocketListener {
             String brightness = device.getDisplayBrightness(response.data.get(0));
 
             logger.info("brightness info: {}", brightness);
-
-            state.setDisplayBrightness(brightness);
+            state.setState(ArcamBindingConstants.CHANNEL_DISPLAY_BRIGHTNESS, brightness);
         }
         // Headphones
         if (response.cc == 0x02) {
             logger.info("Got headphones response: {}", response.data);
             boolean headphones = device.getBoolean(response.data.get(0));
-            state.setHeadphones(headphones);
+            state.setState(ArcamBindingConstants.CHANNEL_HEADPHONES, headphones);
         }
         // Incoming audio sample rate
         if (response.cc == 0x44) {
             String sampleRate = device.getIncomingSampleRate(response.data.get(0));
             logger.info("Got incomingSampleRateresponse: {}, {}", ArcamUtil.bytesToHex(response.data), sampleRate);
-            state.setIncomingSampleRate(sampleRate);
+            state.setState(ArcamBindingConstants.CHANNEL_INCOMING_SAMPLE_RATE, sampleRate);
         }
         // Input detect
         if (response.cc == 0x5A) {
-            logger.info("Got Input detetc response: {}", response.data);
+            logger.info("Got Input detect response: {}", response.data);
             boolean inputDetect = device.getBoolean(response.data.get(0));
-            ArcamZone zone = byteToZone(response.zn);
-            if (zone == ArcamZone.MASTER) {
-                state.setMasterInputDetect(inputDetect);
+
+            if (isMasterZone(response.zn)) {
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_INPUT_DETECT, inputDetect);
             }
         }
         // Input source
         if (response.cc == 0x1D) {
             String input = device.getInputName(response.data.get(0));
-            ArcamZone zone = byteToZone(response.zn);
 
-            logger.info("input info: {}, zone: {}", input, zone);
-            if (zone == ArcamZone.MASTER) {
-                state.setMasterInput(input);
+            if (isMasterZone(response.zn)) {
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_INPUT, input);
             } else {
-                state.setZone2Input(input);
+                state.setState(ArcamBindingConstants.CHANNEL_ZONE2_INPUT, input);
             }
         }
         // Lifter temperature
         if (response.cc == 0x56) {
             int temperature = device.getTemperature(response.data, 0);
             logger.info("Got Lifter temperature: {}, value: {}", ArcamUtil.bytesToHex(response.data), temperature);
-            state.setLifterTemperature(temperature);
+            state.setState(ArcamBindingConstants.CHANNEL_LIFTER_TEMPERATURE, temperature);
         }
         // Mute
         if (response.cc == 0x0E) {
             logger.info("Got mute response: {}", response.data);
             boolean mute = device.getMute(response.data.get(0));
-            ArcamZone zone = byteToZone(response.zn);
-            if (zone == ArcamZone.MASTER) {
-                state.setMasterMute(mute);
+            if (isMasterZone(response.zn)) {
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_MUTE, mute);
             } else {
-                state.setZone2Mute(mute);
+                state.setState(ArcamBindingConstants.CHANNEL_ZONE2_MUTE, mute);
             }
         }
         // Now Playing information
@@ -227,29 +235,29 @@ public class ArcamConnection implements ArcamSocketListener {
 
                 switch (nowPlayingCommandCode) {
                     case MASTER_NOW_PLAYING_ALBUM:
-                        state.setMasterNowPlayingAlbum(value);
+                        state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ALBUM, value);
                         break;
 
                     case MASTER_NOW_PLAYING_APPLICATION:
-                        state.setMasterNowPlayingApplication(value);
+                        state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_APPLICATION, value);
                         break;
 
                     case MASTER_NOW_PLAYING_ARTIST:
-                        state.setMasterNowPlayingArtist(value);
+                        state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ARTIST, value);
                         break;
 
                     case MASTER_NOW_PLAYING_AUDIO_ENCODER:
                         String audioEncoder = device.getNowPlayingEncoder(response.data.get(0));
-                        state.setMasterNowPlayingAudioEncoder(audioEncoder);
+                        state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_AUDIO_ENCODER, audioEncoder);
                         break;
 
                     case MASTER_NOW_PLAYING_SAMPLE_RATE:
                         String sampleRate = device.getNowPlayingSampleRate(response.data.get(0));
-                        state.setMasterNowPlayingSampleRate(sampleRate);
+                        state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_SAMPLE_RATE, sampleRate);
                         break;
 
                     case MASTER_NOW_PLAYING_TITLE:
-                        state.setMasterNowPlayingTitle(value);
+                        state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_TITLE, value);
                         break;
                     default:
                         break;
@@ -258,13 +266,14 @@ public class ArcamConnection implements ArcamSocketListener {
             } else {
                 ArcamNowPlaying nowPlaying = device.setNowPlaying(response.data);
                 if (nowPlaying != null) {
-                    state.setMasterNowPlayingAlbum(nowPlaying.album);
-                    state.setMasterNowPlayingTitle(nowPlaying.track);
-                    state.setMasterNowPlayingArtist(nowPlaying.artist);
-
-                    state.setMasterNowPlayingApplication(nowPlaying.application);
-                    state.setMasterNowPlayingSampleRate(nowPlaying.sampleRate);
-                    state.setMasterNowPlayingAudioEncoder(nowPlaying.audioEncoder);
+                    state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ALBUM, nowPlaying.album);
+                    state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_APPLICATION,
+                            nowPlaying.application);
+                    state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_ARTIST, nowPlaying.artist);
+                    state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_AUDIO_ENCODER,
+                            nowPlaying.audioEncoder);
+                    state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_SAMPLE_RATE, nowPlaying.sampleRate);
+                    state.setState(ArcamBindingConstants.CHANNEL_MASTER_NOW_PLAYING_TITLE, nowPlaying.track);
                 }
             }
         }
@@ -272,53 +281,54 @@ public class ArcamConnection implements ArcamSocketListener {
         if (response.cc == 0x57) {
             int temperature = device.getTemperature(response.data, 0);
             logger.info("Got Output temperature: {}, value: {}", ArcamUtil.bytesToHex(response.data), temperature);
-            state.setOutputTemperature(temperature);
+            state.setState(ArcamBindingConstants.CHANNEL_OUTPUT_TEMPERATURE, temperature);
         }
         // Power
         if (response.cc == 0x00) {
             logger.info("Got power response: {}", response.data);
             boolean power = device.getBoolean(response.data.get(0));
-            state.setMasterPower(power);
+            if (isMasterZone(response.zn)) {
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_POWER, power);
+            } else {
+                state.setState(ArcamBindingConstants.CHANNEL_ZONE2_POWER, power);
+            }
         }
         // Room Equalisation
         if (response.cc == 0x37) {
             String eq = device.getRoomEqualisation(response.data.get(0));
-            ArcamZone zone = byteToZone(response.zn);
-
-            logger.info("room eq info: {}, zone: {}", eq, zone);
-            state.setMasterRoomEqualisation(eq);
+            state.setState(ArcamBindingConstants.CHANNEL_MASTER_ROOM_EQUALISATION, eq);
         }
         // Short circuit status
         if (response.cc == 0x52) {
             logger.info("Got Short circuit status response: {}", response.data);
             boolean shortCircuit = device.getBoolean(response.data.get(0));
-            state.setMasterShortCircuit(shortCircuit);
+            state.setState(ArcamBindingConstants.CHANNEL_MASTER_SHORT_CIRCUIT, shortCircuit);
         }
         // SoftwareVersion
         if (response.cc == 0x04) {
             String version = device.getSoftwareVersion(response.data);
             logger.info("Got SoftwareVersion response: {}, {}", ArcamUtil.bytesToHex(response.data), version);
-            state.setSoftwareVersion(version);
+            state.setState(ArcamBindingConstants.CHANNEL_SOFTWARE_VERSION, version);
         }
         // Timeout counter
         if (response.cc == 0x55) {
             int counter = device.getTimeoutCounter(response.data);
             logger.info("Got Timeout counter response: {}, {}", ArcamUtil.bytesToHex(response.data), counter);
-            state.setTimeoutCounter(counter);
+            state.setState(ArcamBindingConstants.CHANNEL_TIMEOUT_COUNTER, counter);
         }
         // Volume
         if (response.cc == 0x0D) {
-            BigDecimal bd = BigDecimal.valueOf(Byte.valueOf(response.data.get(0)).intValue());
-            state.setMasterVolume(bd);
+            int volume = Byte.valueOf(response.data.get(0)).intValue();
+            if (isMasterZone(response.zn)) {
+                state.setPercentageState(ArcamBindingConstants.CHANNEL_MASTER_VOLUME, volume);
+            } else {
+                state.setPercentageState(ArcamBindingConstants.CHANNEL_ZONE2_VOLUME, volume);
+            }
         }
     }
 
-    private ArcamZone byteToZone(byte zone) {
-        if (zone == 0x01) {
-            return ArcamZone.MASTER;
-        }
-
-        return ArcamZone.ZONE2;
+    private boolean isMasterZone(byte zone) {
+        return zone == 0x01;
     }
 
     @Override

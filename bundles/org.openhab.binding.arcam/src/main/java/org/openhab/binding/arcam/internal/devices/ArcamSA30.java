@@ -101,6 +101,7 @@ public class ArcamSA30 implements ArcamDevice {
                     new byte[] { 0x21, 0x01, 0x64, 0x01, (byte) 0xF5, 0x0D }), //
             new ArcamCommand(MASTER_POWER, new byte[] { 0x21, 0x01, 0x00, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_ROOM_EQUALISATION, new byte[] { 0x21, 0x01, 0x37, 0x01, (byte) 0xF0, 0x0D }), //
+            new ArcamCommand(MASTER_SHORT_CIRCUIT, new byte[] { 0x21, 0x01, 0x52, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_VOLUME, new byte[] { 0x21, 0x01, 0x0D, 0x01, (byte) 0xF0, 0x0D }) //
 
     ));

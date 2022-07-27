@@ -163,7 +163,7 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
             handleConnectionIssue();
         }
 
-        logger.info("Sending heartbeat bytes: {}", ArcamUtil.bytesToHex(heartbeatCommand));
+        logger.debug("Sending heartbeat bytes: {}", ArcamUtil.bytesToHex(heartbeatCommand));
         sendCommand(heartbeatCommand);
     }
 
@@ -174,7 +174,7 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
         }
 
         try {
-            logger.info("outputStream write: {}", ArcamUtil.bytesToHex(data));
+            logger.debug("outputStream write: {}", ArcamUtil.bytesToHex(data));
             os.write(data);
         } catch (IOException e) {
             handleConnectionIssue();
