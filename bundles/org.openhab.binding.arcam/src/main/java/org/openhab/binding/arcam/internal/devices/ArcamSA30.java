@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.arcam.internal.devices;
 
-import static org.openhab.binding.arcam.internal.ArcamCommandCode.*;
+import static org.openhab.binding.arcam.internal.connection.ArcamCommandCode.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.openhab.binding.arcam.internal.ArcamCommand;
-import org.openhab.binding.arcam.internal.ArcamCommandCode;
-import org.openhab.binding.arcam.internal.ArcamCommandData;
-import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
-import org.openhab.binding.arcam.internal.ArcamCommandFinder;
 import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamUtil;
 import org.openhab.binding.arcam.internal.ArcamZone;
+import org.openhab.binding.arcam.internal.connection.ArcamCommand;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandCode;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandData;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandDataFinder;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandFinder;
 
 /**
  * The {@link ArcamSA30} class contains the device specific implementation for the SA30

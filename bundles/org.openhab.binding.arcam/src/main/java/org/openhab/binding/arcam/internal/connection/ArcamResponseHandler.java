@@ -10,10 +10,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
+package org.openhab.binding.arcam.internal.connection;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.arcam.internal.ArcamUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.openhab.binding.arcam.internal.ArcamCommandData;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandData;
 
 /**
  * This class provides constants that are used by multiple devices.

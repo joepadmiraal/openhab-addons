@@ -16,6 +16,8 @@ import static org.openhab.binding.arcam.internal.ArcamBindingConstants.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.arcam.internal.config.ArcamConfiguration;
+import org.openhab.binding.arcam.internal.connection.ArcamConnection;
+import org.openhab.binding.arcam.internal.connection.ArcamConnectionListener;
 import org.openhab.binding.arcam.internal.devices.ArcamDevice;
 import org.openhab.binding.arcam.internal.devices.ArcamDeviceUtil;
 import org.openhab.core.library.types.DecimalType;

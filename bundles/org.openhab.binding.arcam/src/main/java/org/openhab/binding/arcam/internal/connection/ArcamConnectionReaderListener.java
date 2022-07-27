@@ -10,23 +10,19 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.openhab.binding.arcam.internal.connection;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * The {@link ArcamResponse} POJO holds the data that is returned from the device.
+ * The {@link ArcamConnectionReaderListener} interface is used to signal events from the {@link ArcamConnectionReader}
+ * class
  *
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public class ArcamResponse {
-    public byte zn;
-    public byte cc;
-    public byte ac;
-    public int dl;
-    public List<Byte> data = new ArrayList<>();
+public interface ArcamConnectionReaderListener {
+    void onResponse(ArcamResponse response);
+
+    void onConnReadError();
 }

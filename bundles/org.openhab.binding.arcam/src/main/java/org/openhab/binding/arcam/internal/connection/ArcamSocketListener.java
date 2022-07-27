@@ -10,18 +10,20 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
+package org.openhab.binding.arcam.internal.connection;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * The {@link ArcamConnectionListener} interface is used to signal events from the {@link ArcamConnection} class
+ * This interface is used to signal events from the {@link ArcamSocket} class
  *
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public interface ArcamConnectionListener {
-    public void onError();
+public interface ArcamSocketListener {
+    public void onResponse(ArcamResponse response);
 
     public void onConnection();
+
+    public void onError();
 }

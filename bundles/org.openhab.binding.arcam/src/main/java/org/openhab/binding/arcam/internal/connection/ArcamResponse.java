@@ -10,15 +10,23 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
+package org.openhab.binding.arcam.internal.connection;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * Specifies the connection state
+ * The {@link ArcamResponse} POJO holds the data that is returned from the device.
  *
  * @author Joep Admiraal - Initial contribution
  */
-public enum ArcamConnectionState {
-    CONNECTING,
-    RECONNECTING,
-    CONNECTED
+@NonNullByDefault
+public class ArcamResponse {
+    public byte zn;
+    public byte cc;
+    public byte ac;
+    public int dl;
+    public List<Byte> data = new ArrayList<>();
 }

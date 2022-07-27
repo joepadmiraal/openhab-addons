@@ -10,19 +10,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
-
-import org.eclipse.jdt.annotation.NonNullByDefault;
+package org.openhab.binding.arcam.internal.connection;
 
 /**
- * The {@link ArcamConnectionReaderListener} interface is used to signal events from the {@link ArcamConnectionReader}
- * class
+ * Specifies the connection state
  *
  * @author Joep Admiraal - Initial contribution
  */
-@NonNullByDefault
-public interface ArcamConnectionReaderListener {
-    void onResponse(ArcamResponse response);
-
-    void onConnReadError();
+public enum ArcamConnectionState {
+    CONNECTING,
+    RECONNECTING,
+    CONNECTED
 }

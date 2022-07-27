@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.openhab.binding.arcam.internal.ArcamCommandCode;
 import org.openhab.binding.arcam.internal.ArcamNowPlaying;
 import org.openhab.binding.arcam.internal.ArcamZone;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandCode;
 
 /**
  * This interface allows splitting the device specific logic into separate classes.

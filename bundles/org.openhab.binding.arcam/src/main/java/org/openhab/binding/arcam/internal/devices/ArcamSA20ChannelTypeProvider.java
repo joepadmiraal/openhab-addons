@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.arcam.internal.ArcamBindingConstants;
-import org.openhab.binding.arcam.internal.ArcamCommandDataFinder;
+import org.openhab.binding.arcam.internal.connection.ArcamCommandDataFinder;
 import org.openhab.binding.arcam.internal.exceptions.NotFoundException;
 import org.openhab.core.thing.type.ChannelType;
 import org.openhab.core.thing.type.ChannelTypeProvider;

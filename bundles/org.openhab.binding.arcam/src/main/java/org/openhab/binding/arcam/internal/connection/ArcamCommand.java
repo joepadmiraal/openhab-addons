@@ -10,20 +10,23 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
+package org.openhab.binding.arcam.internal.connection;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * This interface is used to signal events from the {@link ArcamSocket} class
+ * The {@link ArcamCommand} class is a POJO to store the bytes that are used to send a command.
+ * Used to create dynamic lookup tables so we can share logic between multiple devices.
  *
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public interface ArcamSocketListener {
-    public void onResponse(ArcamResponse response);
+public class ArcamCommand {
+    public final ArcamCommandCode code;
+    public final byte[] data;
 
-    public void onConnection();
-
-    public void onError();
+    public ArcamCommand(ArcamCommandCode code, byte[] data) {
+        this.code = code;
+        this.data = data;
+    }
 }

@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openhab.binding.arcam.internal.connection.ArcamResponse;
+import org.openhab.binding.arcam.internal.connection.ArcamResponseHandler;
 
 /**
  * Tests for the response handler

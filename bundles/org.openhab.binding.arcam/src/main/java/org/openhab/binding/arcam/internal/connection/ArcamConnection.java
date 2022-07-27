@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.arcam.internal;
+package org.openhab.binding.arcam.internal.connection;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -18,6 +18,11 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.arcam.internal.ArcamBindingConstants;
+import org.openhab.binding.arcam.internal.ArcamNowPlaying;
+import org.openhab.binding.arcam.internal.ArcamState;
+import org.openhab.binding.arcam.internal.ArcamUtil;
+import org.openhab.binding.arcam.internal.ArcamZone;
 import org.openhab.binding.arcam.internal.devices.ArcamDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
