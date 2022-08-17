@@ -12,11 +12,14 @@
  */
 package org.openhab.binding.arcam.internal.connection;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
 /**
  * Specifies the connection state
  *
  * @author Joep Admiraal - Initial contribution
  */
+@NonNullByDefault
 public enum ArcamConnectionState {
     CONNECTING,
     RECONNECTING,

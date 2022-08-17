@@ -358,5 +358,4 @@ public class ArcamConnection implements ArcamSocketListener {
     public void onError() {
         connectionListener.onError();
     }
-
 }

@@ -305,5 +305,4 @@ public class ArcamAVR20 implements ArcamDevice {
     public int getTimeoutCounter(List<Byte> dataBytes) {
         throw new NotSupportedException();
     }
-
 }

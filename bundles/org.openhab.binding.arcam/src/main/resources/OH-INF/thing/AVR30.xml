@@ -33,17 +33,17 @@
 		<description>Channels for the master zone.</description>
 		<channels>
 			<channel id="balance" typeId="avr30Balance"/>
-            <channel id="directMode" typeId="directMode"/>
-            <channel id="displaybrightness" typeId="avr30DisplayBrightness"/>
-            <channel id="headphones" typeId="headphones"/>
-            <channel id="incomingSampleRate" typeId="incomingSampleRate"/>
-            <channel id="input" typeId="avr30Input"/>
-            <channel id="mute" typeId="system.mute"/>
-            <channel id="power" typeId="system.power"/>
-            <channel id="reboot" typeId="reboot"/>
-            <channel id="roomEqualisation" typeId="roomEqualisation"/>
-            <channel id="softwareVersion" typeId="softwareVersion"/>
-            <channel id="volume" typeId="system.volume"/>
+			<channel id="directMode" typeId="directMode"/>
+			<channel id="displaybrightness" typeId="avr30DisplayBrightness"/>
+			<channel id="headphones" typeId="headphones"/>
+			<channel id="incomingSampleRate" typeId="incomingSampleRate"/>
+			<channel id="input" typeId="avr30Input"/>
+			<channel id="mute" typeId="system.mute"/>
+			<channel id="power" typeId="system.power"/>
+			<channel id="reboot" typeId="reboot"/>
+			<channel id="roomEqualisation" typeId="roomEqualisation"/>
+			<channel id="softwareVersion" typeId="softwareVersion"/>
+			<channel id="volume" typeId="system.volume"/>
 		</channels>
 	</channel-group-type>
 
@@ -51,20 +51,20 @@
 		<label>Zone2</label>
 		<description>Channels for zone2.</description>
 		<channels>
-		    <channel id="balance" typeId="avr30Balance"/>
-            <channel id="directMode" typeId="directMode"/>
-            <channel id="input" typeId="avr30Zone2Input"/>
-            <channel id="mute" typeId="system.mute"/>
+			<channel id="balance" typeId="avr30Balance"/>
+			<channel id="directMode" typeId="directMode"/>
+			<channel id="input" typeId="avr30Zone2Input"/>
+			<channel id="mute" typeId="system.mute"/>
 			<channel id="power" typeId="system.power"/>
 			<channel id="roomEqualisation" typeId="roomEqualisation"/>
 			<channel id="volume" typeId="system.volume"/>
 		</channels>
 	</channel-group-type>
-	
+
 	<channel-type id="avr30Balance">
-        <item-type>Number</item-type>
-        <label>Balance</label>
-        <description>Adjust the balance control.</description>
-        <state min="-6" max="6" step="1.0"/>
-    </channel-type>
+		<item-type>Number</item-type>
+		<label>Balance</label>
+		<description>Adjust the balance control.</description>
+		<state min="-6" max="6" step="1.0"/>
+	</channel-type>
 </thing:thing-descriptions>

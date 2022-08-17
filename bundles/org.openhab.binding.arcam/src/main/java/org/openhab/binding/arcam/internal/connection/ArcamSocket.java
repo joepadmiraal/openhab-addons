@@ -218,5 +218,4 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
     public synchronized void onConnReadError() {
         handleConnectionIssue();
     }
-
 }

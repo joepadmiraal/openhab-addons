@@ -308,5 +308,4 @@ public class ArcamSA20 implements ArcamDevice {
         // The range of the value returned is from 0x0000 - 0x00F0 (0 - 240minutes)
         return dataBytes.get(1);
     }
-
 }

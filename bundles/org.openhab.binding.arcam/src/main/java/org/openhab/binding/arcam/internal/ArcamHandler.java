@@ -66,7 +66,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
         if (command instanceof RefreshType) {
             String channelId = channelUID.getId();
 
-            logger.debug("ArcamHandler handled generic refreshType for: {}, commandCode: {}", channelId);
+            logger.debug("ArcamHandler handled generic refreshType for channelId: {}", channelId);
 
             connection.requestState(channelId);
 
