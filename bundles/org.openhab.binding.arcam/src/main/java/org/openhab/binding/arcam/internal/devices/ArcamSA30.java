@@ -31,7 +31,7 @@ import org.openhab.binding.arcam.internal.connection.ArcamCommandDataFinder;
 import org.openhab.binding.arcam.internal.connection.ArcamCommandFinder;
 
 /**
- * The {@link ArcamSA30} class contains the device specific implementation for the SA30
+ * This class contains the device specific implementation for the SA30
  *
  * @author Joep Admiraal - Initial contribution
  */
@@ -88,6 +88,7 @@ public class ArcamSA30 implements ArcamDevice {
             new ArcamCommand(TIMEOUT_COUNTER, new byte[] { 0x21, 0x01, 0x55, 0x01, (byte) 0xF0, 0x0D }), //
             // Master zone
             new ArcamCommand(MASTER_BALANCE, new byte[] { 0x21, 0x01, 0x3B, 0x01, (byte) 0xF0, 0x0D }), //
+            new ArcamCommand(MASTER_DC_OFFSET, new byte[] { 0x21, 0x01, 0x51, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_MUTE, new byte[] { 0x21, 0x01, 0x0E, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_INPUT, new byte[] { 0x21, 0x01, 0x1D, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_INPUT_DETECT, new byte[] { 0x21, 0x01, 0x5A, 0x01, (byte) 0xF0, 0x0D }), //
@@ -103,7 +104,6 @@ public class ArcamSA30 implements ArcamDevice {
             new ArcamCommand(MASTER_ROOM_EQUALISATION, new byte[] { 0x21, 0x01, 0x37, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_SHORT_CIRCUIT, new byte[] { 0x21, 0x01, 0x52, 0x01, (byte) 0xF0, 0x0D }), //
             new ArcamCommand(MASTER_VOLUME, new byte[] { 0x21, 0x01, 0x0D, 0x01, (byte) 0xF0, 0x0D }) //
-
     ));
 
     public static final Map<Byte, String> SAMPLE_RATES = Map.ofEntries( //
@@ -372,6 +372,7 @@ public class ArcamSA30 implements ArcamDevice {
 
     @Override
     public String getSoftwareVersion(List<Byte> dataBytes) {
+        // According to the manual we should receive 3 bytes, however during testing I noticed we only receive 2 bytes.
         int major = dataBytes.get(0);
         int minor = dataBytes.get(1);
         return major + "." + minor;

@@ -125,6 +125,13 @@ public class ArcamConnection implements ArcamSocketListener {
         socket.sendCommand(data);
     }
 
+    public void setMute(boolean on, ArcamZone zone) {
+        byte[] data = device.getMuteCommand(on, zone);
+
+        logger.debug("Sending mute byte: {}, array: {}, zone: {}", on, ArcamUtil.bytesToHex(data), zone);
+        socket.sendCommand(data);
+    }
+
     public void setPower(boolean on, ArcamZone zone) {
         byte[] data = device.getPowerCommand(on, zone);
 
@@ -149,13 +156,17 @@ public class ArcamConnection implements ArcamSocketListener {
     @Override
     public void onResponse(ArcamResponse response) {
         if (response.ac != 0x00) {
-            logger.warn("There is an error with the command");
+            logger.debug("There is an error with command: {}", response.cc);
             return;
         }
         // Balance
         if (response.cc == 0x3B) {
             int balance = device.getBalance(response.data.get(0));
-            state.setState(ArcamBindingConstants.CHANNEL_MASTER_BALANCE, balance);
+            if (isMasterZone(response.zn)) {
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_BALANCE, balance);
+            } else {
+                state.setState(ArcamBindingConstants.CHANNEL_ZONE2_BALANCE, balance);
+            }
         }
         // DAC filter
         if (response.cc == 0x61) {
@@ -200,10 +211,7 @@ public class ArcamConnection implements ArcamSocketListener {
         if (response.cc == 0x5A) {
             logger.debug("Got Input detect response: {}", response.data);
             boolean inputDetect = device.getBoolean(response.data.get(0));
-
-            if (isMasterZone(response.zn)) {
-                state.setState(ArcamBindingConstants.CHANNEL_MASTER_INPUT_DETECT, inputDetect);
-            }
+            state.setState(ArcamBindingConstants.CHANNEL_MASTER_INPUT_DETECT, inputDetect);
         }
         // Input source
         if (response.cc == 0x1D) {
@@ -301,7 +309,11 @@ public class ArcamConnection implements ArcamSocketListener {
         // Room Equalisation
         if (response.cc == 0x37) {
             String eq = device.getRoomEqualisation(response.data.get(0));
-            state.setState(ArcamBindingConstants.CHANNEL_MASTER_ROOM_EQUALISATION, eq);
+            if (isMasterZone(response.zn)) {
+                state.setState(ArcamBindingConstants.CHANNEL_MASTER_ROOM_EQUALISATION, eq);
+            } else {
+                state.setState(ArcamBindingConstants.CHANNEL_ZONE2_ROOM_EQUALISATION, eq);
+            }
         }
         // Short circuit status
         if (response.cc == 0x52) {

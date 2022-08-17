@@ -106,6 +106,11 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
+        if (equalsWithoutGroup(CHANNEL_MASTER_MUTE, channelUID)) {
+            boolean value = command == OnOffType.ON;
+            connection.setMute(value, ArcamZone.MASTER);
+        }
+
         if (equalsWithoutGroup(CHANNEL_MASTER_POWER, channelUID)) {
             boolean value = command == OnOffType.ON;
             connection.setPower(value, ArcamZone.MASTER);
@@ -131,6 +136,13 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
+        if (equalsWithoutGroup(CHANNEL_ZONE2_BALANCE, channelUID)) {
+            if (command instanceof DecimalType) {
+                DecimalType p = (DecimalType) command;
+                connection.setBalance(p.intValue(), ArcamZone.ZONE2);
+            }
+        }
+
         if (equalsWithoutGroup(CHANNEL_ZONE2_INPUT, channelUID)) {
             if (command instanceof StringType) {
                 StringType c = (StringType) command;
@@ -138,9 +150,21 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
             }
         }
 
+        if (equalsWithoutGroup(CHANNEL_ZONE2_MUTE, channelUID)) {
+            boolean value = command == OnOffType.ON;
+            connection.setMute(value, ArcamZone.ZONE2);
+        }
+
         if (equalsWithoutGroup(CHANNEL_ZONE2_POWER, channelUID)) {
             boolean value = command == OnOffType.ON;
             connection.setPower(value, ArcamZone.ZONE2);
+        }
+
+        if (equalsWithoutGroup(CHANNEL_ZONE2_ROOM_EQUALISATION, channelUID)) {
+            if (command instanceof StringType) {
+                StringType c = (StringType) command;
+                connection.setRoomEqualisation(c.toFullString(), ArcamZone.ZONE2);
+            }
         }
 
         if (equalsWithoutGroup(CHANNEL_ZONE2_VOLUME, channelUID)) {

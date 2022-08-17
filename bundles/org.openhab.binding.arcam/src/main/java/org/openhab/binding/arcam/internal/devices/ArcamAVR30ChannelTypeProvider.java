@@ -64,7 +64,7 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
                     channelTypeUID, //
                     "Display brightness", //
                     "Select display brightness", //
-                    ArcamAVR30.displaybrightnessCommands); //
+                    ArcamAVR30.DISPLAY_BRIGHTNESS_COMMANDS); //
         }
 
         if (channelID.equals(AVR30_MASTER_INPUT)) {
@@ -72,7 +72,7 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
                     channelTypeUID, //
                     "xMaster Input", //
                     "Select the input source", //
-                    ArcamAVR30.inputCommands); //
+                    ArcamAVR30.INPUT_COMMANDS); //
         }
 
         if (channelID.equals(AVR30_ZONE2_INPUT)) {
@@ -80,7 +80,7 @@ public class ArcamAVR30ChannelTypeProvider implements ChannelTypeProvider {
                     channelTypeUID, //
                     "Zone2 Input", //
                     "Select the input source", //
-                    ArcamAVR30.inputCommands); //
+                    ArcamAVR30.INPUT_COMMANDS); //
         }
 
         return null;

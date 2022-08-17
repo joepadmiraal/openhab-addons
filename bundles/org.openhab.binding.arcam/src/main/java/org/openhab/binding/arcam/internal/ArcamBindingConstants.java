@@ -30,11 +30,17 @@ public class ArcamBindingConstants {
     public static final String BINDING_ID = "arcam";
 
     // List of all Thing Type UIDs
+    public static final ThingTypeUID AVR5_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR5");
+    public static final ThingTypeUID AVR10_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR10");
+    public static final ThingTypeUID AVR20_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR20");
+    public static final ThingTypeUID AVR30_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR30");
+    public static final ThingTypeUID AVR40_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR40");
+    public static final ThingTypeUID SA10_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "SA10");
     public static final ThingTypeUID SA20_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "SA20");
     public static final ThingTypeUID SA30_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "SA30");
-    public static final ThingTypeUID AVR30_THING_TYPE_UID = new ThingTypeUID(BINDING_ID, "AVR30");
-    public static final Set<ThingTypeUID> SUPPORTED_KNOWN_THING_TYPES_UIDS = Set.of(SA20_THING_TYPE_UID,
-            SA30_THING_TYPE_UID, AVR30_THING_TYPE_UID);
+    public static final Set<ThingTypeUID> SUPPORTED_KNOWN_THING_TYPES_UIDS = Set.of(AVR5_THING_TYPE_UID,
+            AVR10_THING_TYPE_UID, AVR20_THING_TYPE_UID, AVR30_THING_TYPE_UID, AVR40_THING_TYPE_UID, SA10_THING_TYPE_UID,
+            SA20_THING_TYPE_UID, SA30_THING_TYPE_UID);
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<>(SUPPORTED_KNOWN_THING_TYPES_UIDS);
 
     // List of all Channel ids
@@ -68,8 +74,11 @@ public class ArcamBindingConstants {
     public static final String CHANNEL_MASTER_VOLUME = "masterZone#volume";
 
     // Zone 2
+    public static final String CHANNEL_ZONE2_BALANCE = "zone2#balance";
+    public static final String CHANNEL_ZONE2_DIRECT_MODE = "zone2#directMode";
     public static final String CHANNEL_ZONE2_INPUT = "zone2#input";
     public static final String CHANNEL_ZONE2_MUTE = "zone2#mute";
     public static final String CHANNEL_ZONE2_POWER = "zone2#power";
+    public static final String CHANNEL_ZONE2_ROOM_EQUALISATION = "zone2#roomEqualisation";
     public static final String CHANNEL_ZONE2_VOLUME = "zone2#volume";
 }

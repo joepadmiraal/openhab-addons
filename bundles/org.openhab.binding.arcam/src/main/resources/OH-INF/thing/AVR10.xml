@@ -4,18 +4,14 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<thing-type id="AVR30">
+	<thing-type id="AVR10">
 
 		<label>Arcam Binding Thing</label>
-		<description>AVR30</description>
+		<description>AVR10</description>
 		<channel-groups>
-			<channel-group id="avr30MasterZone" typeId="avr30MasterZone">
+			<channel-group id="avr10MasterZone" typeId="avr10MasterZone">
 				<label>Master zone</label>
 				<description>The master zone. Commands that appear zone-less refer to the master zone</description>
-			</channel-group>
-			<channel-group id="avr30Zone2" typeId="avr30Zone2">
-				<label>Zone 2</label>
-				<description>zone.</description>
 			</channel-group>
 		</channel-groups>
 
@@ -28,16 +24,16 @@
 		</config-description>
 	</thing-type>
 
-	<channel-group-type id="avr30MasterZone">
+	<channel-group-type id="avr10MasterZone">
 		<label>Master zone</label>
 		<description>Channels for the master zone.</description>
 		<channels>
-			<channel id="balance" typeId="avr30Balance"/>
+			<channel id="balance" typeId="avr10Balance"/>
             <channel id="directMode" typeId="directMode"/>
-            <channel id="displaybrightness" typeId="avr30DisplayBrightness"/>
+            <channel id="displaybrightness" typeId="avr10DisplayBrightness"/>
             <channel id="headphones" typeId="headphones"/>
             <channel id="incomingSampleRate" typeId="incomingSampleRate"/>
-            <channel id="input" typeId="avr30Input"/>
+            <channel id="input" typeId="avr10Input"/>
             <channel id="mute" typeId="system.mute"/>
             <channel id="power" typeId="system.power"/>
             <channel id="reboot" typeId="reboot"/>
@@ -47,21 +43,9 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="avr30Zone2">
-		<label>Zone2</label>
-		<description>Channels for zone2.</description>
-		<channels>
-		    <channel id="balance" typeId="avr30Balance"/>
-            <channel id="directMode" typeId="directMode"/>
-            <channel id="input" typeId="avr30Zone2Input"/>
-            <channel id="mute" typeId="system.mute"/>
-			<channel id="power" typeId="system.power"/>
-			<channel id="roomEqualisation" typeId="roomEqualisation"/>
-			<channel id="volume" typeId="system.volume"/>
-		</channels>
-	</channel-group-type>
 	
-	<channel-type id="avr30Balance">
+	
+	<channel-type id="avr10Balance">
         <item-type>Number</item-type>
         <label>Balance</label>
         <description>Adjust the balance control.</description>

@@ -30,12 +30,12 @@ import org.openhab.binding.arcam.internal.connection.ArcamCommandFinder;
 import org.openhab.binding.arcam.internal.exceptions.NotSupportedException;
 
 /**
- * This class contains the device specific implementation for the AVR30
+ * This class contains the device specific implementation for the AVR20
  *
  * @author Joep Admiraal - Initial contribution
  */
 @NonNullByDefault
-public class ArcamAVR30 implements ArcamDevice {
+public class ArcamAVR20 implements ArcamDevice {
 
     public static final List<ArcamCommandData> INPUT_COMMANDS = new ArrayList<>(List.of( //
             new ArcamCommandData("FZONE1", "Follow Zone 1", (byte) 0x00), //
@@ -104,12 +104,12 @@ public class ArcamAVR30 implements ArcamDevice {
             Map.entry((byte) 0x08, "Undetected") //
     );//
 
-    public static String AVR30 = "AVR30";
+    public static String AVR20 = "AVR20";
 
     private ArcamCommandDataFinder commandDataFinder;
     private ArcamCommandFinder commandFinder;
 
-    public ArcamAVR30() {
+    public ArcamAVR20() {
         this.commandDataFinder = new ArcamCommandDataFinder();
         this.commandFinder = new ArcamCommandFinder();
     }

@@ -30,29 +30,61 @@ public class ArcamDeviceUtil {
     public static ArcamDevice getDeviceFromThingUID(ThingUID thingUID) {
         String id = thingUID.getAsString();
 
-        if (id.contains(ArcamSA30.SA30)) {
-            return new ArcamSA30();
+        if (id.contains(ArcamAVR5.AVR5)) {
+            return new ArcamAVR5();
         }
-        if (id.contains(ArcamSA20.SA20)) {
-            return new ArcamSA20();
+        if (id.contains(ArcamAVR10.AVR10)) {
+            return new ArcamAVR10();
+        }
+        if (id.contains(ArcamAVR20.AVR20)) {
+            return new ArcamAVR20();
         }
         if (id.contains(ArcamAVR30.AVR30)) {
             return new ArcamAVR30();
         }
+        if (id.contains(ArcamAVR40.AVR40)) {
+            return new ArcamAVR40();
+        }
+        if (id.contains(ArcamSA10.SA10)) {
+            return new ArcamSA10();
+        }
+        if (id.contains(ArcamSA20.SA20)) {
+            return new ArcamSA20();
+        }
+        if (id.contains(ArcamSA30.SA30)) {
+            return new ArcamSA30();
+        }
+
         throw new NotFoundException("Could not find an Arcam device from the thingUID: " + id);
     }
 
     @Nullable
     public static ThingTypeUID getThingTypeUIDFromModelName(String modelName) {
+        if (modelName.contains("AVR5")) {
+            return ArcamBindingConstants.AVR5_THING_TYPE_UID;
+        }
+        if (modelName.contains("AVR10")) {
+            return ArcamBindingConstants.AVR10_THING_TYPE_UID;
+        }
+        if (modelName.contains("AVR20")) {
+            return ArcamBindingConstants.AVR20_THING_TYPE_UID;
+        }
+        if (modelName.contains("AVR30")) {
+            return ArcamBindingConstants.AVR30_THING_TYPE_UID;
+        }
+        if (modelName.contains("AVR40")) {
+            return ArcamBindingConstants.AVR40_THING_TYPE_UID;
+        }
+        if (modelName.contains("SA10")) {
+            return ArcamBindingConstants.SA10_THING_TYPE_UID;
+        }
         if (modelName.contains("SA20")) {
             return ArcamBindingConstants.SA20_THING_TYPE_UID;
         }
         if (modelName.contains("SA30")) {
             return ArcamBindingConstants.SA30_THING_TYPE_UID;
         }
-        if (modelName.contains("AVR30")) {
-            return ArcamBindingConstants.AVR30_THING_TYPE_UID;
-        }
+
         return null;
     }
 
