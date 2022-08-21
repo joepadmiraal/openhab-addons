@@ -1,76 +1,113 @@
 # Arcam Binding
 
-_Give some details about what this binding is meant for - a protocol, system, specific device._
-
-_If possible, provide some resources like pictures (only PNG is supported currently), a video, etc. to give an impression of what can be done with this binding._
-_You can place such resources into a `doc` folder next to this README.md._
-
-_Put each sentence in a separate line to improve readability of diffs._
+This binding add support for [Arcam](https://www.arcam.co.uk/) audio products.
+These products have their own protocol on top of TCP which is what this binding uses to communicate.
 
 ## Supported Things
 
-_Please describe the different supported things / devices including their ThingTypeUID within this section._
-_Which different types are supported, which models were tested etc.?_
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/OH-INF/thing``` of your binding._
+This binding supports the following models:
 
-- `bridge`: Short description of the Bridge, if any
-- `sample`: Short description of the Thing with the ThingTypeUID `sample`
+| Model               | ThingTypeUID   | Tested | 
+|---------------------|----------------|--------|
+| AVR5                | AVR5           | No     |
+| AVR10               | AVR10          | No     |
+| AVR20               | AVR20          | No     |
+| AVR30               | AVR30          | No     |
+| AVR40               | AVR40          | No     |
+| SA10                | SA10           | No     |
+| SA20                | SA20           | Yes    |
+| SA30                | SA30           | No     |
+
+Each device seems to have different options and the protocol differs between each series.
+Which is why not all Arcam models are supported yet.
+If you own an Arcam device you can help out by validating whether this binding works correctly with your device.
+You can get in touch via the OpenHAB forum by either sending a direct message or start a post and mention me (joepadmiraal).
+Also let me know if you have an Arcam device which is not in the list, I'm happy to add support for more models.
 
 ## Discovery
 
-_Describe the available auto-discovery features here._
-_Mention for what it works and what needs to be kept in mind when using it._
+The Arcam devices are discovered through UPnP in the local network and all devices are put in the Inbox.
 
 ## Binding Configuration
 
-_If your binding requires or supports general configuration settings, please create a folder ```cfg``` and place the configuration file ```<bindingId>.cfg``` inside it._
-_In this section, you should link to this file and provide some information about the options._
-_The file could e.g. look like:_
-
-```
-# Configuration for the Arcam Binding
-#
-# Default secret key for the pairing of the Arcam Thing.
-# It has to be between 10-40 (alphanumeric) characters.
-# This may be changed by the user for security reasons.
-secret=openHABSecret
-```
-
-_Note that it is planned to generate some part of this based on the information that is available within ```src/main/resources/OH-INF/binding``` of your binding._
-
-_If your binding does not offer any generic configurations, you can remove this section completely._
+This binding does not require any configuration.
 
 ## Thing Configuration
 
-_Describe what is needed to manually configure a thing, either through the UI or via a thing-file._
-_This should be mainly about its mandatory and optional configuration parameters._
-
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/OH-INF/thing``` of your binding._
+The most easy way of using this binding is via UPnP discovery.
+This will automatically configure the `hostname` for your device.
+You can manually configure this if you don't want to use the discovery mechanism.
 
 ### `sample` Thing Configuration
 
-| Name            | Type    | Description                           | Default | Required | Advanced |
-|-----------------|---------|---------------------------------------|---------|----------|----------|
-| hostname        | text    | Hostname or IP address of the device  | N/A     | yes      | no       |
-| password        | text    | Password to access the device         | N/A     | yes      | no       |
-| refreshInterval | integer | Interval the device is polled in sec. | 600     | no       | yes      |
+| Name            | Type    | Description                           | Default | Required |
+|-----------------|---------|---------------------------------------|---------|----------|
+| hostname        | text    | Hostname or IP address of the device  | N/A     | yes      |
 
 ## Channels
+Dependent on the model that you are using, these channels will be available.
+All generic channels are placed in the masterZone.
 
-_Here you should provide information about available channel types, what their meaning is and how they can be used._
-
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/OH-INF/thing``` of your binding._
-
-| Channel | Type   | Read/Write | Description                 |
-|---------|--------|------------|-----------------------------|
-| control | Switch | RW         | This is the control channel |
+| Channel ID                            | Item Type | Access Mode | Description                                                           | Thing types                            |
+|---------------------------------------|-----------|-------------|-----------------------------------------------------------------------|----------------------------------------|
+| masterZone#balance                    | Number    | W           | Get or set the balance, min/max value differs per model               | all                                    |
+| masterZone#dacFilter                  | String    | W           | Get or set the DAC filter, available filters differ per model         | SA10/SA20/SA30                         |
+| masterZone#dcOffset                   | Switch    | R           | Get the output DC offset status                                       | SA10/SA20/SA30                         |
+| masterZone#directMode                 | Switch    | R           | Get the Analogue input direct mode of the current input               | SA20/SA30/AVR5/AVR10/AVR20/AVR30/AVR40 |
+| masterZone#displaybrightness          | String    | W           | Get or set the display brightness                                     | all                                    |
+| masterZone#headphones                 | Switch    | R           | Get whether headphones are connected                                  | all                                    |
+| masterZone#incomingSampleRate         | String    | R           | Get the incoming audio sample rate                                    | all                                    |
+| masterZone#input                      | String    | W           | Get or set the input source, available options differ per model       | all                                    |
+| masterZone#inputDetect                | Switch    | R           | Get the status of the active input                                    | SA10/SA20/SA30                         |
+| masterZone#lifterTemperature          | Number    | R           | Get the temperature of the lifter                                     | SA20/SA30                              |
+| masterZone#mute                       | Switch    | W           | Get or set whether the device should be muted                         | all                                    |
+| masterZone#nowPlayingTitle            | String    | R           | Get the title of the song that is currently playing                   | SA30                                   |
+| masterZone#nowPlayingArtist           | String    | R           | Get the artist of the song that is currently playing                  | SA30                                   |
+| masterZone#masterZone#nowPlayingAlbum | String    | R           | Get the ablum of the song that is currently playing                   | SA30                                   |
+| masterZone#nowPlayingApplication      | String    | R           | Get the GoogleCast source application                                 | SA30                                   |
+| masterZone#nowPlayingSampleRate       | String    | R           | Get the sample rate of the song that is currently playing             | SA30                                   |
+| masterZone#nowPlayingAudioEncoder     | String    | R           | Get the audio encoder of the song that is currently playing           | SA30                                   |
+| masterZone#outputTemperature          | Number    | R           | Get the temperature of the output stage                               | SA10/SA20/SA30                         |
+| masterZone#power                      | Switch    | W           | Get or set the power status of the device or the master zone          | all                                    |
+| masterZone#reboot                     | Switch    | W           | Forces a reboot of the device                                         | all                                    |
+| masterZone#roomEqualisation           | String    | W           | Get or set the room equalisation preset or turn it off                | SA30/AVR5/AVR10/AVR20/AVR30/AVR40      |
+| masterZone#shortCircuit               | Switch    | R           | Get the short circuit status                                          | SA20/SA30                              |
+| masterZone#softwareVersion            | String    | R           | Get the software (firmware) version                                   | all                                    |
+| masterZone#timeoutCounter             | Number    | R           | Get the time left (in minutes) until unit enters auto standby         | SA10/SA20/SA30                         |
+| masterZone#volume                     | Number    | W           | Get or set the volume                                                 | all                                    |
+| zone2#balance                         | Number    | W           | Get or set the balance, min/max value differs per model               | AVR20/AVR30/AVR40                      |
+| zone2#directMode                      | Switch    | R           | Get the Analogue input direct mode of the current input               | AVR20/AVR30/AVR40                      |
+| zone2#input                           | String    | W           | Get or set the input source, available options differ per model       | AVR20/AVR30/AVR40                      |
+| zone2#mute                            | Switch    | W           | Get or set whether the device should be muted                         | AVR20/AVR30/AVR40                      |
+| zone2#power                           | Switch    | W           | Get or set the power status of zone 2                                 | AVR20/AVR30/AVR40                      |
+| zone2#roomEqualisation                | String    | W           | Get or set the room equalisation preset or turn it off                | AVR20/AVR30/AVR40                      |
+| zone2#volume                          | Number    | W           | Get or set the volume                                                 | AVR20/AVR30/AVR40                      |
 
 ## Full Example
 
-_Provide a full usage example based on textual configuration files._
-_*.things, *.items examples are mandatory as textual configuration is well used by many users._
-_*.sitemap examples are optional._
+`.things` file:
 
+```
+Thing arcam:SA30:living [ hostname="192.168.0.10"]
+```
+
+`.items` file:
+
+```
+Dimmer Arcam_Volume       "Volume [%.1f %%]" <soundvolume>      {channel="arcam:SA30:living:sa30MasterZone#volume"}
+Switch Arcam_Mute         "Mute"             <soundvolume_mute> {channel="arcam:SA30:living:sa30MasterZone#mute"}
+String Arcam_Input        "Input"            <mediacontrol>     {channel="arcam:SA30:living:sa30MasterZone#input"}
+```
+
+`.sitemap` file:
+
+```
+Frame label="Arcam" {
+    Default item=Arcam_Volume
+    Default item=Arcam_Mute
+    Default item=Arcam_Input
+}
+```
 ## Development 
 
 When adding a new Arcam device you need to do the following.
