@@ -150,6 +150,8 @@ public class HDPowerViewShadeHandler extends AbstractHubbedThingHandler {
                     requestRefreshShadeBatteryLevel();
                     break;
                 case CHANNEL_SHADE_SIGNAL_STRENGTH:
+                case CHANNEL_SHADE_HUB_RSSI:
+                case CHANNEL_SHADE_REPEATER_RSSI:
                     requestRefreshShadeSurvey();
                     break;
             }
@@ -162,10 +164,6 @@ public class HDPowerViewShadeHandler extends AbstractHubbedThingHandler {
             return;
         }
         HDPowerViewWebTargets webTargets = bridge.getWebTargets();
-        if (webTargets == null) {
-            logger.warn("Web targets not initialized");
-            return;
-        }
         try {
             handleShadeCommand(channelId, command, webTargets, shadeId);
         } catch (HubInvalidResponseException e) {
@@ -324,7 +322,7 @@ public class HDPowerViewShadeHandler extends AbstractHubbedThingHandler {
         }
 
         if (propChanged && db.isCapabilitiesInDatabase(capabilitiesVal) && db.isTypeInDatabase(type)
-                && (capabilitiesVal != db.getType(type).getCapabilities())) {
+                && (capabilitiesVal != db.getType(type).getCapabilities()) && (shadeData.capabilities != null)) {
             db.logCapabilitiesMismatch(type, capabilitiesVal);
         }
     }
@@ -523,9 +521,6 @@ public class HDPowerViewShadeHandler extends AbstractHubbedThingHandler {
                 throw new HubProcessingException("Missing bridge handler");
             }
             HDPowerViewWebTargets webTargets = bridge.getWebTargets();
-            if (webTargets == null) {
-                throw new HubProcessingException("Web targets not initialized");
-            }
             ShadeData shadeData;
             switch (kind) {
                 case POSITION:
@@ -541,15 +536,32 @@ public class HDPowerViewShadeHandler extends AbstractHubbedThingHandler {
                             surveyData.forEach(data -> joiner.add(data.toString()));
                             logger.debug("Survey response for shade {}: {}", shadeId, joiner.toString());
                         }
+
+                        int hubRssi = Integer.MAX_VALUE;
+                        int repeaterRssi = Integer.MAX_VALUE;
+                        for (SurveyData survey : surveyData) {
+                            if (survey.neighborId == 0) {
+                                hubRssi = survey.rssi;
+                            } else {
+                                repeaterRssi = survey.rssi;
+                            }
+                        }
+                        updateState(CHANNEL_SHADE_HUB_RSSI, hubRssi == Integer.MAX_VALUE ? UnDefType.UNDEF
+                                : new QuantityType<>(hubRssi, Units.DECIBEL_MILLIWATTS));
+                        updateState(CHANNEL_SHADE_REPEATER_RSSI, repeaterRssi == Integer.MAX_VALUE ? UnDefType.UNDEF
+                                : new QuantityType<>(repeaterRssi, Units.DECIBEL_MILLIWATTS));
+
                         shadeData = webTargets.getShade(shadeId);
                         updateSignalStrengthState(shadeData.signalStrength);
                     } else {
                         logger.info("No data from shade {} survey", shadeId);
                         /*
-                         * Setting channel to UNDEF here would be reverted on next poll, since
-                         * signal strength is part of shade response. So leaving current value,
+                         * Setting signal strength channel to UNDEF here would be reverted on next poll,
+                         * since signal strength is part of shade response. So leaving current value,
                          * even though refreshing the value failed.
                          */
+                        updateState(CHANNEL_SHADE_HUB_RSSI, UnDefType.UNDEF);
+                        updateState(CHANNEL_SHADE_REPEATER_RSSI, UnDefType.UNDEF);
                     }
                     break;
                 case BATTERY_LEVEL:
@@ -565,6 +577,12 @@ public class HDPowerViewShadeHandler extends AbstractHubbedThingHandler {
                 logger.warn("Bridge returned a bad JSON response: {}", e.getMessage());
             } else {
                 logger.warn("Bridge returned a bad JSON response: {} -> {}", e.getMessage(), cause.getMessage());
+            }
+            // Survey calls are unreliable and often returns "{}" as payload. For repeater RSSI tracking to be useful,
+            // we need to reset channels also in this case.
+            if (kind == RefreshKind.SURVEY) {
+                updateState(CHANNEL_SHADE_HUB_RSSI, UnDefType.UNDEF);
+                updateState(CHANNEL_SHADE_REPEATER_RSSI, UnDefType.UNDEF);
             }
         } catch (HubMaintenanceException e) {
             // exceptions are logged in HDPowerViewWebTargets
