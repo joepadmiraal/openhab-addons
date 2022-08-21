@@ -45,6 +45,7 @@ You can manually configure this if you don't want to use the discovery mechanism
 | hostname        | text    | Hostname or IP address of the device  | N/A     | yes      |
 
 ## Channels
+
 Dependent on the model that you are using, these channels will be available.
 All generic channels are placed in the masterZone.
 
@@ -108,6 +109,7 @@ Frame label="Arcam" {
     Default item=Arcam_Input
 }
 ```
+
 ## Development 
 
 When adding a new Arcam device you need to do the following.
