@@ -82,6 +82,7 @@ public class ArcamConnection implements ArcamSocketListener {
     public void requestState(String channel) {
         ArcamCommandCode commandCode = ArcamCommandCode.getFromChannel(channel);
         if (commandCode == null) {
+            logger.debug("commandCode not found, channel: {}", channel);
             return;
         }
 
@@ -336,6 +337,7 @@ public class ArcamConnection implements ArcamSocketListener {
         // Volume
         if (response.cc == 0x0D) {
             int volume = Byte.valueOf(response.data.get(0)).intValue();
+            logger.debug("Got volume response: {}, {}", ArcamUtil.bytesToHex(response.data), volume);
             if (isMasterZone(response.zn)) {
                 state.setPercentageState(ArcamBindingConstants.CHANNEL_MASTER_VOLUME, volume);
             } else {

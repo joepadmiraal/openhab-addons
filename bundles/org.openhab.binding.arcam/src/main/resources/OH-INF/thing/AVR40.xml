@@ -9,11 +9,11 @@
 		<label>Arcam Binding Thing</label>
 		<description>AVR40</description>
 		<channel-groups>
-			<channel-group id="avr40MasterZone" typeId="avr40MasterZone">
+			<channel-group id="masterZone" typeId="avr40MasterZone">
 				<label>Master zone</label>
 				<description>The master zone. Commands that appear zone-less refer to the master zone</description>
 			</channel-group>
-			<channel-group id="avr40Zone2" typeId="avr40Zone2">
+			<channel-group id="zone2" typeId="avr40Zone2">
 				<label>Zone 2</label>
 				<description>zone.</description>
 			</channel-group>

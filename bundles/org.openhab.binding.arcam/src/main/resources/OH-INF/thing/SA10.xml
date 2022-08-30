@@ -9,7 +9,7 @@
 		<label>Arcam Binding Thing</label>
 		<description>SA10</description>
 		<channel-groups>
-			<channel-group id="sa10MasterZone" typeId="sa10MasterZone">
+			<channel-group id="masterZone" typeId="sa10MasterZone">
 				<label>Master zone</label>
 				<description>The master zone. Commands that appear zone-less refer to the master zone</description>
 			</channel-group>
