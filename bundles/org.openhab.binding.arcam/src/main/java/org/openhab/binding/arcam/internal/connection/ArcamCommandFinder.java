@@ -38,5 +38,4 @@ public class ArcamCommandFinder {
         logger.trace("Could not find ArcamCommand data for code: {}.", code);
         return new byte[] {};
     }
-
 }

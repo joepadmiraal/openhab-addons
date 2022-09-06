@@ -49,18 +49,17 @@ public class ArcamCommandInTransit {
         }
     }
 
-    synchronized public void set(ArcamCommandCode commandCode) {
+    public synchronized void set(ArcamCommandCode commandCode) {
         commandInTransit = commandCode;
     }
 
-    synchronized public void finish(ArcamCommandCode commandCode) {
+    public synchronized void finish(ArcamCommandCode commandCode) {
         if (commandCode.equals(commandInTransit)) {
             commandInTransit = null;
         }
     }
 
-    synchronized public boolean hasCommand() {
+    public synchronized boolean hasCommand() {
         return commandInTransit != null;
     }
-
 }
