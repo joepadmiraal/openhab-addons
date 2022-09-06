@@ -25,6 +25,12 @@
 				<label>Hostname</label>
 				<description>Hostname or IP address of the device</description>
 			</parameter>
+            <parameter name="pollingInterval" type="integer" min="0">
+                <label>Polling interval</label>
+                <description>The amount of seconds to wait before polling the device for updated information. When set to 0 no
+                    polling is done and the binding relies on data being pushed from the device to the binding.</description>
+                <default>0</default>
+            </parameter>
 		</config-description>
 	</thing-type>
 

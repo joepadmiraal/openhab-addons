@@ -199,6 +199,7 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
 
         scheduler.execute(() -> {
             String hostname = config.hostname;
+            Integer pollingInterval = config.pollingInterval;
 
             try {
                 if (hostname == null) {
@@ -206,13 +207,18 @@ public class ArcamHandler extends BaseThingHandler implements ArcamStateChangedL
                     return;
                 }
 
-                connection.connect(hostname);
+                if (pollingInterval == null) {
+                    pollingInterval = 0;
+                }
+
+                connection.connect(hostname, pollingInterval);
+
             } catch (Exception e) {
                 updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
                 return;
             }
 
-            logger.debug("handler initialized. ip: {}", config.hostname);
+            logger.debug("handler initialized. hostname: {}", config.hostname);
         });
     }
 
