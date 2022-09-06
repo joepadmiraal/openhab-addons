@@ -15,7 +15,6 @@ package org.openhab.binding.arcam.internal.connection;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -32,8 +31,6 @@ import org.openhab.core.library.types.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.micrometer.core.instrument.util.StringUtils;
-
 /**
  * The {@link ArcamConnection} class manages the socket connection with the device.
  * It will trigger state changes when new messages are received and writes commands to the socket.
@@ -48,7 +45,6 @@ public class ArcamConnection implements ArcamSocketListener {
     private ArcamDevice device;
     private ArcamSocket socket;
     private ArcamConnectionListener connectionListener;
-    private ScheduledExecutorService scheduler;
     private ArcamCommandInTransit commandInTransit = new ArcamCommandInTransit();
 
     @Nullable
@@ -61,16 +57,10 @@ public class ArcamConnection implements ArcamSocketListener {
         byte[] heartbeatCommand = device.getHeartbeatCommand();
         this.socket = new ArcamSocket(thingUID, scheduler, heartbeatCommand, this);
         this.connectionListener = connectionListener;
-        this.scheduler = scheduler;
     }
 
-    public void connect(String hostname, int pollingInterval) throws UnknownHostException, IOException {
+    public void connect(String hostname) throws UnknownHostException, IOException {
         socket.connect(hostname);
-
-        if (pollingInterval > 0) {
-            scheduler.scheduleWithFixedDelay(this::requestAllValues, pollingInterval, pollingInterval,
-                    TimeUnit.SECONDS);
-        }
     }
 
     public void dispose() {
@@ -82,18 +72,6 @@ public class ArcamConnection implements ArcamSocketListener {
 
         logger.debug("Sending reboot array: {}", ArcamUtil.bytesToHex(data));
         socket.sendCommand(data);
-    }
-
-    public void requestAllValues() {
-        logger.debug("requestAllValues");
-
-        for (ArcamCommandCode commandCode : ArcamCommandCode.values()) {
-            // Only request the commandCodes for which a channel can exist
-            if (!StringUtils.isEmpty(commandCode.channel)) {
-
-                requestState(commandCode.channel);
-            }
-        }
     }
 
     public void requestState(String channel) {
@@ -406,7 +384,6 @@ public class ArcamConnection implements ArcamSocketListener {
     @Override
     public void onConnection() {
         connectionListener.onConnection();
-        requestAllValues();
     }
 
     @Override

@@ -48,6 +48,8 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
     private OutputStream outputStream;
     @Nullable
     private ScheduledFuture<?> pollingTask;
+    @Nullable
+    private ScheduledFuture<?> reconnectTask;
 
     private String thingUID;
     private ScheduledExecutorService scheduler;
@@ -139,7 +141,7 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
         try {
             connect();
         } catch (IOException e) {
-            scheduler.schedule(this::reconnect, 10, TimeUnit.SECONDS);
+            reconnectTask = scheduler.schedule(this::reconnect, 10, TimeUnit.SECONDS);
         }
     }
 
@@ -187,10 +189,15 @@ public class ArcamSocket implements ArcamConnectionReaderListener {
 
     public synchronized void dispose() {
         final ScheduledFuture<?> pollingTask = this.pollingTask;
-
         if (pollingTask != null) {
             pollingTask.cancel(true);
             this.pollingTask = null;
+        }
+
+        final ScheduledFuture<?> reconnectTask = this.reconnectTask;
+        if (reconnectTask != null) {
+            reconnectTask.cancel(true);
+            this.reconnectTask = null;
         }
 
         try {
