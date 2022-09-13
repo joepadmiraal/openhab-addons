@@ -16,7 +16,7 @@ import org.openhab.binding.eufy.internal.annotations.EufyChannel;
 
 /**
  * Represents a Eufy doorbell
- * 
+ *
  * @author Iwan Bron - Initial contribution
  */
 public class Doorbell extends Device {
@@ -36,9 +36,9 @@ public class Doorbell extends Device {
     @EufyChannel
     private int chimeHomebaseRingtoneType;
     @EufyChannel
-    private int notificationRing;
+    private boolean notificationRing;
     @EufyChannel
-    private int notificationMotion;
+    private boolean notificationMotion;
 
     public boolean isRinging() {
         return ringing;
@@ -104,19 +104,19 @@ public class Doorbell extends Device {
         this.chimeHomebaseRingtoneType = chimeHomebaseRingtoneType;
     }
 
-    public int getNotificationRing() {
+    public boolean isNotificationRing() {
         return notificationRing;
     }
 
-    public void setNotificationRing(int notificationRing) {
+    public void setNotificationRing(boolean notificationRing) {
         this.notificationRing = notificationRing;
     }
 
-    public int getNotificationMotion() {
+    public boolean isNotificationMotion() {
         return notificationMotion;
     }
 
-    public void setNotificationMotion(int notificationMotion) {
+    public void setNotificationMotion(boolean notificationMotion) {
         this.notificationMotion = notificationMotion;
     }
 }

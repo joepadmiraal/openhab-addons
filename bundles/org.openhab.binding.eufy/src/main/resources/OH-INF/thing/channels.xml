@@ -168,13 +168,13 @@
 	</channel-type>
 
 	<channel-type id="notificationMotion" advanced="true">
-		<item-type>Number</item-type>
+		<item-type>Boolean</item-type>
 		<label>Notification Motion</label>
 		<description>Notification Motion</description>
 	</channel-type>
 
 	<channel-type id="notificationRing" advanced="true">
-		<item-type>Number</item-type>
+		<item-type>Boolean</item-type>
 		<label>Notification Ring</label>
 		<description>Notification Ring</description>
 	</channel-type>
