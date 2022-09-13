@@ -1,0 +1,7 @@
+{
+	"type": "version",
+	"driverVersion": "1.5.0",
+	"serverVersion": "0.7.0",
+	"minSchemaVersion": 0,
+	"maxSchemaVersion": 8
+}

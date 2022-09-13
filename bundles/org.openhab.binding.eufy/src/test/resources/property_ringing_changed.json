@@ -1,0 +1,11 @@
+{
+	"type": "event",
+	"event": {
+		"source": "device",
+		"event": "property changed",
+		"serialNumber": "T8220P60213118F1",
+		"name": "ringing",
+		"value": true,
+		"timestamp": 1640624653380
+	}
+}

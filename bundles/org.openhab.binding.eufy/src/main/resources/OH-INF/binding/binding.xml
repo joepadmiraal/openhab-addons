@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<binding:binding id="eufy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:binding="https://openhab.org/schemas/binding/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/binding/v1.0.0 https://openhab.org/schemas/binding-1.0.0.xsd">
+
+	<name>Eufy Security Binding</name>
+	<description>This is the binding for Eufy Security products. It needs a docker container from
+		https://github.com/bropat/eufy-security-ws. See description there to install the docker container
+		that wraps the Eufy
+		Security client into a easy to use websocket server.</description>
+
+</binding:binding>

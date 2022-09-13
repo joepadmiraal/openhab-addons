@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="eufy"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<bridge-type id="container">
+
+		<label>Eufy Security Docker Container</label>
+		<description>A docker container from https://github.com/bropat/eufy-security-ws with the Eufy security client wrapped.</description>
+
+		<channels>
+			<channel typeId="readonlySwitchDefault" id="cloud-connected">
+				<label>Cloud Connected</label>
+				<description>If the container is connected to the cloud account.</description>
+			</channel>
+			<channel typeId="readonlySwitchDefault" id="push-connected">
+				<label>Push Connected</label>
+				<description>If the container is connected to the local station, hence able to forward push events.</description>
+			</channel>
+		</channels>
+
+		<representation-property>url</representation-property>
+
+		<config-description>
+			<parameter name="hostname" type="text" required="true">
+				<label>Hostname</label>
+				<description>Hostname or IP address where the container is reachable.</description>
+				<default>localhost</default>
+			</parameter>
+			<parameter name="port" type="integer" required="true">
+				<label>Portnumber</label>
+				<description>Portnumber to connect the websocket client.</description>
+				<default>3000</default>
+			</parameter>
+		</config-description>
+
+	</bridge-type>
+
+</thing:thing-descriptions>
