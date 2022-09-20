@@ -104,7 +104,7 @@ public class Doorbell extends Device {
         this.chimeHomebaseRingtoneType = chimeHomebaseRingtoneType;
     }
 
-    public boolean getNotificationRing() {
+    public boolean isNotificationRing() {
         return notificationRing;
     }
 
@@ -112,7 +112,7 @@ public class Doorbell extends Device {
         this.notificationRing = notificationRing;
     }
 
-    public boolean getNotificationMotion() {
+    public boolean isNotificationMotion() {
         return notificationMotion;
     }
 
