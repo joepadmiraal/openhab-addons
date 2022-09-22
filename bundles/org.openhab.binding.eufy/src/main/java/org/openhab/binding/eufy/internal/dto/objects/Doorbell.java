@@ -36,9 +36,9 @@ public class Doorbell extends Device {
     @EufyChannel
     private int chimeHomebaseRingtoneType;
     @EufyChannel
-    private boolean notificationRing;
+    private BoolInt notificationRing;
     @EufyChannel
-    private boolean notificationMotion;
+    private BoolInt notificationMotion;
 
     public boolean isRinging() {
         return ringing;
@@ -104,19 +104,19 @@ public class Doorbell extends Device {
         this.chimeHomebaseRingtoneType = chimeHomebaseRingtoneType;
     }
 
-    public boolean isNotificationRing() {
-        return notificationRing;
+    public boolean getNotificationRing() {
+        return notificationRing.value;
     }
 
     public void setNotificationRing(boolean notificationRing) {
-        this.notificationRing = notificationRing;
+        this.notificationRing.value = notificationRing;
     }
 
-    public boolean isNotificationMotion() {
-        return notificationMotion;
+    public boolean getNotificationMotion() {
+        return notificationMotion.value;
     }
 
     public void setNotificationMotion(boolean notificationMotion) {
-        this.notificationMotion = notificationMotion;
+        this.notificationMotion.value = notificationMotion;
     }
 }

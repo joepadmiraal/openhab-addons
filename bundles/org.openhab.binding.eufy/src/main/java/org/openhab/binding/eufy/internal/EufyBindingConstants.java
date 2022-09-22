@@ -66,5 +66,6 @@ public class EufyBindingConstants {
     public static final String CHANNEL_ANTITHEFTPROTECTION = "antitheftProtection";
     public static final String CHANNEL_PERSON_DETECTED = "personDetected";
     public static final String CHANNEL_PERSON_NAME = "personName";
+    public static final String CHANNEL_RINGING = "ringing";
     public static final String CHANNEL_MOTION_DETECTED = "motionDetected";
 }
