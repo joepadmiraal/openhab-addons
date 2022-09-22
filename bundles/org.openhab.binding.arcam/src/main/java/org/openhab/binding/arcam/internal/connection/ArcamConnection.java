@@ -388,12 +388,7 @@ public class ArcamConnection implements ArcamSocketListener {
         state.setState(channelId, newValue);
     }
 
-    private void sendCommand(byte[] data, @Nullable ArcamCommandCode commandCode) {
-        if (commandCode == null) {
-            logger.error("Command code not found during sendCommand");
-            return;
-        }
-
+    private void sendCommand(byte[] data, ArcamCommandCode commandCode) {
         commandInTransit.set(commandCode);
 
         if (data[2] == 0x64) {
