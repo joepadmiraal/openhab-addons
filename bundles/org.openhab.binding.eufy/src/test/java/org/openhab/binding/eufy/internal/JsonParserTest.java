@@ -25,6 +25,7 @@ import org.openhab.binding.eufy.internal.dto.Message;
 import org.openhab.binding.eufy.internal.dto.MotionDetectedEvent;
 import org.openhab.binding.eufy.internal.dto.PersonDetectedEvent;
 import org.openhab.binding.eufy.internal.dto.PropertyChangedEvent;
+import org.openhab.binding.eufy.internal.dto.StateChangedEvent;
 import org.openhab.binding.eufy.internal.dto.StatusMessage;
 import org.openhab.binding.eufy.internal.dto.VersionMessage;
 import org.openhab.binding.eufy.internal.dto.objects.Device;
@@ -84,6 +85,17 @@ public class JsonParserTest {
         assertTrue(event.getEvent() instanceof MotionDetectedEvent);
         MotionDetectedEvent motion = (MotionDetectedEvent) event.getEvent();
         assertTrue(motion.isState());
+    }
+
+    @Test
+    public void testParseRingingEvent() throws Exception {
+        Message message = MessageHelper
+                .parse(Files.readString(Paths.get("src/test/resources/state_ringing_changed.json")));
+        assertTrue(message instanceof EventMessage);
+        EventMessage event = (EventMessage) message;
+        assertTrue(event.getEvent() instanceof StateChangedEvent);
+        StateChangedEvent ringingEvent = (StateChangedEvent) event.getEvent();
+        assertTrue(ringingEvent.isState());
     }
 
     @Test

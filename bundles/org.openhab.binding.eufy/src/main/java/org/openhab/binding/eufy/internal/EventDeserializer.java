@@ -20,6 +20,7 @@ import org.openhab.binding.eufy.internal.dto.Event;
 import org.openhab.binding.eufy.internal.dto.MotionDetectedEvent;
 import org.openhab.binding.eufy.internal.dto.PersonDetectedEvent;
 import org.openhab.binding.eufy.internal.dto.PropertyChangedEvent;
+import org.openhab.binding.eufy.internal.dto.RingsEvent;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -39,6 +40,7 @@ class EventDeserializer implements JsonDeserializer<Event> {
     private static final String TYPE_MOTION_DETECTED = "motion detected";
     private static final String TYPE_PERSON_DETECTED = "person detected";
     private static final String TYPE_PROPERTY_CHANGED = "property changed";
+    private static final String TYPE_RINGS = "rings";
 
     @Override
     public @Nullable Event deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -53,6 +55,8 @@ class EventDeserializer implements JsonDeserializer<Event> {
                 return context.deserialize(jsonObject, PersonDetectedEvent.class);
             } else if (jsonType.getAsString().equals(TYPE_PROPERTY_CHANGED)) {
                 return context.deserialize(jsonObject, PropertyChangedEvent.class);
+            } else if (jsonType.getAsString().equals(TYPE_RINGS)) {
+                return context.deserialize(jsonObject, RingsEvent.class);
             }
         }
         return context.deserialize(jsonObject, PropertyChangedEvent.class);

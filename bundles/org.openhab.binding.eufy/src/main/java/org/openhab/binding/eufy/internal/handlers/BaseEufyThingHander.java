@@ -30,6 +30,7 @@ import org.openhab.binding.eufy.internal.dto.MotionDetectedEvent;
 import org.openhab.binding.eufy.internal.dto.PersonDetectedEvent;
 import org.openhab.binding.eufy.internal.dto.PropertyChangedEvent;
 import org.openhab.binding.eufy.internal.dto.ResultMessage;
+import org.openhab.binding.eufy.internal.dto.RingsEvent;
 import org.openhab.binding.eufy.internal.dto.StateChangedEvent;
 import org.openhab.binding.eufy.internal.dto.objects.EufyObject;
 import org.openhab.core.library.types.DecimalType;
@@ -239,10 +240,12 @@ public abstract class BaseEufyThingHander extends BaseThingHandler {
     }
 
     public void eventReceived(Event event) {
+        // if (event.getEvent().contains("name")) {
         if (event instanceof PropertyChangedEvent) {
             PropertyChangedEvent propEvent = (PropertyChangedEvent) event;
             propertyChanged(propEvent.getName(), propEvent.getValue());
         } else if (event instanceof StateChangedEvent) {
+            // } else if (event.getEvent().contains("state")) {
             StateChangedEvent stateEvent = (StateChangedEvent) event;
             stateChanged(stateEvent);
         } else {
@@ -256,6 +259,8 @@ public abstract class BaseEufyThingHander extends BaseThingHandler {
             updateChannel(CHANNEL_PERSON_NAME, ((PersonDetectedEvent) stateEvent).getPerson());
         } else if (stateEvent instanceof MotionDetectedEvent) {
             updateChannel(CHANNEL_MOTION_DETECTED, ((MotionDetectedEvent) stateEvent).isState());
+        } else if (stateEvent instanceof RingsEvent) {
+            updateChannel(CHANNEL_RINGING, ((RingsEvent) stateEvent).isState());
         } else {
             logger.debug("Unhandled state change: {}", stateEvent.getEvent());
         }

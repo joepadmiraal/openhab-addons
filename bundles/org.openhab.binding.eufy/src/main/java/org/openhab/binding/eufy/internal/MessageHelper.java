@@ -17,6 +17,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.eufy.internal.dto.Event;
 import org.openhab.binding.eufy.internal.dto.Message;
 import org.openhab.binding.eufy.internal.dto.ResultMessage;
+import org.openhab.binding.eufy.internal.dto.objects.BoolInt;
 import org.openhab.binding.eufy.internal.dto.objects.Device;
 import org.openhab.binding.eufy.internal.dto.outgoing.OutgoingMessage;
 
@@ -40,7 +41,8 @@ public class MessageHelper {
         gson = new GsonBuilder().registerTypeAdapter(Message.class, new MessageDeserializer())
                 .registerTypeAdapter(Device.class, new DeviceDeserializer())
                 .registerTypeAdapter(ResultMessage.class, new ResultDeserializer())
-                .registerTypeAdapter(Event.class, new EventDeserializer()).create();
+                .registerTypeAdapter(Event.class, new EventDeserializer())
+                .registerTypeAdapter(BoolInt.class, new BoolIntDeserializer()).create();
     }
 
     public static @Nullable Message parse(String message) {
