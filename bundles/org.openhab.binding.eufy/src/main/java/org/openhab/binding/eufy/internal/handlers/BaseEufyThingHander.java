@@ -240,12 +240,10 @@ public abstract class BaseEufyThingHander extends BaseThingHandler {
     }
 
     public void eventReceived(Event event) {
-        // if (event.getEvent().contains("name")) {
         if (event instanceof PropertyChangedEvent) {
             PropertyChangedEvent propEvent = (PropertyChangedEvent) event;
             propertyChanged(propEvent.getName(), propEvent.getValue());
         } else if (event instanceof StateChangedEvent) {
-            // } else if (event.getEvent().contains("state")) {
             StateChangedEvent stateEvent = (StateChangedEvent) event;
             stateChanged(stateEvent);
         } else {
