@@ -3,7 +3,7 @@
 	"event": {
 		"source": "device",
 		"event": "property changed",
-		"serialNumber": "T8220P60213118F1",
+		"serialNumber": "fake serial",
 		"name": "ringing",
 		"value": true,
 		"timestamp": 1640624653380

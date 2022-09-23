@@ -3,7 +3,7 @@
 	"event": {
 		"source": "device",
 		"event": "person detected",
-		"serialNumber": "T8140P8121432028",
+		"serialNumber": "fake serial",
 		"state": true,
 		"person": "Unknown"
 	}

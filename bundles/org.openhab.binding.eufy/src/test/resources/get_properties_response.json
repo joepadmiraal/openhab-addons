@@ -3,7 +3,7 @@
 	"success": true,
 	"messageId": "3",
 	"result": {
-		"serialNumber": "T8140P8121432028",
+		"serialNumber": "fake serial",
 		"properties": {
 			"name": {
 				"value": "Voordeur",
@@ -58,7 +58,7 @@
 				"timestamp": 1640335395000
 			},
 			"pictureUrl": {
-				"value": "https://zhixin-security-eu.s3.eu-central-1.amazonaws.com/thumb/2021/12/23/station/T8010P2321381032/lD0bjebWOQZkpTGa./camera00_20211224005444.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJYLV2KOLW6PU4FSA%2F20220101%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20220101T131208Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=bd8f0e7edc13597188db5a6d3248c2391de7db9b19896a31e83e3bda3a4a5105",
+				"value": "fake url",
 				"timestamp": 1640303683000
 			},
 			"recordingClipLength": {
